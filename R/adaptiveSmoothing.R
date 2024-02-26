@@ -1,0 +1,85 @@
+#' Adaptive smoothing
+#'
+#' @description
+#' A function to perform a weighted, adaptive smoothing of gene expression based on the heterogeneity of the cell neighbourhood. Heterogeneous neighbourhoods are smoothed less with higher weights given to cells belonging to same initial group. Homogeneous neighbourhoods are smoothed more with similar weights given to most cells.
+#'
+#' @param spe SpatialExperiment object with logcounts, PCA, 'putative cell type' groups, and entropy outputs included.
+#' @param nnCells a character matrix of NN nearest neighbours - rows are cells and columns are their nearest neighbours ranged from closest to farthest neighbour. For sort = TRUE, the neighbours belonging to the same 'putative cell type' group as the cell are moved closer to it.
+#' @param NN an integer for the number of neighbourhood cells the function should consider. The value must be greater than or equal to 1. Default value is 30.
+#' @param kernel a character for type of distribution to be used. The two valid values are "G" or "E". G for Gaussian distribution, and E for exponential distribution. Default value is "G".
+#' @param spread a numeric value for distribution spread, represented by standard deviation for Gaussian distribution and rate for exponential distribution. Default value is 0.05 for Gaussian distribution and 20 for exponential distribution.
+#' @param cells a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).
+#' @param threads a numeric value for the number of CPU cores to be used for the analysis.
+#'
+#' @return SpatialExperiment object including smoothed gene expression values as another assay.
+#'
+#' @examples
+#'
+#' @export
+
+#### Smoothing
+adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) {
+    # function to retrieve normal distribution weights for neighbors
+    gauss_kernel <- function(ed, NN, sd) {
+        # distribution from 0 to entropy, with cells in smoothing radius as cut points
+        cutpoints <- seq(0, ed, length.out = NN)
+        return(dnorm(cutpoints, sd = sd))
+    }
+    # function to retrieve exponential distribution weights for neighbors
+    exp_kernel <- function(ed, NN, rate) {
+        # distribution from 0 to entropy, with cells in smoothing radius as cut points
+        cutpoints <- seq(0, ed, length.out = NN)
+        return(dexp(cutpoints, rate = rate))
+    }
+    # function to perform weighted moving average smoothing
+    smoothedData <- function(mat, weight) {
+        # column matrix of weight
+        weight <- as.matrix(weight)
+        # return weighted moving average
+        return((mat %*% weight) / sum(weight))
+    }
+
+    gXc <- as(logcounts(spe), "sparseMatrix")
+    cl <- makeCluster(threads)
+    doParallel::registerDoParallel(cl)
+    # loop through each cell column
+    y <- foreach (x = c(1:length(colnames(gXc)))) %dopar% {
+        # central cell name
+        cell <- colnames(gXc)[x]
+        # cell entropy
+        ed = spe$entropy[x]
+        # names of central cell + NN cells
+        region <- as.vector(nnCells[x,])
+        # gene expression matrix of NN cells
+        inMat <- as.matrix(gXc[,region])
+        if (kernel == "G"){
+            # normal distribution-weights
+            weight <- gauss_kernel(ed, NN + 1, spread)
+        } else if (kernel == "E") {
+            # exponential distribution-weights
+            weight <- exp_kernel(ed, NN + 1, spread)
+        }
+        smat <- smoothedData(inMat, weight)
+        colnames(smat) <- cell
+        smat
+    }
+    stopCluster(cl)
+
+    # QC check
+    check.cells <- identical(sapply(y, colnames), cells)
+    check.genes <- identical(rownames(logcounts(spe)), rownames(y[[1]]))
+    check.NA <- sum(is.na(unlist(y)))
+    if (check.cells == FALSE) {
+        stop("ERROR: Order of cells in smoothed data does not match cell order in spatial experiment object.")
+    } else if (check.genes == FALSE) {
+        stop("ERROR: Order of genes in smoothed data does not match gene order in spatial experiment object.")
+    } else if (check.NA != 0) {
+        stop("ERROR: Missing values in smoothed data.")
+    } else {
+        smoothMat = matrix(unlist(y), ncol = length(y), dimnames = list(rownames(y[[1]]), sapply(y, colnames)))
+        # add data to spatial experiment
+        assay(spe, i = "smoothed") <- as(smoothMat, "sparseMatrix")
+        print(paste("Smoothing performed. NN =", NN, "Kernel =", kernel, "Spread =", spread, Sys.time()))
+    }
+    return(spe)
+}
