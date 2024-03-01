@@ -1,65 +1,92 @@
-#' Clustering metrics
+#' Additional internal functions
 #'
 #' @description
-#' A function to measure clustering performance using ARI, NMI, and silhouette width, and to provide entropy statistics of each sample in the dataset.
+#' .cellName: A function to fetch cell IDs. Returns a data frame of cell IDs of neighbourhood cells.
+#' .cellNameSort: A function to perform neighbourhood cell sorting. Neighbourhood cells that belong to the same 'putative cell type' as the central cell are moved closer to the central cell. Returns a data frame of cell IDs of sorted neighbourhood cells.
+#' .clustNum: A function to fetch 'putative cell type' assignments of cell. Returns a data frame of 'putative cell type' assignments of neighbourhood cells.
+#' .calculateProp: A function to calculate the cell neighbourhood composition of 'putative' cell types. Returns a table of 'putative cell type' proportions in a neighbourhood.
+#' .exp_kernel: A function to generate weights from an exponential distribution. Returns a numeric vector of weights.
+#' .gauss_kernel: A function to generate weights from a Gaussian distribution. Returns a numeric vector of weights.
+#' .smoothedData: A function to perform a weighted moving average of gene expression in a neighbourhood. Returns a column matrix of smoothed gene expression.
+#' .getColours: Returns a vector of colours used in clustSIGNAL spatial plots by default.
 #'
-#' @param spe spatialExperiment object with logcounts, PCA, initial non-spatial clustering, entropy, and smoothed gene expression outputs included.
-#' @param samples samples a character vector of sample names to which the cells belong. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).
-#' @param celltypes a character vector of cell type annotation of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).
-#' @param cells a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).
-#'
-#' @return a list containing two items:
-#'
-#' 1. metrics_out, a table of clustering metrics ARI, NMI, and ASW, and domainness statistics min, max, and mean entropy values calculated for each sample.
-#'
-#' 2. spe_out, spatialExperiment object with annotated cell type and post-smoothing cluster silhouette widths of each cell added as metadata.
-#'
-#' @examples
+#' @keywords internal
 
-metrics <- function(spe, samples, celltypes, cells){
-    samplesList <- unique(samples)
-    # Silhoutte width
-    spe$cellNum <- transform(colData(spe), cellNum = as.numeric(interaction(celltypes, drop = TRUE)))$cellNum # integer representatives of cell types
-    silWidthRC = matrix(nrow = 0, ncol = 3)
-    silWidthCell = matrix(nrow = 0, ncol = 3)
-    for (s in samplesList) {
-        speX = spe[, samples == s]
-        clust_sub <- as.numeric(as.character(speX$reCluster))
-        cell_sub = speX$cellNum
-        cXg <- t(as.matrix(logcounts(speX)))
-        set.seed(12997)
-        distMat <- distances(cXg)
-        silCluster <- as.matrix(silhouette(clust_sub, distMat))
-        silCell <- as.matrix(silhouette(cell_sub, distMat))
-        silWidthRC <- rbind(silWidthRC, silCluster)
-        silWidthCell <- rbind(silWidthCell, silCell)
-    }
 
-    # QC check
-    check.cluster <- identical(silWidthRC[,1], as.numeric(as.character(spe$reCluster)))
-    check.cell <- identical(silWidthCell[,1], spe$cellNum)
-    if (check.cluster == FALSE | check.cell == FALSE) {
-        print(paste("ERROR: issue in silhouette width calculation. Order of cells in silhoutte width matrix did not match cell order in spatial experiment object."))
-    } else {
-        spe$rcSil <- silWidthRC[,3]
-        spe$cellSil <- silWidthCell[,3]
-    }
-    print(paste("Silhouette width calculated for each sample.", Sys.time()))
-
-    tmp_df = data.frame(Samples = samples, Celltypes = celltypes,
-                        Clusters = spe$reCluster, Entropy = spe$entropy,
-                        Silhouette = spe$rcSil)
-    metrics_per_sample <- tmp_df %>%
-        group_by(as.character(tmp_df$Samples)) %>%
-        summarise(ari = ARI(Celltypes, Clusters),
-                  nmi = NMI(Celltypes, Clusters),
-                  asw = mean(Silhouette),
-                  minEntropy = min(Entropy),
-                  maxEntropy = max(Entropy),
-                  meanEntropy = mean(Entropy))
-    print(paste("Metrics per sample calculated.", Sys.time()))
-    return(list("metrics_out" = metrics_per_sample,
-                "spe_out" = spe))
+# function to retrieve cell names of neighbors
+.cellName <- function (cell, Clust) {
+    return(rownames(Clust)[cell])
 }
 
 
+# function to sort neighbours and retrieving cell names of neighbors
+.cellNameSort <- function (cell, Clust) {
+    cellDF = data.frame(cellName = rownames(Clust)[cell], cluster = Clust[cell,1])
+    if (cellDF$cluster[1] %in% cellDF$cluster[2:31]) {
+        centralClust = cellDF$cluster[1]
+        sameClust = c()
+        diffClust = c()
+        for (c in 1:nrow(cellDF)) {
+            if (cellDF$cluster[c] == centralClust){
+                sameClust = append(sameClust, cellDF$cellName[c])
+            } else {
+                diffClust = append(diffClust, cellDF$cellName[c])
+            }
+        }
+        region = c(sameClust, diffClust)
+        return(region)
+    } else {
+        return(rownames(Clust)[cell])
+    }
+}
+
+
+# function to retrieve cluster numbers to which neighbors belong
+.clustNum <- function (cell, subClust) {
+    return(subClust[cell,])
+}
+
+
+# function to retrieve cluster proportions of each region
+.calculateProp <- function(arr) {
+    prop = prop.table(table(arr))
+    if (round(sum(prop)) != 1){ # check if the proportions for each region sum up to 1
+        stop(paste("ERROR: proportions are incorrect.", "row =", c, "proportion =", sum(arr)))
+    }
+    return(prop)
+}
+
+
+# function to retrieve exponential distribution weights for neighbors
+.exp_kernel <- function(ed, NN, rate) {
+    # distribution from 0 to entropy, with cells in smoothing radius as cut points
+    cutpoints <- seq(0, ed, length.out = NN)
+    return(dexp(cutpoints, rate = rate))
+}
+
+
+# function to retrieve normal distribution weights for neighbors
+.gauss_kernel <- function(ed, NN, sd) {
+    # distribution from 0 to entropy, with cells in smoothing radius as cut points
+    cutpoints <- seq(0, ed, length.out = NN)
+    return(dnorm(cutpoints, sd = sd))
+}
+
+
+# function to perform weighted moving average smoothing
+.smoothedData <- function(mat, weight) {
+    # column matrix of weight
+    weight <- as.matrix(weight)
+    # return weighted moving average
+    return((mat %*% weight) / sum(weight))
+}
+
+
+# function to select colours for spatial plots
+.getColours = function(){
+    return (c("#635547", "#8EC792", "#9e6762", "#FACB12", "#3F84AA", "#0F4A9C", "#ff891c", "#EF5A9D", "#C594BF", "#DFCDE4",
+              "#139992", "#65A83E", "#8DB5CE", "#005579", "#C9EBFB", "#B51D8D", "#532C8A", "#8870ad", "#cc7818", "#FBBE92",
+              "#EF4E22", "#f9decf", "#c9a997", "#C72228", "#f79083", "#F397C0", "#DABE99", "#c19f70", "#354E23", "#C3C388",
+              "#647a4f", "#CDE088", "#f7f79e", "#F6BFCB", "#7F6874", "#989898", "#1A1A1A", "#FFFFFF", "#e6e6e6", "#77441B",
+              "#F90026", "#A10037", "#DA5921", "#E1C239", "#9DD84A"))
+}

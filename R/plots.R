@@ -17,8 +17,10 @@
 #' plotType = heatmap, generates a heat map showing cell number distributions of annotated cell types and post-smoothing clusters.
 #'
 #' @examples
+#'
+#' @export
 
-plots = function(spe, samples, celltypes, plotType){
+.plots <- function(spe, samples, celltypes, plotType){
     xcoord = spatialCoords(spe)[, 1]
     ycoord = spatialCoords(spe)[, 2]
     df = cbind(as.data.frame(colData(spe)), xcoord, ycoord)
@@ -55,7 +57,7 @@ plots = function(spe, samples, celltypes, plotType){
     } else if (plotType == "spatial") {
         sptCell = ggplot(df, aes(x = xcoord, y = -ycoord)) +
             geom_point(size = 1, aes(colour = celltypes)) +
-            scale_color_manual(values = getColours()) +
+            scale_color_manual(values = .getColours()) +
             facet_wrap(vars(samples), scales = "free") +
             ggtitle("Spatial distribution of annotated cell types") +
             labs(x = "x-coordinate", y = "y-coordinate") +
@@ -64,7 +66,7 @@ plots = function(spe, samples, celltypes, plotType){
             theme(text = element_text(size = 10))
         sptCluster = ggplot(df, aes(x = xcoord, y = -ycoord)) +
             geom_point(size = 1, aes(colour = reCluster)) +
-            scale_color_manual(values = getColours()) +
+            scale_color_manual(values = .getColours()) +
             facet_wrap(vars(samples), scales = "free") +
             ggtitle("Spatial distribution of clusters") +
             labs(x = "x-coordinate", y = "y-coordinate") +
@@ -87,21 +89,21 @@ plots = function(spe, samples, celltypes, plotType){
         row_ha = rowAnnotation(SilhouetteWidth = anno_barplot(meanSilRow[,2], baseline = 0, width = unit(2, "cm")))
         col_ha = HeatmapAnnotation(SilhouetteWidth = anno_barplot(meanSilCol[,2], baseline = 0, height = unit(2, "cm")))
         cellHeat = Heatmap(cellMatrix, name = "Number of cells",
-                            column_dend_height = unit(4, "cm"),
-                            row_dend_width = unit(4, "cm"),
-                            top_annotation = col_ha,
-                            right_annotation = row_ha,
-                            col = col_func,
-                            # cluster_rows = FALSE,
-                            border_gp = gpar(col = "black", lty = 2),
-                            rect_gp = gpar(col = "white", lwd = 2),
-                            column_title = "Clusters",
-                            column_title_side = "bottom",
-                            row_title = "Annotated cell types",
-                            cell_fun = function(j, i, x, y, width, height, fill) {
-                                grid.text(sprintf("%.0f", cellMatrix[i, j]), x, y,
-                                          gp = gpar(fontsize = 15))
-                            })
+                           column_dend_height = unit(4, "cm"),
+                           row_dend_width = unit(4, "cm"),
+                           top_annotation = col_ha,
+                           right_annotation = row_ha,
+                           col = col_func,
+                           # cluster_rows = FALSE,
+                           border_gp = gpar(col = "black", lty = 2),
+                           rect_gp = gpar(col = "white", lwd = 2),
+                           column_title = "Clusters",
+                           column_title_side = "bottom",
+                           row_title = "Annotated cell types",
+                           cell_fun = function(j, i, x, y, width, height, fill) {
+                               grid.text(sprintf("%.0f", cellMatrix[i, j]), x, y,
+                                         gp = gpar(fontsize = 15))
+                           })
         print(paste("Heatmap generated.", Sys.time()))
 
         return(cellHeat)

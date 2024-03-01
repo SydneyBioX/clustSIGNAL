@@ -1,0 +1,34 @@
+#' Neighbour cell sorting
+#'
+#' @description
+#' A function to perform neighbourhood cell sorting. Neighbourhood cells that belong to the same 'putative cell type' as the central cell are moved closer to the central cell.
+#'
+#' @param cell a vector of neighbourhood cell indices. The cell indices indicate the row number of cells in sample metadata.
+#' @param Clust a data frame of initial cluster assignments of all cells in the sample.
+#'
+#' @return a data frame of cell IDs of sorted neighbourhood cells.
+#'
+#' @examples
+#'
+#' @keywords internal
+
+# function to sort neighbours and retrieving cell names of neighbors
+.cellNameSort <- function (cell, Clust) {
+    cellDF = data.frame(cellName = rownames(Clust)[cell], cluster = Clust[cell,1])
+    if (cellDF$cluster[1] %in% cellDF$cluster[2:31]) {
+        centralClust = cellDF$cluster[1]
+        sameClust = c()
+        diffClust = c()
+        for (c in 1:nrow(cellDF)) {
+            if (cellDF$cluster[c] == centralClust){
+                sameClust = append(sameClust, cellDF$cellName[c])
+            } else {
+                diffClust = append(diffClust, cellDF$cellName[c])
+            }
+        }
+        region = c(sameClust, diffClust)
+        return(region)
+    } else {
+        return(rownames(Clust)[cell])
+    }
+}

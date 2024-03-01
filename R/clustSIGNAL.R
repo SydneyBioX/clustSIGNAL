@@ -43,6 +43,7 @@ clustSIGNAL <- function (spe,
                         sort = TRUE,
                         threads = 20) {
 
+    require(aricode)
     require(BiocNeighbors)
     require(bluster)
     require(circlize)
@@ -63,6 +64,10 @@ clustSIGNAL <- function (spe,
     require(SpatialExperiment)
     require(RColorBrewer)
 
+    if (NN < 1){
+        stop("ERROR: Number of nearest neighbours cannot be less than 1.")
+    }
+
     print(paste("Adaptive clustering run started.", Sys.time()))
 
     # Non-spatial clustering
@@ -75,7 +80,7 @@ clustSIGNAL <- function (spe,
     # Domainness measure and spread
     spe <- entropyMeasure(spe, cells, outReg$regXclust, threads)
     # entropy histogram and spatial plots
-    domPlotList <- plots(spe, samples, celltypes, plotType = "domain")
+    domPlotList <- .plots(spe, samples, celltypes, plotType = "domain")
 
     # Smoothing
     spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, cells, threads)
@@ -84,13 +89,13 @@ clustSIGNAL <- function (spe,
     # reclust should always be TRUE here
     spe <- nsClustering(spe, reclust = TRUE)
     # spatial plots of annotated and cluster labels
-    spatialPlot <- plots(spe, samples, celltypes, plotType = "spatial")
+    spatialPlot <- .plots(spe, samples, celltypes, plotType = "spatial")
 
     # Cluster metrics
-    spe <- metrics(spe, samples, celltypes, cells)$spe_out
-    metrics_per_sample <- metrics(spe, samples, celltypes, cells)$metrics_out
+    spe <- .metrics(spe, samples, celltypes, cells)$spe_out
+    metrics_per_sample <- .metrics(spe, samples, celltypes, cells)$metrics_out
     # heat map comparison between annotated and cluster labels
-    cellHeat <- plots(spe, samples, celltypes, plotType = "heatmap")
+    cellHeat <- .plots(spe, samples, celltypes, plotType = "heatmap")
 
     print(paste("Adaptive clustering run completed. Outputs are ready.", Sys.time()))
 

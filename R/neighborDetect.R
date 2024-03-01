@@ -21,47 +21,6 @@
 
 #### Region description + sorting
 neighbourDetect <- function(spe, samples, NN, cells, sort) {
-
-    # function to retrieve cell names of neighbors
-    cellName <- function (cell, Clust) {
-        return(rownames(Clust)[cell])
-    }
-
-    # function to sort neighbours and retrieving cell names of neighbors
-    cellNameSort <- function (cell, Clust) {
-        cellDF = data.frame(cellName = rownames(Clust)[cell], cluster = Clust[cell,1])
-        if (cellDF$cluster[1] %in% cellDF$cluster[2:31]) {
-            centralClust = cellDF$cluster[1]
-            sameClust = c()
-            diffClust = c()
-            for (c in 1:nrow(cellDF)) {
-                if (cellDF$cluster[c] == centralClust){
-                    sameClust = append(sameClust, cellDF$cellName[c])
-                } else {
-                    diffClust = append(diffClust, cellDF$cellName[c])
-                }
-            }
-            region = c(sameClust, diffClust)
-            return(region)
-        } else {
-            return(rownames(Clust)[cell])
-        }
-    }
-
-    # function to retrieve cluster numbers to which neighbors belong
-    clustNum <- function (cell, subClust) {
-        return(subClust[cell,])
-    }
-
-    # function to retrieve cluster proportions of each region
-    calculateProp <- function(arr) {
-        prop = prop.table(table(arr))
-        if (round(sum(prop)) != 1){ # check if the proportions for each region sum up to 1
-            stop(paste("ERROR: proportions are incorrect.", "row =", c, "proportion =", sum(arr)))
-        }
-        return(prop)
-    }
-
     samplesList <- unique(samples)
     nnCells = matrix(nrow = 0, ncol = NN + 1)
     nnClusts = matrix(nrow = 0, ncol = NN)
@@ -74,14 +33,14 @@ neighbourDetect <- function(spe, samples, NN, cells, sort) {
         rownames(nnMatlist$index) <- rownames(subClust)
         nnMatlist$indexNew <- cbind(seq(1:length(rownames(nnMatlist$index))), nnMatlist$index)
         if (sort == TRUE) {
-            nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1, cellNameSort, Clust = Clust)))
+            nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1, .cellNameSort, Clust = Clust)))
         } else if (sort == FALSE) {
-            nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1, cellName, Clust = Clust)))
+            nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1, .cellName, Clust = Clust)))
         }
-        nnClusts <- rbind(nnClusts, t(apply(nnMatlist$index, 1, clustNum, subClust = subClust)))
+        nnClusts <- rbind(nnClusts, t(apply(nnMatlist$index, 1, .clustNum, subClust = subClust)))
     }
     # obtaining a list of regions by cluster proportions
-    regXclust <- apply(nnClusts, 1, calculateProp)
+    regXclust <- apply(nnClusts, 1, .calculateProp)
 
     # QC check
     check.cells.dim <- identical(dim(nnCells), as.integer(c(length(cells), NN + 1)))

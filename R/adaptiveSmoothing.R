@@ -19,26 +19,6 @@
 
 #### Smoothing
 adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) {
-    # function to retrieve normal distribution weights for neighbors
-    gauss_kernel <- function(ed, NN, sd) {
-        # distribution from 0 to entropy, with cells in smoothing radius as cut points
-        cutpoints <- seq(0, ed, length.out = NN)
-        return(dnorm(cutpoints, sd = sd))
-    }
-    # function to retrieve exponential distribution weights for neighbors
-    exp_kernel <- function(ed, NN, rate) {
-        # distribution from 0 to entropy, with cells in smoothing radius as cut points
-        cutpoints <- seq(0, ed, length.out = NN)
-        return(dexp(cutpoints, rate = rate))
-    }
-    # function to perform weighted moving average smoothing
-    smoothedData <- function(mat, weight) {
-        # column matrix of weight
-        weight <- as.matrix(weight)
-        # return weighted moving average
-        return((mat %*% weight) / sum(weight))
-    }
-
     gXc <- as(logcounts(spe), "sparseMatrix")
     cl <- makeCluster(threads)
     doParallel::registerDoParallel(cl)
@@ -54,12 +34,12 @@ adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) 
         inMat <- as.matrix(gXc[,region])
         if (kernel == "G"){
             # normal distribution-weights
-            weight <- gauss_kernel(ed, NN + 1, spread)
+            weight <- .gauss_kernel(ed, NN + 1, spread)
         } else if (kernel == "E") {
             # exponential distribution-weights
-            weight <- exp_kernel(ed, NN + 1, spread)
+            weight <- .exp_kernel(ed, NN + 1, spread)
         }
-        smat <- smoothedData(inMat, weight)
+        smat <- .smoothedData(inMat, weight)
         colnames(smat) <- cell
         smat
     }
