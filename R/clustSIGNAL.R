@@ -92,10 +92,9 @@ clustSIGNAL <- function (spe,
     spatialPlot <- .plots(spe, samples, celltypes, plotType = "spatial")
 
     # Cluster metrics
-    spe <- .metrics(spe, samples, celltypes, cells)$spe_out
-    metrics_per_sample <- .metrics(spe, samples, celltypes, cells)$metrics_out
+    met <- .metrics(spe, samples, celltypes, cells)
     # heat map comparison between annotated and cluster labels
-    cellHeat <- .plots(spe, samples, celltypes, plotType = "heatmap")
+    cellHeat <- .plots(met$spe_out, samples, celltypes, plotType = "heatmap")
 
     print(paste("Adaptive clustering run completed. Outputs are ready.", Sys.time()))
 
@@ -104,6 +103,7 @@ clustSIGNAL <- function (spe,
                  "spatialAnnotated" = spatialPlot$cellPlot,
                  "spatialCluster" = spatialPlot$clusterPlot,
                  "compareHeatmap" = cellHeat,
-                 "metrics" = metrics_per_sample,
-                 "spe_final" = spe))
+                 "metrics" = met$metrics_out,
+                 "neighbours" = outReg$nnCells,
+                 "spe_final" = met$spe_out))
 }
