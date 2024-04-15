@@ -11,37 +11,41 @@
 #' @param kernel a character for type of distribution to be used. The two valid values are "G" or "E". G for Gaussian distribution, and E for exponential distribution. Default value is "G".
 #' @param spread a numeric value for distribution spread, represented by standard deviation for Gaussian distribution and rate for exponential distribution. Default value is 0.05 for Gaussian distribution and 20 for exponential distribution.
 #' @param sort a logical parameter for whether or not to sort the neighbourhood after region description. Default value is TRUE.
-#' @param threads a numeric value for the number of CPU cores to be used for the analysis.
+#' @param threads a numeric value for the number of CPU cores to be used for the analysis. Default value set to 4 cores.
+#' @param outputs a character for the type of output to return to the user. "pm" for plots and metrics (default), "n" for plots and metrics plus neighbourhood matrix, "s" for plots and metrics plus final spatialExperiment object, or "a" for all outputs.
 #'
 #' @return a list of outputs
 #'
-#' 1. domainSpread, a histogram of entropy values and number of cell neighbourhoods
+#' 1. domainSpread: a histogram of entropy values and number of cell neighbourhoods.
 #'
-#' 2. domainDistribution, a spatial plot showing entropy of all cell neighbourhoods
+#' 2. domainDistribution: a spatial plot showing entropy of all cell neighbourhoods.
 #'
-#' 3. spatialAnnotated, a spatial plot of annotated cell types
+#' 3. spatialAnnotated: a spatial plot of annotated cell types. If no celltype annotations were provides, the output will be NULL.
 #'
-#' 4. spatialCluster, a spatial plot of clusters generated using clustSIGNAL
+#' 4. spatialCluster: a spatial plot of clusters generated using clustSIGNAL.
 #'
-#' 5. compareHeatmap, a heat map showing cell number distributions of annotated cell type and output clusters
+#' 5. compareHeatmap: a heat map showing cell number distributions of annotated cell type and output clusters. If no celltype annotations were provides, the output will be NULL.
 #'
-#' 6. metrics, a table with ARI, NMI, mean silhouette width, minimum entropy, maximum entropy, and mean entropy of each sample in the dataset
+#' 6. metrics: a table with ARI, NMI, mean silhouette width, minimum entropy, maximum entropy, and mean entropy of each sample in the dataset. If no celltype annotations were provides, the ARI and NMI values will be NULL.
 #'
-#' 7. spe_final, a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
+#' 7. neighbours: a matrix of cell names and the names of their NN nearest neighbour cells.
+#'
+#' 8. spe_final: a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
 #'
 #' @examples
 #'
 #' @export
 
 clustSIGNAL <- function (spe,
-                        samples,
-                        cells,
-                        celltypes,
-                        NN = 30,
-                        kernel = "G",
-                        spread = 0.05,
-                        sort = TRUE,
-                        threads = 20) {
+                         samples,
+                         cells,
+                         celltypes,
+                         NN = 30,
+                         kernel = "G",
+                         spread = 0.05,
+                         sort = TRUE,
+                         threads = 4,
+                         outputs = "pm") {
 
     require(aricode)
     require(BiocNeighbors)
@@ -98,12 +102,39 @@ clustSIGNAL <- function (spe,
 
     print(paste("Adaptive clustering run completed. Outputs are ready.", Sys.time()))
 
-    return (list("domainSpread" = domPlotList$spread,
-                 "domainDistribution" = domPlotList$distribution,
-                 "spatialAnnotated" = spatialPlot$cellPlot,
-                 "spatialCluster" = spatialPlot$clusterPlot,
-                 "compareHeatmap" = cellHeat,
-                 "metrics" = met$metrics_out,
-                 "neighbours" = outReg$nnCells,
-                 "spe_final" = met$spe_out))
+    if (outputs == "ps"){
+        return (list("domainSpread" = domPlotList$spread,
+                     "domainDistribution" = domPlotList$distribution,
+                     "spatialAnnotated" = spatialPlot$cellPlot,
+                     "spatialCluster" = spatialPlot$clusterPlot,
+                     "compareHeatmap" = cellHeat,
+                     "metrics" = met$metrics_out))
+    } else if (outputs == "n"){
+        return (list("domainSpread" = domPlotList$spread,
+                     "domainDistribution" = domPlotList$distribution,
+                     "spatialAnnotated" = spatialPlot$cellPlot,
+                     "spatialCluster" = spatialPlot$clusterPlot,
+                     "compareHeatmap" = cellHeat,
+                     "metrics" = met$metrics_out,
+                     "neighbours" = outReg$nnCells))
+    } else if (outputs == "s") {
+        return (list("domainSpread" = domPlotList$spread,
+                     "domainDistribution" = domPlotList$distribution,
+                     "spatialAnnotated" = spatialPlot$cellPlot,
+                     "spatialCluster" = spatialPlot$clusterPlot,
+                     "compareHeatmap" = cellHeat,
+                     "metrics" = met$metrics_out,
+                     "spe_final" = met$spe_out))
+    } else if (outputs == "a") {
+        return (list("domainSpread" = domPlotList$spread,
+                     "domainDistribution" = domPlotList$distribution,
+                     "spatialAnnotated" = spatialPlot$cellPlot,
+                     "spatialCluster" = spatialPlot$clusterPlot,
+                     "compareHeatmap" = cellHeat,
+                     "metrics" = met$metrics_out,
+                     "neighbours" = outReg$nnCells,
+                     "spe_final" = met$spe_out))
+    } else {
+        print("ERROR: invalid character used. Use 'ps', 'n', 's', or 'a' to indicate the type of output you would like." )
+    }
 }
