@@ -11,7 +11,7 @@
 
 \item{samples}{a character vector of sample names to which the cells belong. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
 
-\item{celltypes}{a character vector of cell type annotation of each cell. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
+\item{celltypes}{a character vector of cell type annotation of each cell. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)). Set value to NULL, if celltypes information not available.}
 
 \item{plotType}{a character parameter handled within the method, to decide what plots to generate.}
 }

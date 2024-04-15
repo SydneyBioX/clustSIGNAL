@@ -27,7 +27,7 @@ adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) 
         # central cell name
         cell <- colnames(gXc)[x]
         # cell entropy
-        ed = spe$entropy[x]
+        ed <- spe$entropy[x]
         # names of central cell + NN cells
         region <- as.vector(nnCells[x,])
         # gene expression matrix of NN cells

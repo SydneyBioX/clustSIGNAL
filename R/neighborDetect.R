@@ -22,8 +22,8 @@
 #### Region description + sorting
 neighbourDetect <- function(spe, samples, NN, cells, sort) {
     samplesList <- unique(samples)
-    nnCells = matrix(nrow = 0, ncol = NN + 1)
-    nnClusts = matrix(nrow = 0, ncol = NN)
+    nnCells <- matrix(nrow = 0, ncol = NN + 1)
+    nnClusts <- matrix(nrow = 0, ncol = NN)
     set.seed(12997)
     for (s in samplesList) {
         xy_pos <- spatialCoords(spe[, samples == s])

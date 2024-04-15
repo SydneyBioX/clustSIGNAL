@@ -11,7 +11,7 @@
 
 \item{samples}{samples a character vector of sample names to which the cells belong. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).}
 
-\item{celltypes}{a character vector of cell type annotation of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).}
+\item{celltypes}{a character vector of cell type annotation of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)). Set value to NULL, if celltypes information not available.}
 
 \item{cells}{a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).}
 }

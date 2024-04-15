@@ -29,7 +29,7 @@ nsClustering <- function(spe, reclust) {
         subclusters_list = list()
         set.seed(12997)
         for (c in 1:clusters){
-            speX = spe[, spe$nsCluster == c]
+            speX <- spe[, spe$nsCluster == c]
             speX <- runPCA(speX)
             matX <- reducedDim(speX, "PCA")
             # number of centers = half of total cells in cluster

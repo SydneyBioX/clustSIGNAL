@@ -21,7 +21,7 @@ entropyMeasure <- function(spe, cells, regXclust, threads) {
     doParallel::registerDoParallel(cl)
     regEntropy <- foreach (c = cellsList[1:length(cells)]) %dopar% {
         arr <- as.vector(unlist(regXclust[c]))
-        y = matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
+        y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
         rownames(y) <- c
         y
     }
