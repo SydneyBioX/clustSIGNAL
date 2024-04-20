@@ -33,7 +33,7 @@
         }
         # QC check
         check.cluster <- identical(silWidthRC[,1], as.numeric(as.character(spe$reCluster)))
-        if (check.cluster == FALSE | check.cell == FALSE) {
+        if (check.cluster == FALSE) {
             print(paste("ERROR: issue in silhouette width calculation. Order of cells in silhoutte width matrix did not match cell order in spatial experiment object.", Sys.time()))
         } else {
             spe$rcSil <- silWidthRC[, 3]
