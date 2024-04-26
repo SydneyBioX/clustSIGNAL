@@ -17,5 +17,5 @@
 .gauss_kernel <- function(ed, NN, sd) {
     # distribution from 0 to entropy, with cells in smoothing radius as cut points
     cutpoints <- seq(0, ed, length.out = NN)
-    return(dnorm(cutpoints, sd = sd))
+    return(as.matrix(dnorm(cutpoints, sd = sd)))
 }
