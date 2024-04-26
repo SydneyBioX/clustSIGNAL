@@ -15,7 +15,9 @@
 # function to sort neighbours and retrieving cell names of neighbors
 .cellNameSort <- function (cell, Clust) {
     cellDF <- data.frame(cellName = rownames(Clust)[cell], cluster = Clust[cell,1])
-    if (cellDF$cluster[1] %in% cellDF$cluster[2:31]) {
+    if (length(unique(Clust[cell,])) == 1) { # all cells belong to same putative cell type
+        return(rownames(Clust)[cell])
+    } else if (cellDF$cluster[1] %in% cellDF$cluster[2:31]) {
         centralClust <- cellDF$cluster[1]
         sameClust <- c()
         diffClust <- c()
