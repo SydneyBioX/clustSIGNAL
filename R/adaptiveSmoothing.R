@@ -22,24 +22,36 @@ adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) 
     gXc <- as(logcounts(spe), "sparseMatrix")
     cl <- makeCluster(threads)
     doParallel::registerDoParallel(cl)
+    # create a weights by entropy matrix
+    entropies <- unique(spe$entropy)
+    if (kernel == "G"){
+        e <- foreach (val = c(1:length(entropies))) %dopar% {
+            # normal distribution-weights
+            weight <- .gauss_kernel(entropies[val], NN + 1, spread)
+            colnames(weight) <- paste0("E", entropies[val])
+            weight
+        }
+        emat <- matrix(unlist(e), ncol = length(e), dimnames = list(c(1:length(e[[1]])), sapply(e, colnames)))
+    } else if (kernel == "E") {
+        e <- foreach (val = c(1:length(entropies))) %dopar% {
+            # exponential distribution-weights
+            weight <- .exp_kernel(entropies[val], NN + 1, spread)
+            colnames(weight) <- paste0("E", entropies[val])
+            weight
+        }
+        emat <- matrix(unlist(e), ncol = length(e), dimnames = list(c(1:length(e[[1]])), sapply(e, colnames)))
+    }
     # loop through each cell column
     y <- foreach (x = c(1:ncol(gXc))) %dopar% {
         # central cell name
         cell <- colnames(gXc)[x]
         # cell entropy
-        ed <- spe$entropy[x]
+        ed <- paste0("E", spe$entropy[x])
         # names of central cell + NN cells
-        region <- as.vector(nnCells[x,])
+        region <- as.vector(nnCells[x, ])
         # gene expression matrix of NN cells
-        inMat <- as.matrix(gXc[,region])
-        if (kernel == "G"){
-            # normal distribution-weights
-            weight <- .gauss_kernel(ed, NN + 1, spread)
-        } else if (kernel == "E") {
-            # exponential distribution-weights
-            weight <- .exp_kernel(ed, NN + 1, spread)
-        }
-        smat <- .smoothedData(inMat, weight)
+        inMat <- as.matrix(gXc[, region])
+        smat <- .smoothedData(inMat, emat[, ed])
         colnames(smat) <- cell
         smat
     }
@@ -56,7 +68,7 @@ adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) 
     } else if (check.NA != 0) {
         stop("ERROR: Missing values in smoothed data.")
     } else {
-        smoothMat = matrix(unlist(y), ncol = length(y), dimnames = list(rownames(y[[1]]), sapply(y, colnames)))
+        smoothMat <- matrix(unlist(y), ncol = length(y), dimnames = list(rownames(y[[1]]), sapply(y, colnames)))
         # add data to spatial experiment
         assay(spe, i = "smoothed") <- as(smoothMat, "sparseMatrix")
         print(paste("Smoothing performed. NN =", NN, "Kernel =", kernel, "Spread =", spread, Sys.time()))
