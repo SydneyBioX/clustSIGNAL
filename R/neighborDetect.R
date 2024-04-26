@@ -31,7 +31,7 @@ neighbourDetect <- function(spe, samples, NN, cells, sort) {
         subClust <- subset(as.data.frame(colData(spe)), samples == s, nsSubcluster)
         nnMatlist <- findKNN(xy_pos, k = NN, BNPARAM = KmknnParam()) # finding NN nearest neighbors for each cell
         rownames(nnMatlist$index) <- rownames(subClust)
-        nnMatlist$indexNew <- cbind(seq(1:length(rownames(nnMatlist$index))), nnMatlist$index)
+        nnMatlist$indexNew <- cbind(seq(1:nrow(nnMatlist$index)), nnMatlist$index)
         if (sort == TRUE) {
             nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1, .cellNameSort, Clust = Clust)))
         } else if (sort == FALSE) {

@@ -23,7 +23,7 @@ adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) 
     cl <- makeCluster(threads)
     doParallel::registerDoParallel(cl)
     # loop through each cell column
-    y <- foreach (x = c(1:length(colnames(gXc)))) %dopar% {
+    y <- foreach (x = c(1:ncol(gXc))) %dopar% {
         # central cell name
         cell <- colnames(gXc)[x]
         # cell entropy
