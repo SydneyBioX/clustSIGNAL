@@ -52,7 +52,7 @@
                       minEntropy = min(Entropy),
                       maxEntropy = max(Entropy),
                       meanEntropy = mean(Entropy))
-        print(paste("No celltype data available. Metrics per sample calculated, except ARI and NMI.", Sys.time()))
+        print(paste("No celltype annotations available. Metrics per sample calculated, except ARI and NMI.", Sys.time()))
 
     } else {
         # Silhoutte width
