@@ -9,8 +9,6 @@
 #' @param kernel a character for type of distribution to be used. The two valid values are "G" or "E". G for Gaussian distribution, and E for exponential distribution. Default value is "G".
 #' @param spread a numeric value for distribution spread, represented by standard deviation for Gaussian distribution and rate for exponential distribution. Default value is 0.05 for Gaussian distribution and 20 for exponential distribution.
 #' @param cells a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).
-#' @param threads a numeric value for the number of CPU cores to be used for the analysis.
-#'
 #' @return SpatialExperiment object including smoothed gene expression values as another assay.
 #'
 #' @examples
@@ -18,57 +16,53 @@
 #' @export
 
 #### Smoothing
-adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, cells, threads) {
+adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread) {
+    e <- unique(spe$entropy)
     gXc <- as(logcounts(spe), "sparseMatrix")
-    cl <- makeCluster(threads)
-    doParallel::registerDoParallel(cl)
-    # create a weights by entropy matrix
-    entropies <- unique(spe$entropy)
-    if (kernel == "G"){
-        e <- foreach (val = c(1:length(entropies))) %dopar% {
+    outMats = matrix(nrow = nrow(spe), ncol = 0)
+    for (val in c(1:length(e))) {
+        entCells <- colnames(spe[, spe$entropy == e[val]])
+        inMatList = list()
+        if (kernel == "G") {
             # normal distribution-weights
-            weight <- .gauss_kernel(entropies[val], NN + 1, spread)
-            colnames(weight) <- paste0("E", entropies[val])
-            weight
-        }
-        emat <- matrix(unlist(e), ncol = length(e), dimnames = list(c(1:length(e[[1]])), sapply(e, colnames)))
-    } else if (kernel == "E") {
-        e <- foreach (val = c(1:length(entropies))) %dopar% {
+            weight <- .gauss_kernel(e[val], NN + 1, spread)
+        } else if (kernel == "E") {
             # exponential distribution-weights
-            weight <- .exp_kernel(entropies[val], NN + 1, spread)
-            colnames(weight) <- paste0("E", entropies[val])
-            weight
+            weight <- .exp_kernel(e[val], NN + 1, spread)
         }
-        emat <- matrix(unlist(e), ncol = length(e), dimnames = list(c(1:length(e[[1]])), sapply(e, colnames)))
+
+        if (length(entCells) == 1) {
+            region <- as.vector(nnCells[entCells, ])
+            inMat <- as.matrix(gXc[, region])
+            tmpMat <- .smoothedData(inMat, weight)
+            colnames(tmpMat) <- entCells
+        } else {
+            for (x in entCells) {
+                # names of central cell + NN cells
+                region <- as.vector(nnCells[x, ])
+                # gene expression matrix of NN cells
+                inMatList[[x]] <- as.matrix(gXc[, region])
+            }
+            out <- lapply(inMatList, .smoothedData, weight = weight)
+            tmpMat <- matrix(unlist(out),
+                          ncol = length(out),
+                          dimnames = list(rownames(out[[1]]), sapply(out, names)))
+            colnames(tmpMat) <- names(out)
+        }
+        outMats <- cbind(outMats, tmpMat)
     }
-    # loop through each cell column
-    y <- foreach (x = c(1:ncol(gXc))) %dopar% {
-        # central cell name
-        cell <- colnames(gXc)[x]
-        # cell entropy
-        ed <- paste0("E", spe$entropy[x])
-        # names of central cell + NN cells
-        region <- as.vector(nnCells[x, ])
-        # gene expression matrix of NN cells
-        inMat <- as.matrix(gXc[, region])
-        smat <- .smoothedData(inMat, emat[, ed])
-        colnames(smat) <- cell
-        smat
-    }
-    stopCluster(cl)
+
+    # rearrange the cells in smoothed data matrix
+    smoothMat <- outMats[, as.vector(colnames(spe))]
 
     # QC check
-    check.cells <- identical(sapply(y, colnames), cells)
-    check.genes <- identical(rownames(logcounts(spe)), rownames(y[[1]]))
-    check.NA <- sum(is.na(unlist(y)))
-    if (check.cells == FALSE) {
-        stop("ERROR: Order of cells in smoothed data does not match cell order in spatial experiment object.")
-    } else if (check.genes == FALSE) {
+    check.genes <- identical(rownames(spe), rownames(smoothMat))
+    check.NA <- sum(is.na(smoothMat))
+    if (check.genes == FALSE) {
         stop("ERROR: Order of genes in smoothed data does not match gene order in spatial experiment object.")
     } else if (check.NA != 0) {
         stop("ERROR: Missing values in smoothed data.")
     } else {
-        smoothMat <- matrix(unlist(y), ncol = length(y), dimnames = list(rownames(y[[1]]), sapply(y, colnames)))
         # add data to spatial experiment
         assay(spe, i = "smoothed") <- as(smoothMat, "sparseMatrix")
         print(paste("Smoothing performed. NN =", NN, "Kernel =", kernel, "Spread =", spread, Sys.time()))
