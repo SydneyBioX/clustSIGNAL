@@ -8,13 +8,12 @@ clustSIGNAL(
   spe,
   samples,
   cells,
-  celltypes,
   NN = 30,
   kernel = "G",
   spread = 0.05,
   sort = TRUE,
   threads = 4,
-  outputs = "pm"
+  outputs = "c"
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ clustSIGNAL(
 \item{samples}{a character vector of sample names to which the cells belong. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
 
 \item{cells}{a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
-
-\item{celltypes}{a character vector of cell type annotation of each cell. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
 
 \item{NN}{an integer for the number of neighbourhood cells the function should consider. The value must be greater than or equal to 1. Default value is 30.}
 
@@ -36,7 +33,7 @@ clustSIGNAL(
 
 \item{threads}{a numeric value for the number of CPU cores to be used for the analysis. Default value set to 4 cores.}
 
-\item{outputs}{a character for the type of output to return to the user. "pm" for plots and metrics (default), "n" for plots and metrics plus neighbourhood matrix, "s" for plots and metrics plus final spatialExperiment object, or "a" for all outputs.}
+\item{outputs}{a character for the type of output to return to the user. "c" for data frame of cell IDs and their respective cluster numbers (default), "n" for dataframe of clusters plus neighbourhood matrix, "s" for  dataframe of clusters plus final spatialExperiment object, or "a" for all outputs.}
 }
 \value{
 a list of outputs
