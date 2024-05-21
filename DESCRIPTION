@@ -10,7 +10,7 @@ Author:
     person(given = "Shila", family = "Ghazanfar", email = "shila.ghazanfar@sydney.edu.au", role = "aut", "ctb"))
 Maintainer: Pratibha Panwar <pratibha.panwar@sydney.edu.au>
 Description: clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for clustering and adaptively smoothing gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods, and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous nwighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.
-License: What license is it under?
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1

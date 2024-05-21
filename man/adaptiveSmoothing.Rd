@@ -16,8 +16,6 @@ adaptiveSmoothing(spe, nnCells, NN, kernel, spread)
 \item{kernel}{a character for type of distribution to be used. The two valid values are "G" or "E". G for Gaussian distribution, and E for exponential distribution. Default value is "G".}
 
 \item{spread}{a numeric value for distribution spread, represented by standard deviation for Gaussian distribution and rate for exponential distribution. Default value is 0.05 for Gaussian distribution and 20 for exponential distribution.}
-
-\item{cells}{a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in spatialExperiment object (i.e. the number of rows in colData(spe)).}
 }
 \value{
 SpatialExperiment object including smoothed gene expression values as another assay.

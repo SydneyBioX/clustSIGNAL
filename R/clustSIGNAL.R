@@ -47,18 +47,18 @@ clustSIGNAL <- function (spe,
                          threads = 4,
                          outputs = "c") {
 
-    require(BiocNeighbors)
-    require(bluster)
-    require(DescTools)
-    require(dplyr)
-    require(foreach)
-    require(Hmisc)
-    require(parallel)
-    require(PCAtools)
-    require(scater)
-    require(scran)
-    require(scuttle)
-    require(SpatialExperiment)
+    # require(BiocNeighbors)
+    # require(bluster)
+    # require(DescTools)
+    # require(dplyr)
+    # require(foreach)
+    # require(Hmisc)
+    # require(parallel)
+    # require(PCAtools)
+    # require(scater)
+    # require(scran)
+    # require(scuttle)
+    # require(SpatialExperiment)
 
     if (NN < 1){
         stop("ERROR: Number of nearest neighbours cannot be less than 1.")
