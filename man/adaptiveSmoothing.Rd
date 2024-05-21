@@ -25,3 +25,8 @@ SpatialExperiment object including smoothed gene expression values as another as
 \description{
 A function to perform a weighted, adaptive smoothing of gene expression based on the heterogeneity of the cell neighbourhood. Heterogeneous neighbourhoods are smoothed less with higher weights given to cells belonging to same initial group. Homogeneous neighbourhoods are smoothed more with similar weights given to most cells.
 }
+\examples{
+
+# to do
+
+}

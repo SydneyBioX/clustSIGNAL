@@ -8,8 +8,6 @@
 #'
 #' @return a data frame of cell IDs of neighbourhood cells.
 #'
-#' @examples
-#'
 #' @keywords internal
 
 # function to retrieve cell names of neighbors

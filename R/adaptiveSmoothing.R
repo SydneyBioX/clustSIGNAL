@@ -13,6 +13,8 @@
 #'
 #' @examples
 #'
+#' # to do
+#'
 #' @export
 
 #### Smoothing

@@ -17,3 +17,8 @@ SpatialExperiment object containing 'putative cell type' group allotted to each 
 \description{
 A function containing two steps used at different times in the clustSIGNAL workflow. An initial non-spatial clustering and sub-clustering step (reclust = FALSE) is used to generate groups of ‘putative cell types’, whereas a later non-spatial clustering step (reclust = TRUE) is used to cluster adaptively smoothed gene expression data.
 }
+\examples{
+
+# to do
+
+}

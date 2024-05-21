@@ -9,8 +9,6 @@
 #'
 #' @return a numeric vector of weights.
 #'
-#' @examples
-#'
 #' @keywords internal
 
 # function to retrieve normal distribution weights for neighbors

@@ -8,8 +8,6 @@
 #'
 #' @return a column matrix of smoothed gene expression.
 #'
-#' @examples
-#'
 #' @keywords internal
 
 # function to perform weighted moving average smoothing

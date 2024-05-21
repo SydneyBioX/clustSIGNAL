@@ -11,6 +11,7 @@
 #' @return SpatialExperiment object including entropy values for each cell neighbourhood.
 #'
 #' @examples
+#' # to do
 #'
 #' @export
 

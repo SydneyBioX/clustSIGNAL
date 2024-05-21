@@ -27,3 +27,8 @@ a list containing two items:
 \description{
 A function to identify the neighbourhood of each cell. If sort = TRUE, the neighbourhoods are also sorted such that cells belonging to the same group as the central cell are arranged closer to it.
 }
+\examples{
+
+# to do
+
+}

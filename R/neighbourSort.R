@@ -8,8 +8,6 @@
 #'
 #' @return a data frame of cell IDs of sorted neighbourhood cells.
 #'
-#' @examples
-#'
 #' @keywords internal
 
 # function to sort neighbours and retrieving cell names of neighbors

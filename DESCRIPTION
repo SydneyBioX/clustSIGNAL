@@ -27,4 +27,5 @@ Imports:
     scater,
     scran,
     scuttle,
+    doParallel
     

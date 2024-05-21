@@ -7,8 +7,6 @@
 #'
 #' @return a table of 'putative cell type' proportions in a neighbourhood.
 #'
-#' @examples
-#'
 #' @keywords internal
 
 # function to retrieve cluster proportions of each region

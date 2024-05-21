@@ -57,3 +57,8 @@ a list of outputs
 \description{
 A clustering method for cell type classification of spatial transcriptomics data. The tool generates and uses an adaptively smoothed, spatially informed gene expression data for clustering.
 }
+\examples{
+
+# to do
+
+}

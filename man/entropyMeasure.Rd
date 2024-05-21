@@ -21,3 +21,7 @@ SpatialExperiment object including entropy values for each cell neighbourhood.
 \description{
 A function to measure the heterogeneity of a cell's neighbourhood in terms of entropy, such that homogeneous neighbourhoods have low entropy and heterogeneous neighbourhoods have high entropy.
 }
+\examples{
+# to do
+
+}

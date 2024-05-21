@@ -8,8 +8,6 @@
 #'
 #' @return a data frame of 'putative cell type' assignments of neighbourhood cells.
 #'
-#' @examples
-#'
 #' @keywords internal
 
 # function to retrieve cluster numbers to which neighbors belong

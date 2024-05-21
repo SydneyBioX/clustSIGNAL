@@ -33,6 +33,8 @@
 #'
 #' @examples
 #'
+#' # to do
+#'
 #' @export
 
 clustSIGNAL <- function (spe,

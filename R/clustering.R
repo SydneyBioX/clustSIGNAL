@@ -10,6 +10,8 @@
 #'
 #' @examples
 #'
+#' # to do
+#'
 #' @export
 
 #### Non-spatial clustering

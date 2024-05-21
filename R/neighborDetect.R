@@ -17,6 +17,8 @@
 #
 #' @examples
 #'
+#' # to do
+#'
 #' @export
 
 #### Region description + sorting
