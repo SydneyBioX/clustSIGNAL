@@ -4,7 +4,7 @@
 \alias{nsClustering}
 \title{Non-spatial clustering}
 \usage{
-nsClustering(spe, reclust)
+nsClustering(spe, dimRed, reclust, ...)
 }
 \arguments{
 \item{spe}{SpatialExperiment object. For reclust = FALSE, the object should contain logcounts and PCA, but for reculst = TRUE, the object should contain smoothed gene expression.}
