@@ -19,11 +19,13 @@ clustSIGNAL(
 )
 }
 \arguments{
-\item{spe}{SpatialExperiment object with logcounts and PCA included.}
+\item{spe}{a SpatialExperiment object.}
 
 \item{samples}{a character vector of sample names to which the cells belong. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
 
 \item{cells}{a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
+
+\item{dimRed}{a character indicating the name of the reduced dimensions to use from the SpatialExperiment object (i.e., from reducedDimNames(spe)). Default value is 'PCA'.}
 
 \item{NN}{an integer for the number of neighbourhood cells the function should consider. The value must be greater than or equal to 1. Default value is 30.}
 
