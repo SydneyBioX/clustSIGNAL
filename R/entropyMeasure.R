@@ -18,15 +18,17 @@
 #### Domainness measure
 entropyMeasure <- function(spe, cells, regXclust, threads) {
     cellsList <- as.vector(cells)
-    cl <- makeCluster(threads)
+    cl <- parallel::makeCluster(threads)
     doParallel::registerDoParallel(cl)
-    regEntropy <- foreach (c = cellsList[1:length(cells)]) %dopar% {
+    regEntropy <- foreach(c = cellsList[1:length(cells)]) %dopar% {
         arr <- as.vector(unlist(regXclust[c]))
+        # calculate Shannon's entropy
         y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
         rownames(y) <- c
         y
     }
     stopCluster(cl)
+
     # QC check
     check.cells <- identical(sapply(regEntropy, rownames), cells)
     check.NA.values <- sum(is.na(unlist(regEntropy)))

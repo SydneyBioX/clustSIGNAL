@@ -20,43 +20,49 @@ nsClustering <- function(spe, dimRed, reclust, ...) {
     clustVal <- min(as.integer(ncol(spe) / 5), 50000)
     if (reclust == FALSE) {
         if (dimRed == "None") {
-            spe <- runPCA(spe)
+            spe <- scater::runPCA(spe)
         }
         else {
-            # Clustering
+            # Initial clustering
             mat <- reducedDim(spe, dimRed)
-            set.seed(12997)
-            nsClust <- clusterRows(mat, TwoStepParam(first = KmeansParam(centers = clustVal, iter.max = 30),
-                                                     second = NNGraphParam(k = 5, cluster.fun = "louvain")))
+            # set.seed(12997)
+            nsClust <- bluster::clusterRows(mat,
+                                            bluster::TwoStepParam(
+                                                first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
+                                                second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
             spe$nsCluster <- factor(nsClust)
             print(paste("Initial nonspatial clustering performed. Clusters =", length(unique(nsClust)), Sys.time()))
-            # Subclustering
+            # Initial subclustering
             clusters <- length(unique(spe$nsCluster))
             subclusters_list = list()
-            set.seed(12997)
+            # set.seed(12997)
             for (c in 1:clusters){
                 speX <- spe[, spe$nsCluster == c]
-                speX <- runPCA(speX)
+                speX <- scater::runPCA(speX)
                 matX <- reducedDim(speX, "PCA")
                 # number of centers = half of total cells in cluster
                 subclustVal <- as.integer(ncol(speX) / 2)
-                nsClustX <- clusterRows(matX, TwoStepParam(first = KmeansParam(centers = subclustVal, iter.max = 30),
-                                                           second = NNGraphParam(k = 5, cluster.fun = "louvain")))
+                nsClustX <- bluster::clusterRows(matX,
+                                                 bluster::TwoStepParam(
+                                                     first = bluster::KmeansParam(centers = subclustVal, iter.max = 30),
+                                                     second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
                 subclusters_list[[c]] <- setNames(paste0(c, ".", nsClustX), colnames(speX))
             }
             spe$nsSubcluster <- unlist(subclusters_list)[colnames(spe)]
             print(paste("Nonspatial subclustering performed. Subclusters =", length(unique(spe$nsSubcluster)), Sys.time()))
         }
     } else if (reclust == TRUE) {
-        # Reclustering
-        set.seed(12997)
-        spe <- runPCA(spe,
+        # Clustering adaptively smoothed data
+        # set.seed(12997)
+        spe <- scater::runPCA(spe,
                       assay.type = "smoothed",
                       name = "PCA.smooth")
         mat <- reducedDim(spe, "PCA.smooth")
-        set.seed(12997)
-        reClust <- clusterRows(mat, TwoStepParam(first = KmeansParam(centers = clustVal, iter.max = 30),
-                                                 second = NNGraphParam(k = 5, cluster.fun = "louvain")))
+        # set.seed(12997)
+        reClust <- bluster::clusterRows(mat,
+                                        bluster::TwoStepParam(
+                                            first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
+                                            second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
         spe$reCluster <- factor(reClust)
         print(paste("Nonspatial clustering performed on smoothed data. Clusters =", length(unique(reClust)), Sys.time()))
     }

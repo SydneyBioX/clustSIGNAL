@@ -26,13 +26,15 @@ neighbourDetect <- function(spe, samples, NN, cells, sort) {
     samplesList <- unique(samples)
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
     nnClusts <- matrix(nrow = 0, ncol = NN)
-    set.seed(12997)
+    # set.seed(12997)
     for (s in samplesList) {
         xy_pos <- spatialCoords(spe[, samples == s])
         Clust <- subset(as.data.frame(colData(spe)), samples == s, nsCluster)
         subClust <- subset(as.data.frame(colData(spe)), samples == s, nsSubcluster)
-        nnMatlist <- findKNN(xy_pos, k = NN, BNPARAM = KmknnParam()) # finding NN nearest neighbors for each cell
+        # finding NN nearest neighbors for each cell
+        nnMatlist <- BiocNeighbors::findKNN(xy_pos, k = NN, BNPARAM = BiocNeighbors::KmknnParam())
         rownames(nnMatlist$index) <- rownames(subClust)
+        # adding central cell indices as first column of matrix of NN neighborhood indices
         nnMatlist$indexNew <- cbind(seq(1:nrow(nnMatlist$index)), nnMatlist$index)
         if (sort == TRUE) {
             nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1, .cellNameSort, Clust = Clust)))

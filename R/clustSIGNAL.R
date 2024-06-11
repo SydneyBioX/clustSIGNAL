@@ -12,8 +12,8 @@
 #' @param spread a numeric value for distribution spread, represented by standard deviation for Gaussian distribution and rate for exponential distribution. Default value is 0.05 for Gaussian distribution and 20 for exponential distribution.
 #' @param sort a logical parameter for whether or not to sort the neighbourhood after region description. Default value is TRUE.
 #' @param threads a numeric value for the number of CPU cores to be used for the analysis. Default value set to 4 cores.
-#' @param outputs a character for the type of output to return to the user. "c" for data frame of cell IDs and their respective cluster numbers (default), "n" for dataframe of clusters plus neighbourhood matrix, "s" for  dataframe of clusters plus final spatialExperiment object, or "a" for all outputs.
-#' @param ... additional parameters for TwoStepParam clustering methods. Include parameters for k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".
+#' @param outputs a character for the type of output to return to the user. "c" for data frame of cell IDs and their respective cluster numbers (default), "n" for list of dataframe of clusters plus neighbourhood matrix, "s" for list of dataframe of clusters plus final spatialExperiment object, or "a" for list of all outputs.
+#' @param ... additional parameters for TwoStepParam clustering methods. Include parameters like k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".
 #'
 #' @return a list of outputs
 #'
@@ -52,7 +52,6 @@ clustSIGNAL <- function (spe,
     # require(PCAtools)
     # require(scater)
     # require(scran)
-    # require(scuttle)
     # require(SpatialExperiment)
 
     if (NN < 1){
@@ -61,20 +60,24 @@ clustSIGNAL <- function (spe,
 
     print(paste("clustSIGNAL run started.", Sys.time()))
 
-    # Non-spatial clustering
+    # Non-spatial clustering to identify 'putative celltype' groups
     # reclust should always be FALSE here
     spe <- nsClustering(spe, dimRed, reclust = FALSE, ...)
 
-    # Region description and sorting, if sort = "yes"
+    # Neighborhood detection, and sorting if sort = "yes"
     outReg <- neighbourDetect(spe, samples, NN, cells, sort)
 
-    # Domainness measure and spread
+    # Calculating domainness of cell neighborhoods
+    # low entropy indicates more homogeneous neighborhood
+    # high entropy indicates more heterogeneous neighborhood
     spe <- entropyMeasure(spe, cells, outReg$regXclust, threads)
 
-    # Smoothing
+    # Weighted smoothing guided by neighbourhood entropy
+    # Homogeneous regions are smoothed more
+    # Heterogeneous regions are smoothed less
     spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread)
 
-    # Non-spatial reclustering
+    # Non-spatial clustering of adaptively smoothed expression
     # reclust should always be TRUE here
     spe <- nsClustering(spe, reclust = TRUE, ...)
 
@@ -83,7 +86,7 @@ clustSIGNAL <- function (spe,
     print(paste("clustSIGNAL run completed.", Sys.time()))
 
     if (outputs == "c"){
-        return (list("clusters" = cluster_df))
+        return (cluster_df)
     } else if (outputs == "n"){
         return (list("clusters" = cluster_df,
                      "neighbours" = outReg$nnCells))

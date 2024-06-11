@@ -22,6 +22,7 @@ adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread) {
     gXc <- as(logcounts(spe), "sparseMatrix")
     outMats = matrix(nrow = nrow(spe), ncol = 0)
     for (val in c(1:length(e))) {
+        # cells with same entropy value will have same weights
         entCells <- colnames(spe[, spe$entropy == e[val]])
         inMatList = list()
         if (kernel == "G") {

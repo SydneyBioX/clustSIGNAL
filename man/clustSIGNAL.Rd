@@ -37,9 +37,9 @@ clustSIGNAL(
 
 \item{threads}{a numeric value for the number of CPU cores to be used for the analysis. Default value set to 4 cores.}
 
-\item{outputs}{a character for the type of output to return to the user. "c" for data frame of cell IDs and their respective cluster numbers (default), "n" for dataframe of clusters plus neighbourhood matrix, "s" for  dataframe of clusters plus final spatialExperiment object, or "a" for all outputs.}
+\item{outputs}{a character for the type of output to return to the user. "c" for data frame of cell IDs and their respective cluster numbers (default), "n" for list of dataframe of clusters plus neighbourhood matrix, "s" for list of dataframe of clusters plus final spatialExperiment object, or "a" for list of all outputs.}
 
-\item{...}{additional parameters for TwoStepParam clustering methods. Include parameters for k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".}
+\item{...}{additional parameters for TwoStepParam clustering methods. Include parameters like k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".}
 }
 \value{
 a list of outputs
