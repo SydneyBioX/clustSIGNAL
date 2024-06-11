@@ -1,0 +1,71 @@
+---
+title: "Getting started: clustSIGNAL"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started: clustSIGNAL}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+clustSIGNAL (clustering using Spatially Informed Gene expression with Neighborhood Adapted Learning) is an R package for a spatial clustering method that takes into account the heterogeneity of cell neighborhoods.
+
+```{r}
+# load required packages
+library(clustSIGNAL)
+
+```
+
+# Using clustSIGNAL with seqFISH mouse embryo data
+
+## run clustSIGNAL
+
+```{r}
+set.seed(100)
+
+```
+
+## calculate clustering metrics
+
+```{r}
+
+```
+
+## visualisation
+
+```{r}
+
+```
+
+# Using clustSIGNAL with MERFISH mouse preoptic hypothalamus data
+
+## run clustSIGNAL
+
+```{r}
+set.seed(100)
+
+```
+
+## calculate clustering metrics
+
+```{r}
+
+```
+
+## visualisation
+
+```{r}
+
+```
+
