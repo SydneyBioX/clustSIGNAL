@@ -2,30 +2,22 @@ Package: clustSIGNAL
 Type: Package
 Title: clustSIGNAL: a spatial clustering method
 Version: 0.1.0
-Author:
-    c(person(given = "Pratibha", family = "Panwar", email = "pratibha.panwar@sydney.edu.au", role = c("cre", "aut")),
+Author:c(
+    person(given = "Pratibha", family = "Panwar", email = "pratibha.panwar@sydney.edu.au", role = c("cre", "aut")),
     person(given = "Boyi", family = "Guo", email = "", role = "aut")),
     person(given = "Haowen", family = "Zhao", email = "", role = "aut")),
     person(given = "Stephanie", family = "Hicks", email = "", role = "aut")),
     person(given = "Shila", family = "Ghazanfar", email = "shila.ghazanfar@sydney.edu.au", role = "aut", "ctb"))
 Maintainer: Pratibha Panwar <pratibha.panwar@sydney.edu.au>
-Description: clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for clustering and adaptively smoothing gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods, and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous nwighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.
+Description: clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. 
+    A tool for clustering and adaptively smoothing gene expression data. clustSIGNAL uses entropy to measure 
+    heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous 
+    neighbourhoods are smoothed more and heterogeneous nwighbourhoods are smoothed less. This not only overcomes 
+    data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene 
+    expression data is used for clustering and could be used for other downstream analyses.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
-Depends: R (>= 4.0.0), SpatialExperiment
-Imports:
-    BiocNeighbors,
-    bluster,
-    DescTools,
-    dplyr,
-    foreach,
-    Hmisc,
-    parallel,
-    PCAtools,
-    scater,
-    scran,
-    scuttle,
-    doParallel
-    
+Depends: R (>= 4.0.0), SpatialExperiment, doParallel
+Imports: BiocNeighbors, bluster, scater
