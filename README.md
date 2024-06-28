@@ -6,7 +6,7 @@ clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood
 
 ## Installation
 
-You can install the clustSIGNAL from
+You can install the clustSIGNAL package from
 [GitHub](https://github.com/SydneyBioX/clustSIGNAL) with:
 
 ``` r
