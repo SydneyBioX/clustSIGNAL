@@ -23,14 +23,18 @@
 
 #### Region description + sorting
 neighbourDetect <- function(spe, samples, NN, cells, sort) {
-    samplesList <- unique(samples)
+    samplesList <- unique(spe[[samples]])
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
     nnClusts <- matrix(nrow = 0, ncol = NN)
-    # set.seed(12997)
     for (s in samplesList) {
-        xy_pos <- spatialCoords(spe[, samples == s])
-        Clust <- subset(as.data.frame(colData(spe)), samples == s, nsCluster)
-        subClust <- subset(as.data.frame(colData(spe)), samples == s, nsSubcluster)
+        xy_pos <- spatialCoords(spe[, spe[[samples]] == s])
+        # Clust <- subset(as.data.frame(colData(spe)), spe[[samples]] == s, nsCluster)
+        # subClust <- subset(as.data.frame(colData(spe)), spe[[samples]] == s, nsSubcluster)
+        speX <- spe[, spe[[samples]] == s]
+        Clust <- as.data.frame(as.character(speX$nsCluster))
+        rownames(Clust) <- speX[[cells]]
+        subClust <- as.data.frame(speX$nsSubcluster)
+        rownames(subClust) <- speX[[cells]]
         # finding NN nearest neighbors for each cell
         nnMatlist <- BiocNeighbors::findKNN(xy_pos, k = NN, BNPARAM = BiocNeighbors::KmknnParam())
         rownames(nnMatlist$index) <- rownames(subClust)
@@ -47,25 +51,25 @@ neighbourDetect <- function(spe, samples, NN, cells, sort) {
     regXclust <- apply(nnClusts, 1, .calculateProp)
 
     # QC check
-    check.cells.dim <- identical(dim(nnCells), as.integer(c(length(cells), NN + 1)))
-    check.cells.names <- identical(as.character(nnCells[,1]), cells)
+    check.cells.dim <- identical(dim(nnCells), as.integer(c(length(spe[[cells]]), NN + 1)))
+    check.cells.names <- identical(as.character(nnCells[,1]), spe[[cells]])
     check.cells.NA <- sum(is.na(nnCells))
-    check.clusts.dim <- identical(dim(nnClusts), as.integer(c(length(cells), NN)))
-    check.clusts.names <- identical(rownames(nnClusts), cells)
+    check.clusts.dim <- identical(dim(nnClusts), as.integer(c(length(spe[[cells]]), NN)))
+    check.clusts.names <- identical(rownames(nnClusts), spe[[cells]])
     check.clusts.NA <- sum(is.na(nnClusts))
-    check.region <- identical(length(regXclust), length(cells))
+    check.region <- identical(length(regXclust), length(spe[[cells]]))
     if (check.cells.dim == FALSE) {
-        stop("ERROR: issue in cell names from neighbour detection. All neighbors were not detected for all cells.")
+        stop("Issue in cell names from neighbour detection. All neighbors were not detected for all cells.")
     } else if (check.cells.names == FALSE) {
-        stop("ERROR: issue in cell names from neighbour detection. Order of cells in neighbor data did not match cell order in spatial experiment object.")
+        stop("Issue in cell names from neighbour detection. Order of cells in neighbor data did not match cell order in spatial experiment object.")
     } else if (check.clusts.dim == FALSE) {
-        stop("ERROR: issue in cluster numbers from neighbour detection. All neighbors were not detected for all cells.")
+        stop("Issue in cluster numbers from neighbour detection. All neighbors were not detected for all cells.")
     } else if (check.clusts.names == FALSE) {
-        stop("ERROR: issue in cluster numbers from neighbour detection. Order of cells in neighbor data did not match cell order in spatial experiment object.")
+        stop("Issue in cluster numbers from neighbour detection. Order of cells in neighbor data did not match cell order in spatial experiment object.")
     } else if (check.region == FALSE) {
-        stop("ERROR: Region proportions not calculated for all cells.")
+        stop("Region proportions not calculated for all cells.")
     } else if (check.cells.NA != 0 | check.clusts.NA != 0) {
-        stop("ERROR: Missing values in neighbor data.")
+        stop("Missing values in neighbor data.")
     } else {
         print(paste("Regions defined.", Sys.time()))
     }
