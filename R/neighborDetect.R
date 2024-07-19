@@ -16,8 +16,10 @@
 #' 2. regXclust, a list of vectors for each cell's neighbourhood composition indicated by the proportion of 'putative cell type' groups it contains.
 #
 #' @examples
+#' data(mouseEmbryo2)
 #'
-#' # to do
+#' out_list <- neighbourDetect(spe, samples = "embryo", NN = 30, cells = "uniqueID", sort = TRUE)
+#' names(out_list)
 #'
 #' @export
 

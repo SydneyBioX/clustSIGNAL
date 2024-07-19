@@ -22,6 +22,11 @@ SpatialExperiment object including entropy values for each cell neighbourhood.
 A function to measure the heterogeneity of a cell's neighbourhood in terms of entropy, such that homogeneous neighbourhoods have low entropy and heterogeneous neighbourhoods have high entropy.
 }
 \examples{
-# to do
+data(mouseEmbryo2)
+
+# requires list of containing cluster proportions of each region (regXclust),
+# generated using the neighbourDetect() function
+spe <- entropyMeasure(spe, cells = "uniqueID", regXclust, threads = 1)
+head(spe$entropy)
 
 }

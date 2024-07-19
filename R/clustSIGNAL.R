@@ -24,8 +24,13 @@
 #' 3. spe_final: a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
 #'
 #' @examples
-#' spe = load(mouseEmbryo2)
-#' clustSIGNAL <- function (spe, spe$embryo, spe$uniqueIDs)
+#' data(mouseEmbryo2)
+#'
+#' names(colData(spe))
+#' # identify the column names with cell and sample labels
+#' samples = "embryo"
+#' cells = "uniqueID"
+#' res_list <- clustSIGNAL(spe, samples, cells, dimRed = "PCA", outputs = "c")
 #'
 #'
 #' @export

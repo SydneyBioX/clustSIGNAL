@@ -54,8 +54,13 @@ a list of outputs
 A clustering method for cell type classification of spatial transcriptomics data. The tool generates and uses an adaptively smoothed, spatially informed gene expression data for clustering.
 }
 \examples{
-spe = load(mouseEmbryo2)
-clustSIGNAL <- function (spe, spe$embryo, spe$uniqueIDs)
+data(mouseEmbryo2)
+
+names(colData(spe))
+# identify the column names with cell and sample labels
+samples = "embryo"
+cells = "uniqueID"
+res_list <- clustSIGNAL(spe, samples, cells, dimRed = "PCA", outputs = "c")
 
 
 }

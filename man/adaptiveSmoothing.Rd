@@ -24,7 +24,11 @@ SpatialExperiment object including smoothed gene expression values as another as
 A function to perform a weighted, adaptive smoothing of gene expression based on the heterogeneity of the cell neighbourhood. Heterogeneous neighbourhoods are smoothed less with higher weights given to cells belonging to same initial group. Homogeneous neighbourhoods are smoothed more with similar weights given to most cells.
 }
 \examples{
+data(mouseEmbryo2)
 
-# to do
+# requires matrix containing NN nearest neighbour cell labels (nnCells),
+# generated using the neighbourDetect() function
+spe <- adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.05)
+spe
 
 }

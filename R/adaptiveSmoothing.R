@@ -11,8 +11,12 @@
 #' @return SpatialExperiment object including smoothed gene expression values as another assay.
 #'
 #' @examples
+#' data(mouseEmbryo2)
 #'
-#' # to do
+#' # requires matrix containing NN nearest neighbour cell labels (nnCells),
+#' # generated using the neighbourDetect() function
+#' spe <- adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.05)
+#' spe
 #'
 #' @export
 

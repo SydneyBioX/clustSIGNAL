@@ -18,7 +18,15 @@ SpatialExperiment object containing 'putative cell type' group allotted to each 
 A function containing two steps used at different times in the clustSIGNAL workflow. An initial non-spatial clustering and sub-clustering step (reclust = FALSE) is used to generate groups of ‘putative cell types’, whereas a later non-spatial clustering step (reclust = TRUE) is used to cluster adaptively smoothed gene expression data.
 }
 \examples{
+data(mouseEmbryo2)
 
-# to do
+# for non-spatial clustering of normalised counts
+spe <- nsClustering(spe, dimRed = "PCA", reclust = FALSE)
+head(spe$nsCluster)
+head(spe$nsSubcluster)
+
+# for non-spatial clustering of adaptively smoothed counts
+spe <- nsClustering(spe, dimRed = "PCA", reclust = TRUE)
+head(spe$reCluster)
 
 }

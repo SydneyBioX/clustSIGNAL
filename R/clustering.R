@@ -9,8 +9,16 @@
 #' @return SpatialExperiment object containing 'putative cell type' group allotted to each cell (reclust = FALSE) or clusters generated from smoothed data (reclust = TRUE).
 #'
 #' @examples
+#' data(mouseEmbryo2)
 #'
-#' # to do
+#' # for non-spatial clustering of normalised counts
+#' spe <- nsClustering(spe, dimRed = "PCA", reclust = FALSE)
+#' head(spe$nsCluster)
+#' head(spe$nsSubcluster)
+#'
+#' # for non-spatial clustering of adaptively smoothed counts
+#' spe <- nsClustering(spe, dimRed = "PCA", reclust = TRUE)
+#' head(spe$reCluster)
 #'
 #' @export
 

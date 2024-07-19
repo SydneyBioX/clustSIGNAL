@@ -28,7 +28,9 @@ a list containing two items:
 A function to identify the neighbourhood of each cell. If sort = TRUE, the neighbourhoods are also sorted such that cells belonging to the same group as the central cell are arranged closer to it.
 }
 \examples{
+data(mouseEmbryo2)
 
-# to do
+out_list <- neighbourDetect(spe, samples = "embryo", NN = 30, cells = "uniqueID", sort = TRUE)
+names(out_list)
 
 }
