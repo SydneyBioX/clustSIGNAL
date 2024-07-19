@@ -8,7 +8,7 @@ clustSIGNAL(
   spe,
   samples,
   cells,
-  dimRed = "PCA",
+  dimRed = "None",
   NN = 30,
   kernel = "G",
   spread = 0.05,
@@ -21,9 +21,9 @@ clustSIGNAL(
 \arguments{
 \item{spe}{a SpatialExperiment object.}
 
-\item{samples}{a character vector of sample names to which the cells belong. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
+\item{samples}{a character indicating name of colData(spe) column containing sample names.}
 
-\item{cells}{a character vector of cell IDs of each cell. Length of vector must be equal to the number of cells in SpatialExperiment object (i.e. the number of rows in colData(spe)).}
+\item{cells}{a character indicating name of colData(spe) column containing cell IDs.}
 
 \item{dimRed}{a character indicating the name of the reduced dimensions to use from the SpatialExperiment object (i.e., from reducedDimNames(spe)). Default value is 'PCA'.}
 
