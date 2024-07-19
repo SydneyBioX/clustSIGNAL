@@ -19,46 +19,39 @@ nsClustering <- function(spe, dimRed, reclust, ...) {
     # number of centers = 1/5th of total cells in sample
     clustVal <- min(as.integer(ncol(spe) / 5), 50000)
     if (reclust == FALSE) {
-        if (dimRed == "None") {
-            spe <- scater::runPCA(spe)
+        # Initial clustering
+        mat <- reducedDim(spe, dimRed)
+        nsClust <- bluster::clusterRows(mat,
+                                        bluster::TwoStepParam(
+                                            first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
+                                            second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
+        spe$nsCluster <- factor(nsClust)
+        print(paste("Initial nonspatial clustering performed. Clusters =", length(unique(nsClust)), Sys.time()))
+        # Initial subclustering
+        clusters <- length(unique(spe$nsCluster))
+        subclusters_list = list()
+        for (c in 1:clusters){
+            speX <- spe[, spe$nsCluster == c]
+            speX <- scater::runPCA(speX)
+            matX <- reducedDim(speX, "PCA")
+            # number of centers = half of total cells in cluster or 1,
+            # if only one cell in cluster
+            subclustVal <- max(as.integer(ncol(speX)/2), 1)
+            nsClustX <- bluster::clusterRows(matX,
+                                             bluster::TwoStepParam(
+                                                 first = bluster::KmeansParam(centers = subclustVal, iter.max = 30),
+                                                 second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
+            subclusters_list[[c]] <- setNames(paste0(c, ".", nsClustX), colnames(speX))
         }
-        else {
-            # Initial clustering
-            mat <- reducedDim(spe, dimRed)
-            # set.seed(12997)
-            nsClust <- bluster::clusterRows(mat,
-                                            bluster::TwoStepParam(
-                                                first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
-                                                second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
-            spe$nsCluster <- factor(nsClust)
-            print(paste("Initial nonspatial clustering performed. Clusters =", length(unique(nsClust)), Sys.time()))
-            # Initial subclustering
-            clusters <- length(unique(spe$nsCluster))
-            subclusters_list = list()
-            # set.seed(12997)
-            for (c in 1:clusters){
-                speX <- spe[, spe$nsCluster == c]
-                speX <- scater::runPCA(speX)
-                matX <- reducedDim(speX, "PCA")
-                # number of centers = half of total cells in cluster
-                subclustVal <- as.integer(ncol(speX) / 2)
-                nsClustX <- bluster::clusterRows(matX,
-                                                 bluster::TwoStepParam(
-                                                     first = bluster::KmeansParam(centers = subclustVal, iter.max = 30),
-                                                     second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
-                subclusters_list[[c]] <- setNames(paste0(c, ".", nsClustX), colnames(speX))
-            }
-            spe$nsSubcluster <- unlist(subclusters_list)[colnames(spe)]
-            print(paste("Nonspatial subclustering performed. Subclusters =", length(unique(spe$nsSubcluster)), Sys.time()))
-        }
+        spe$nsSubcluster <- unlist(subclusters_list)[colnames(spe)]
+        print(paste("Nonspatial subclustering performed. Subclusters =", length(unique(spe$nsSubcluster)), Sys.time()))
+
     } else if (reclust == TRUE) {
         # Clustering adaptively smoothed data
-        # set.seed(12997)
         spe <- scater::runPCA(spe,
-                      assay.type = "smoothed",
-                      name = "PCA.smooth")
+                              assay.type = "smoothed",
+                              name = "PCA.smooth")
         mat <- reducedDim(spe, "PCA.smooth")
-        # set.seed(12997)
         reClust <- bluster::clusterRows(mat,
                                         bluster::TwoStepParam(
                                             first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
