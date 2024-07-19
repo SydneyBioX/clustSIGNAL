@@ -19,29 +19,27 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-clustSIGNAL (clustering using Spatially Informed Gene expression with Neighborhood Adapted Learning) is an R package for a spatial clustering method that takes into account the heterogeneity of cell neighborhoods.
+clustSIGNAL (clustering of Spatially Informed Gene expression with Neighborhood Adapted Learning) is an R package for a spatial clustering method that takes into account the heterogeneity of cell neighborhoods.
 
 ```{r}
 # load required packages
 library(clustSIGNAL)
 ```
 
-# Single sample run {.tabset}
-
-## SeqFISH mouse embryo data analysis
+# SeqFISH mouse embryo data analysis
 
 ```{r}
 data(mouseEmbryo2)
 spe
 ```
 
-To run clustSIGNAL, we need the column names of sample and cell IDs in the colData dataframe of the spatial experiment object.
+To run clustSIGNAL, we need the column names of sample and cell labels in the colData dataframe of the spatial experiment object.
 
 ```{r}
-head(colData(spe), n = 5)
+names(colData(spe))
 ```
 
-Here, the cell IDs are in the column 'uniqueID' and sample IDs are in 'embryo' column. Apart from these, the spe object must have spatial coordinates stored in spatialCoords matrix. Other clustSIGNAL options include:
+Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column. Apart from these, the spe object must have spatial coordinates stored in the spatialCoords matrix. Other clustSIGNAL options include:
 
 -   'dimRed' for name of reduced dimensions. Default is "None", in which case PCA is calculated and used as reduced dimensions.
 
@@ -76,11 +74,7 @@ names(res_emb)
 ```
 
 ```{r}
-head(res_emb$clusters)
-```
-
-```{r}
-head(res_emb$neighbours, n = 1)
+head(res_emb$clusters, n = 3)
 ```
 
 ```{r}
@@ -96,19 +90,12 @@ library(cluster)
 library(aricode)
 library(dplyr)
 
-samplesList <- unique(spe[[samples]])
-
-# calculating silhouette width per sample
-silWidthRC <- matrix(nrow = 0, ncol = 3)
-for (s in samplesList) {
-  speX <- spe[, spe[[samples]] == s]
-  clust_sub <- as.numeric(as.character(speX$reCluster))
-  cXg <- t(as.matrix(logcounts(speX)))
-  distMat <- distances(cXg)
-  silCluster <- as.matrix(silhouette(clust_sub, distMat))
-  silWidthRC <- rbind(silWidthRC, silCluster)
-}
-spe$rcSil <- silWidthRC[, 3]
+# calculating silhouette width
+clusts <- as.numeric(as.character(spe$reCluster))
+cXg_mat <- t(as.matrix(logcounts(spe)))
+distMat <- distances(cXg_mat)
+silCluster <- as.matrix(silhouette(clusts, distMat))
+spe$rcSil <- silCluster[, 3]
 
 # for datasets with annotated cell type information, we can also calculate 
 # metrics like adjusted rand index (ARI) and normalised mutual information (NMI)
@@ -121,7 +108,7 @@ as.data.frame(colData(spe)) %>%
             mean_Entropy = mean(entropy))
 ```
 
-## Visualising of clustSIGNAL outputs
+## Visualising clustSIGNAL outputs
 
 ```{r}
 library(ggplot2)
@@ -193,13 +180,13 @@ cellOrder = celltype_ent$meanEntropy
 names(cellOrder) = celltype_ent$`as.character(reCluster)`
 cellOrder = sort(cellOrder)
 df_ent$reCluster = factor(df_ent$reCluster, levels = names(cellOrder))
-head(df_ent$reCluster)
 # box plot of cluster entropy
 colors_ent = colors[as.numeric(names(cellOrder))]
 box_clust <- df_ent %>%
   ggplot(aes(x = reCluster, y = entropy, fill = reCluster)) +
   geom_boxplot() +
   scale_fill_manual(values = colors_ent) +
+  ggtitle("Entropy ditribution of clusters") +
   labs(x = "clustSIGNAL clusters", y = "Entropy") +
   theme_classic() +
   theme(legend.position = "none",
@@ -209,9 +196,8 @@ box_clust <- df_ent %>%
 spt_clust + box_clust + plot_layout(guides = "collect", widths = c(1, 2))
 ```
 
-# Multiple sample runs {.tabset}
 
-## MERFISH mouse preoptic hypothalamus data analysis
+# MERFISH mouse preoptic hypothalamus data analysis
 
 ```{r}
 data(mousePH_subset)
@@ -221,7 +207,7 @@ spe2
 To run clustSIGNAL, we need the column names of sample and cell IDs in the colData dataframe of the spatial experiment object.
 
 ```{r}
-head(colData(spe2), n = 5)
+names(colData(spe2))
 ```
 
 Here, the cell IDs are in the column 'Cell_ID' and sample IDs are in 'samples' column.
@@ -233,7 +219,7 @@ set.seed(101)
 samples = "samples"
 cells = "Cell_ID"
 dimRed = "PCA"
-res_hyp = clustSIGNAL(spe2, samples = samples, cells = cells, dimRed, outputs = "a")
+res_hyp = clustSIGNAL(spe2, samples, cells, dimRed, outputs = "a")
 ```
 
 ```{r}
@@ -252,7 +238,9 @@ library(dplyr)
 
 ```{r}
 samplesList <- levels(spe2[[samples]])
+```
 
+```{r}
 # calculating silhouette width per sample
 silWidthRC <- matrix(nrow = 0, ncol = 3)
 for (s in samplesList) {
@@ -306,10 +294,8 @@ hst_ent <- as.data.frame(colData(spe2)) %>%
   facet_wrap(vars(samples), nrow = 1) +
   labs(x = "Entropy", y = "Number of regions") +
   theme_grey() +
-  theme(text = element_text(size = 15))
-```
+  theme(text = element_text(size = 12))
 
-```{r}
 # Spatial plot showing sample entropy distribution
 spt_ent <- as.data.frame(colData(spe2)) %>%
   ggplot(aes(x = spatialCoords(spe2)[, 1], 
@@ -322,10 +308,8 @@ spt_ent <- as.data.frame(colData(spe2)) %>%
   ggtitle("Spatial distribution of region entropy") +
   labs(x = "x-coordinate", y = "y-coordinate") +
   theme_classic() +
-  theme(text = element_text(size = 15))
-```
+  theme(text = element_text(size = 12))
 
-```{r}
 hst_ent / spt_ent
 ```
 
@@ -333,9 +317,7 @@ We can also visualize the spatial plot and entropy distribution of the clusters,
 
 ```{r}
 df_ent = as.data.frame(colData(spe2))
-```
 
-```{r}
 # spatial plot
 spt_clust <- df_ent %>%
   ggplot(aes(x = spatialCoords(spe2)[, 1], 
@@ -343,15 +325,12 @@ spt_clust <- df_ent %>%
   geom_point(size = 1, aes(colour = reCluster)) +
   scale_color_manual(values = colors) +
   facet_wrap(vars(samples), scales = "free", nrow = 1) +
-  ggtitle("Spatial distribution of clusters") +
   labs(x = "x-coordinate", y = "y-coordinate") +
   guides(color = guide_legend(title = "Clusters", 
                               override.aes = list(size = 3))) +
   theme_classic() +
-  theme(text = element_text(size = 15))
-```
+  theme(text = element_text(size = 12))
 
-```{r}
 box_clust = list()
 for (s in samplesList) {
   df_ent_sub = as.data.frame(colData(spe2)[spe2[[samples]] == s, ])
@@ -373,16 +352,16 @@ for (s in samplesList) {
     geom_boxplot() +
     scale_fill_manual(values = colors_ent) +
     facet_wrap(vars(samples), nrow = 1) +
-    ggtitle("Entropy ditribution of clusters") +
     labs(x = "clustSIGNAL clusters", y = "Entropy") +
     ylim(0, NA) +
     theme_classic() +
     theme(legend.position = "none",
-          text = element_text(size = 15),
+          text = element_text(size = 12),
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 }
-```
 
-```{r}
-spt_clust / patchwork::wrap_plots(box_clust, nrow = 1) + plot_layout(guides = "collect")
+spt_clust / (patchwork::wrap_plots(box_clust[1:4], nrow = 1) + 
+               plot_layout(axes = "collect")) + 
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "Spatial and entropy distributions of clusters")
 ```
