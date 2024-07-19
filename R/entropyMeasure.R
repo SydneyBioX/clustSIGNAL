@@ -17,10 +17,10 @@
 
 #### Domainness measure
 entropyMeasure <- function(spe, cells, regXclust, threads) {
-    cellsList <- as.vector(cells)
+    cellsList <- as.vector(spe[[cells]])
     cl <- parallel::makeCluster(threads)
     doParallel::registerDoParallel(cl)
-    regEntropy <- foreach(c = cellsList[1:length(cells)]) %dopar% {
+    regEntropy <- foreach(c = cellsList[1:length(spe[[cells]])]) %dopar% {
         arr <- as.vector(unlist(regXclust[c]))
         # calculate Shannon's entropy
         y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
@@ -30,12 +30,12 @@ entropyMeasure <- function(spe, cells, regXclust, threads) {
     stopCluster(cl)
 
     # QC check
-    check.cells <- identical(sapply(regEntropy, rownames), cells)
+    check.cells <- identical(sapply(regEntropy, rownames), spe[[cells]])
     check.NA.values <- sum(is.na(unlist(regEntropy)))
     if (check.cells == FALSE) {
-        stop("ERROR: Order of cells in entropy data does not match cell order in spatial experiment object")
+        stop("Order of cells in entropy data does not match cell order in spatial experiment object")
     } else if (check.NA.values != 0) {
-        stop("ERROR: missing entropy values.")
+        stop("Missing entropy values.")
     } else {
         spe$entropy <- as.matrix(unlist(regEntropy))
         print(paste("Region domainness calculated.", Sys.time()))
