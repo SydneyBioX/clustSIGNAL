@@ -61,9 +61,9 @@ adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread) {
     check.genes <- identical(rownames(spe), rownames(smoothMat))
     check.NA <- sum(is.na(smoothMat))
     if (check.genes == FALSE) {
-        stop("ERROR: Order of genes in smoothed data does not match gene order in spatial experiment object.")
+        stop("Order of genes in smoothed data does not match gene order in spatial experiment object.")
     } else if (check.NA != 0) {
-        stop("ERROR: Missing values in smoothed data.")
+        stop("Missing values in smoothed data.")
     } else {
         # add data to spatial experiment
         assay(spe, i = "smoothed") <- as(smoothMat, "sparseMatrix")
