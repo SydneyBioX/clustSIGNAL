@@ -13,7 +13,7 @@
 .calculateProp <- function(arr) {
     prop = prop.table(table(arr))
     if (round(sum(prop)) != 1){ # check if the proportions for each region sum up to 1
-        stop(paste("ERROR: proportions are incorrect.", "row =", c, "proportion =", sum(arr)))
+        stop(paste("Proportions are incorrect.", "row =", c, "proportion =", sum(arr)))
     }
     return(prop)
 }
