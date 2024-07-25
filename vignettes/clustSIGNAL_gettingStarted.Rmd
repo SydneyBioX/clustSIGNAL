@@ -1,0 +1,59 @@
+---
+title: "Getting started: clustSIGNAL"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started: clustSIGNAL}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+clustSIGNAL (clustering of Spatially Informed Gene expression with Neighborhood Adapted Learning) is an R package for a spatial clustering method that takes into account the heterogeneity of cell neighborhoods.
+
+```{r}
+# load required packages
+library(clustSIGNAL)
+```
+
+```{r}
+data(mouseEmbryo2)
+spe
+```
+
+```{r}
+names(colData(spe))
+```
+
+To run clustSIGNAL, we need the column names of sample and cell labels in the colData dataframe of the spatial experiment object. Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column. Apart from these, the spe object must have spatial coordinates stored in the spatialCoords matrix. Other clustSIGNAL options include:
+
+-   'dimRed' for name of reduced dimensions. Default is "None", in which case PCA is calculated and used as reduced dimensions.
+
+-   'NN' for neighbourhood size. Value should be \> 1.
+
+-   'kernel' for the type of weight distribution to use - Gaussian or exponential distribution.
+
+-   'spread' for value of distribution parameters - standard deviation of Gaussian distribution or rate of exponential distribution.
+
+-   'sort' for whether or not to sort the cell neighbourhoods by their 'putative cell type' grouping.
+
+-   'threads' for number of cpus to use for parallel runs.
+
+-   'outputs' for the choice of output types.
+
+-   '...' for additional arguments to non-spatial clustering algorithms.
+
+```{r}
+set.seed(100)
+res_emb = clustSIGNAL(spe, samples = "embryo", cells = "uniqueID", dimRed = "PCA", cluster.fun = "leiden", outputs = "a")
+```

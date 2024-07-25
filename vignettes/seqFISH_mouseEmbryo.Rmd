@@ -1,0 +1,179 @@
+---
+title: "Getting started: clustSIGNAL"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started: clustSIGNAL}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+clustSIGNAL (clustering of Spatially Informed Gene expression with Neighborhood Adapted Learning) is an R package for a spatial clustering method that takes into account the heterogeneity of cell neighborhoods.
+
+```{r}
+# load required packages
+library(clustSIGNAL)
+library(distances)
+library(cluster)
+library(aricode)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+```
+
+# SeqFISH mouse embryo data analysis
+
+Single sample data analysis
+
+```{r}
+data(mouseEmbryo2)
+spe
+```
+
+```{r}
+names(colData(spe))
+```
+
+To run clustSIGNAL, we need the column names of sample and cell labels in the colData dataframe of the spatial experiment object. Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column. 
+
+## Running clustSIGNAL
+
+```{r}
+set.seed(100)
+samples = "embryo"
+cells = "uniqueID"
+dimRed = "PCA"
+res_emb = clustSIGNAL(spe, samples, cells, dimRed, cluster.fun = "leiden", outputs = "a")
+```
+
+The output variable is a list that can contain dataframe of cluster names, matrix of NN neighbours of each cell, final spe object, or a combination of these, depending on the choice of 'outputs' selected.
+
+```{r}
+names(res_emb)
+```
+
+```{r}
+head(res_emb$clusters, n = 3)
+```
+
+```{r}
+spe = res_emb$spe_final
+spe
+```
+
+## Calculating clustering metrics
+
+```{r}
+# calculating silhouette width
+clusts <- as.numeric(as.character(spe$reCluster))
+cXg_mat <- t(as.matrix(logcounts(spe)))
+distMat <- distances(cXg_mat)
+silCluster <- as.matrix(silhouette(clusts, distMat))
+spe$rcSil <- silCluster[, 3]
+
+# for datasets with annotated cell type information, we can also calculate 
+# metrics like adjusted rand index (ARI) and normalised mutual information (NMI)
+as.data.frame(colData(spe)) %>%
+  summarise(ARI = ARI(celltype_mapped_refined, reCluster),
+            NMI = NMI(celltype_mapped_refined, reCluster),
+            ASW = mean(rcSil),
+            min_Entropy = min(entropy),
+            max_Entropy = max(entropy),
+            mean_Entropy = mean(entropy))
+```
+
+## Visualising clustSIGNAL outputs
+
+```{r}
+colors = c("#635547", "#8EC792", "#9e6762", "#FACB12", "#3F84AA", "#0F4A9C", 
+           "#ff891c", "#EF5A9D", "#C594BF", "#DFCDE4", "#139992", "#65A83E", 
+           "#8DB5CE", "#005579", "#C9EBFB", "#B51D8D", "#532C8A", "#8870ad", 
+           "#cc7818", "#FBBE92", "#EF4E22", "#f9decf", "#c9a997", "#C72228", 
+           "#f79083", "#F397C0", "#DABE99", "#c19f70", "#354E23", "#C3C388",
+           "#647a4f", "#CDE088", "#f7f79e", "#F6BFCB", "#7F6874", "#989898", 
+           "#1A1A1A", "#FFFFFF", "#e6e6e6", "#77441B", "#F90026", "#A10037", 
+           "#DA5921", "#E1C239", "#9DD84A")
+```
+
+The entropy measures can be very useful in assessing the tissue composition of samples - homogeneous (low entropy) with domain-like regions, or heterogeneous (high entropy) with uniform distribution of cells.
+
+```{r}
+# Histogram of entropy spread
+hst_ent <- as.data.frame(colData(spe)) %>%
+  ggplot(aes(entropy)) +
+  geom_histogram(binwidth = 0.05) +
+  ggtitle("Entropy spread of regions") +
+  labs(x = "Entropy", y = "Number of regions") +
+  theme_grey() +
+  theme(text = element_text(size = 12))
+
+# Spatial plot showing sample entropy distribution
+spt_ent <- as.data.frame(colData(spe)) %>%
+  ggplot(aes(x = spatialCoords(spe)[, 1], 
+             y = -spatialCoords(spe)[, 2])) +
+  geom_point(size = 1, 
+             aes(colour = entropy)) +
+  scale_colour_gradient2("Entropy", low = "grey", high = "blue") +
+  scale_size_continuous(range = c(0, max(spe$entropy))) +
+  ggtitle("Spatial distribution of region entropy") +
+  labs(x = "x-coordinate", y = "y-coordinate") +
+  theme_classic() +
+  theme(text = element_text(size = 12))
+
+hst_ent + spt_ent
+```
+
+We can also visualize the spatial plot and entropy distribution of the clusters, which provide spatial context of the cells and their neighbourhoods, as well as the compositions of the neighbouhoods.
+
+```{r}
+df_ent = as.data.frame(colData(spe))
+
+# spatial plot
+spt_clust <- df_ent %>%
+  ggplot(aes(x = spatialCoords(spe)[, 1], 
+             y = -spatialCoords(spe)[, 2])) +
+  geom_point(size = 1, aes(colour = reCluster)) +
+  scale_color_manual(values = colors) +
+  ggtitle("Spatial distribution of clusters") +
+  labs(x = "x-coordinate", y = "y-coordinate") +
+  guides(color = guide_legend(title = "Clusters", 
+                              override.aes = list(size = 3))) +
+  theme_classic() +
+  theme(text = element_text(size = 12))
+
+# calculating median entropy of each cluster
+celltype_ent = df_ent %>%
+  group_by(as.character(reCluster)) %>%
+  summarise(meanEntropy = median(entropy))
+# reordering clusters by their median entropy
+# low to high median entropy
+cellOrder = celltype_ent$meanEntropy
+names(cellOrder) = celltype_ent$`as.character(reCluster)`
+cellOrder = sort(cellOrder)
+df_ent$reCluster = factor(df_ent$reCluster, levels = names(cellOrder))
+# box plot of cluster entropy
+colors_ent = colors[as.numeric(names(cellOrder))]
+box_clust <- df_ent %>%
+  ggplot(aes(x = reCluster, y = entropy, fill = reCluster)) +
+  geom_boxplot() +
+  scale_fill_manual(values = colors_ent) +
+  ggtitle("Entropy ditribution of clusters") +
+  labs(x = "clustSIGNAL clusters", y = "Entropy") +
+  theme_classic() +
+  theme(legend.position = "none",
+        text = element_text(size = 15),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+spt_clust + box_clust + plot_layout(guides = "collect", widths = c(1, 2))
+```

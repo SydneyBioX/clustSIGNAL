@@ -1,0 +1,169 @@
+# MERFISH mouse preoptic hypothalamus data analysis
+
+Multisample data analysis
+
+```{r}
+# load required packages
+library(clustSIGNAL)
+library(distances)
+library(cluster)
+library(aricode)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+```
+
+```{r}
+data(mousePH_subset)
+spe2
+```
+
+```{r}
+names(colData(spe2))
+```
+
+To run clustSIGNAL, we need the column names of sample and cell IDs in the colData dataframe of the spatial experiment object. Here, the cell IDs are in the column 'Cell_ID' and sample IDs are in 'samples' column.
+
+## run clustSIGNAL
+
+```{r}
+set.seed(101)
+samples = "samples"
+cells = "Cell_ID"
+dimRed = "PCA"
+res_hyp = clustSIGNAL(spe2, samples, cells, dimRed, outputs = "a")
+```
+
+```{r}
+spe2 = res_hyp$spe_final
+spe2
+```
+
+## calculate clustering metrics
+
+```{r}
+samplesList <- levels(spe2[[samples]])
+```
+
+```{r}
+# calculating silhouette width per sample
+silWidthRC <- matrix(nrow = 0, ncol = 3)
+for (s in samplesList) {
+  speX <- spe2[, spe2[[samples]] == s]
+  clust_sub <- as.numeric(as.character(speX$reCluster))
+  cXg <- t(as.matrix(logcounts(speX)))
+  distMat <- distances(cXg)
+  silCluster <- as.matrix(silhouette(clust_sub, distMat))
+  silWidthRC <- rbind(silWidthRC, silCluster)
+}
+spe2$rcSil <- silWidthRC[, 3]
+```
+
+```{r}
+# for datasets with annotated cell type information, we can also calculate 
+# metrics like adjusted rand index (ARI) and normalised mutual information (NMI)
+as.data.frame(colData(spe2)) %>%
+  group_by(samples) %>%
+  summarise(ARI = ARI(Cell_class, reCluster),
+            NMI = NMI(Cell_class, reCluster),
+            ASW = mean(rcSil),
+            min_Entropy = min(entropy),
+            max_Entropy = max(entropy),
+            mean_Entropy = mean(entropy))
+```
+
+## Visualisation of clustSIGNAL outputs
+
+```{r}
+colors = c("#635547", "#8EC792", "#9e6762", "#FACB12", "#3F84AA", "#0F4A9C", 
+           "#ff891c", "#EF5A9D", "#C594BF", "#DFCDE4", "#139992", "#65A83E", 
+           "#8DB5CE", "#005579", "#C9EBFB", "#B51D8D", "#532C8A", "#8870ad", 
+           "#cc7818", "#FBBE92", "#EF4E22", "#f9decf", "#c9a997", "#C72228", 
+           "#f79083", "#F397C0", "#DABE99", "#c19f70", "#354E23", "#C3C388",
+           "#647a4f", "#CDE088", "#f7f79e", "#F6BFCB", "#7F6874", "#989898", 
+           "#1A1A1A", "#FFFFFF", "#e6e6e6", "#77441B", "#F90026", "#A10037", 
+           "#DA5921", "#E1C239", "#9DD84A")
+```
+
+The entropy measures can be very useful in assessing the tissue composition of samples - homogeneous (low entropy) with domain-like regions, or heterogeneous (high entropy) with uniform distribution of cells.
+
+```{r}
+# Histogram of entropy spread
+hst_ent <- as.data.frame(colData(spe2)) %>%
+  ggplot(aes(entropy)) +
+  geom_histogram(binwidth = 0.05) +
+  ggtitle("Entropy spread of regions") +
+  facet_wrap(vars(samples), nrow = 1) +
+  labs(x = "Entropy", y = "Number of regions") +
+  theme_grey() +
+  theme(text = element_text(size = 12))
+
+# Spatial plot showing sample entropy distribution
+spt_ent <- as.data.frame(colData(spe2)) %>%
+  ggplot(aes(x = spatialCoords(spe2)[, 1], 
+             y = -spatialCoords(spe2)[, 2])) +
+  geom_point(size = 1, 
+             aes(colour = entropy)) +
+  scale_colour_gradient2("Entropy", low = "grey", high = "blue") +
+  scale_size_continuous(range = c(0, max(spe2$entropy))) +
+  facet_wrap(vars(samples), scales = "free", nrow = 1) +
+  ggtitle("Spatial distribution of region entropy") +
+  labs(x = "x-coordinate", y = "y-coordinate") +
+  theme_classic() +
+  theme(text = element_text(size = 12))
+
+hst_ent / spt_ent
+```
+
+We can also visualize the spatial plot and entropy distribution of the clusters, which provide spatial context of the cells and their neighbourhoods, as well as the compositions of the neighbouhoods.
+
+```{r}
+df_ent = as.data.frame(colData(spe2))
+
+# spatial plot
+spt_clust <- df_ent %>%
+  ggplot(aes(x = spatialCoords(spe2)[, 1], 
+             y = -spatialCoords(spe2)[, 2])) +
+  geom_point(size = 1, aes(colour = reCluster)) +
+  scale_color_manual(values = colors) +
+  facet_wrap(vars(samples), scales = "free", nrow = 1) +
+  labs(x = "x-coordinate", y = "y-coordinate") +
+  guides(color = guide_legend(title = "Clusters", 
+                              override.aes = list(size = 3))) +
+  theme_classic() +
+  theme(text = element_text(size = 12))
+
+box_clust = list()
+for (s in samplesList) {
+  df_ent_sub = as.data.frame(colData(spe2)[spe2[[samples]] == s, ])
+  # calculating median entropy of each cluster in a sample
+  celltype_ent = df_ent_sub %>%
+    group_by(as.character(reCluster)) %>%
+    summarise(meanEntropy = median(entropy))
+  # reordering clusters by their median entropy
+  # low to high median entropy
+  cellOrder = celltype_ent$meanEntropy
+  names(cellOrder) = celltype_ent$`as.character(reCluster)`
+  cellOrder = sort(cellOrder)
+  df_ent_sub$reCluster = factor(df_ent_sub$reCluster, levels = names(cellOrder))
+  
+  # box plot of cluster entropy
+  colors_ent = colors[as.numeric(names(cellOrder))]
+  box_clust[[s]] <- df_ent_sub %>%
+    ggplot(aes(x = reCluster, y = entropy, fill = reCluster)) +
+    geom_boxplot() +
+    scale_fill_manual(values = colors_ent) +
+    facet_wrap(vars(samples), nrow = 1) +
+    labs(x = "clustSIGNAL clusters", y = "Entropy") +
+    ylim(0, NA) +
+    theme_classic() +
+    theme(legend.position = "none",
+          text = element_text(size = 12),
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+}
+
+spt_clust / (patchwork::wrap_plots(box_clust[1:4], nrow = 1) + 
+               plot_layout(axes = "collect")) + 
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "Spatial and entropy distributions of clusters")
+```
