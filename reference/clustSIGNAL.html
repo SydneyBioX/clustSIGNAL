@@ -18,9 +18,8 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/clustSIGNAL_gettingStarted.html">Getting started: clustSIGNAL</a></li>
-    <li><a class="dropdown-item" href="../articles/MERFISH_mouseHypothalamus.html">UNKNOWN TITLE</a></li>
-    <li><a class="dropdown-item" href="../articles/seqFISH_mouseEmbryo.html">Getting started: clustSIGNAL</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -138,14 +137,14 @@
 <span class="r-in"><span><span class="va">samples</span> <span class="op">=</span> <span class="st">"embryo"</span></span></span>
 <span class="r-in"><span><span class="va">cells</span> <span class="op">=</span> <span class="st">"uniqueID"</span></span></span>
 <span class="r-in"><span><span class="va">res_list</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, <span class="va">cells</span>, dimRed <span class="op">=</span> <span class="st">"PCA"</span>, outputs <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "clustSIGNAL run started. 2024-07-25 05:01:41.098083"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Initial nonspatial clustering performed. Clusters = 14 2024-07-25 05:01:48.145814"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial subclustering performed. Subclusters = 78 2024-07-25 05:01:53.616408"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Regions defined. 2024-07-25 05:01:59.687777"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Region domainness calculated. 2024-07-25 05:02:11.173916"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-07-25 05:05:02.088838"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial clustering performed on smoothed data. Clusters = 25 2024-07-25 05:05:08.278851"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "clustSIGNAL run completed. 2024-07-25 05:05:08.280789"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "clustSIGNAL run started. 2024-07-25 08:14:23.342451"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Initial nonspatial clustering performed. Clusters = 14 2024-07-25 08:14:30.414454"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial subclustering performed. Subclusters = 78 2024-07-25 08:14:35.853681"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Regions defined. 2024-07-25 08:14:42.455327"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Region domainness calculated. 2024-07-25 08:14:53.461301"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-07-25 08:17:47.383725"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial clustering performed on smoothed data. Clusters = 25 2024-07-25 08:17:53.586004"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "clustSIGNAL run completed. 2024-07-25 08:17:53.587966"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

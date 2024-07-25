@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Getting started: clustSIGNAL • clustSIGNAL</title>
+<title>Single sample analysis • clustSIGNAL</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting started: clustSIGNAL">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Single sample analysis">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -33,9 +33,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/clustSIGNAL_gettingStarted.html">Getting started: clustSIGNAL</a></li>
-    <li><a class="dropdown-item" href="../articles/MERFISH_mouseHypothalamus.html">UNKNOWN TITLE</a></li>
-    <li><a class="dropdown-item" href="../articles/seqFISH_mouseEmbryo.html">Getting started: clustSIGNAL</a></li>
+<li><a class="dropdown-item" href="../articles/MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
   </ul>
 </li>
       </ul>
@@ -56,7 +55,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Getting started: clustSIGNAL</h1>
+      <h1>Single sample analysis</h1>
             
             <h4 data-toc-skip class="date">2024-07-25</h4>
       
@@ -67,12 +66,8 @@
     
     
 <div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<h2 id="seqfish-mouse-embryo-data-analysis">SeqFISH mouse embryo data analysis<a class="anchor" aria-label="anchor" href="#seqfish-mouse-embryo-data-analysis"></a>
 </h2>
-<p>clustSIGNAL (clustering of Spatially Informed Gene expression with
-Neighborhood Adapted Learning) is an R package for a spatial clustering
-method that takes into account the heterogeneity of cell
-neighborhoods.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load required packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sydneybiox.github.io/clustSIGNAL/">clustSIGNAL</a></span><span class="op">)</span></span>
@@ -82,11 +77,6 @@ neighborhoods.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="seqfish-mouse-embryo-data-analysis">SeqFISH mouse embryo data analysis<a class="anchor" aria-label="anchor" href="#seqfish-mouse-embryo-data-analysis"></a>
-</h2>
-<p>Single sample data analysis</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mouseEmbryo2</span><span class="op">)</span></span>
 <span><span class="va">spe</span></span>
@@ -126,23 +116,24 @@ neighborhoods.</p>
 labels in the colData dataframe of the spatial experiment object. Here,
 the cell labels are in the column ‘uniqueID’ and sample labels are in
 ‘embryo’ column.</p>
-<div class="section level3">
-<h3 id="running-clustsignal">Running clustSIGNAL<a class="anchor" aria-label="anchor" href="#running-clustsignal"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="run-clustsignal">Run clustSIGNAL<a class="anchor" aria-label="anchor" href="#run-clustsignal"></a>
+</h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">samples</span> <span class="op">=</span> <span class="st">"embryo"</span></span>
 <span><span class="va">cells</span> <span class="op">=</span> <span class="st">"uniqueID"</span></span>
 <span><span class="va">dimRed</span> <span class="op">=</span> <span class="st">"PCA"</span></span>
 <span><span class="va">res_emb</span> <span class="op">=</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, <span class="va">cells</span>, <span class="va">dimRed</span>, cluster.fun <span class="op">=</span> <span class="st">"leiden"</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "clustSIGNAL run started. 2024-07-25 05:12:54.732136"</span></span>
-<span><span class="co">#&gt; [1] "Initial nonspatial clustering performed. Clusters = 15 2024-07-25 05:13:01.847967"</span></span>
-<span><span class="co">#&gt; [1] "Nonspatial subclustering performed. Subclusters = 79 2024-07-25 05:13:07.774462"</span></span>
-<span><span class="co">#&gt; [1] "Regions defined. 2024-07-25 05:13:13.730469"</span></span>
-<span><span class="co">#&gt; [1] "Region domainness calculated. 2024-07-25 05:13:24.605654"</span></span>
-<span><span class="co">#&gt; [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-07-25 05:16:16.254762"</span></span>
-<span><span class="co">#&gt; [1] "Nonspatial clustering performed on smoothed data. Clusters = 24 2024-07-25 05:16:22.386478"</span></span>
-<span><span class="co">#&gt; [1] "clustSIGNAL run completed. 2024-07-25 05:16:22.388388"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "clustSIGNAL run started. 2024-07-25 08:22:10.886528"</span></span>
+<span><span class="co">#&gt; [1] "Initial nonspatial clustering performed. Clusters = 15 2024-07-25 08:22:18.077428"</span></span>
+<span><span class="co">#&gt; [1] "Nonspatial subclustering performed. Subclusters = 79 2024-07-25 08:22:24.306852"</span></span>
+<span><span class="co">#&gt; [1] "Regions defined. 2024-07-25 08:22:30.394411"</span></span>
+<span><span class="co">#&gt; [1] "Region domainness calculated. 2024-07-25 08:22:41.906502"</span></span>
+<span><span class="co">#&gt; [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-07-25 08:25:37.687609"</span></span>
+<span><span class="co">#&gt; [1] "Nonspatial clustering performed on smoothed data. Clusters = 24 2024-07-25 08:25:43.857019"</span></span>
+<span><span class="co">#&gt; [1] "clustSIGNAL run completed. 2024-07-25 08:25:43.858958"</span></span></code></pre></div>
 <p>The output variable is a list that can contain dataframe of cluster
 names, matrix of NN neighbours of each cell, final spe object, or a
 combination of these, depending on the choice of ‘outputs’ selected.</p>
@@ -173,9 +164,9 @@ combination of these, depending on the choice of ‘outputs’ selected.</p>
 <span><span class="co">#&gt; spatialCoords names(2) : x_global_affine y_global_affine</span></span>
 <span><span class="co">#&gt; imgData names(1): sample_id</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="calculating-clustering-metrics">Calculating clustering metrics<a class="anchor" aria-label="anchor" href="#calculating-clustering-metrics"></a>
-</h3>
+<div class="section level2">
+<h2 id="calculate-clustering-metrics">Calculate clustering metrics<a class="anchor" aria-label="anchor" href="#calculate-clustering-metrics"></a>
+</h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculating silhouette width</span></span>
 <span><span class="va">clusts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">spe</span><span class="op">$</span><span class="va">reCluster</span><span class="op">)</span><span class="op">)</span></span>
@@ -187,8 +178,8 @@ combination of these, depending on the choice of ‘outputs’ selected.</p>
 <span><span class="co"># for datasets with annotated cell type information, we can also calculate </span></span>
 <span><span class="co"># metrics like adjusted rand index (ARI) and normalised mutual information (NMI)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>ARI <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/aricode/man/ARI.html" class="external-link">ARI</a></span><span class="op">(</span><span class="va">celltype_mapped_refined</span>, <span class="va">reCluster</span><span class="op">)</span>,</span>
-<span>            NMI <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/aricode/man/NMI.html" class="external-link">NMI</a></span><span class="op">(</span><span class="va">celltype_mapped_refined</span>, <span class="va">reCluster</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>ARI <span class="op">=</span> <span class="fu">aricode</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/aricode/man/ARI.html" class="external-link">ARI</a></span><span class="op">(</span><span class="va">celltype_mapped_refined</span>, <span class="va">reCluster</span><span class="op">)</span>,</span>
+<span>            NMI <span class="op">=</span> <span class="fu">aricode</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/aricode/man/NMI.html" class="external-link">NMI</a></span><span class="op">(</span><span class="va">celltype_mapped_refined</span>, <span class="va">reCluster</span><span class="op">)</span>,</span>
 <span>            ASW <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">rcSil</span><span class="op">)</span>,</span>
 <span>            min_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">entropy</span><span class="op">)</span>,</span>
 <span>            max_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">entropy</span><span class="op">)</span>,</span>
@@ -196,9 +187,9 @@ combination of these, depending on the choice of ‘outputs’ selected.</p>
 <span><span class="co">#&gt;         ARI       NMI        ASW min_Entropy max_Entropy mean_Entropy</span></span>
 <span><span class="co">#&gt; 1 0.2758015 0.5434374 0.02652979           0    3.124092      1.30814</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="visualising-clustsignal-outputs">Visualising clustSIGNAL outputs<a class="anchor" aria-label="anchor" href="#visualising-clustsignal-outputs"></a>
-</h3>
+<div class="section level2">
+<h2 id="visualise-clustsignal-outputs">Visualise clustSIGNAL outputs<a class="anchor" aria-label="anchor" href="#visualise-clustsignal-outputs"></a>
+</h2>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">colors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#635547"</span>, <span class="st">"#8EC792"</span>, <span class="st">"#9e6762"</span>, <span class="st">"#FACB12"</span>, <span class="st">"#3F84AA"</span>, <span class="st">"#0F4A9C"</span>, </span>
 <span>           <span class="st">"#ff891c"</span>, <span class="st">"#EF5A9D"</span>, <span class="st">"#C594BF"</span>, <span class="st">"#DFCDE4"</span>, <span class="st">"#139992"</span>, <span class="st">"#65A83E"</span>, </span>
@@ -226,7 +217,7 @@ cells.</p>
 <span><span class="va">spt_ent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment-methods.html" class="external-link">spatialCoords</a></span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, </span>
 <span>             y <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment-methods.html" class="external-link">spatialCoords</a></span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.5</span>, </span>
 <span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">entropy</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_colour_gradient2</a></span><span class="op">(</span><span class="st">"Entropy"</span>, low <span class="op">=</span> <span class="st">"grey"</span>, high <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html" class="external-link">scale_size_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">spe</span><span class="op">$</span><span class="va">entropy</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -247,7 +238,7 @@ neighbourhoods, as well as the compositions of the neighbouhoods.</p>
 <span><span class="va">spt_clust</span> <span class="op">&lt;-</span> <span class="va">df_ent</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment-methods.html" class="external-link">spatialCoords</a></span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, </span>
 <span>             y <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment-methods.html" class="external-link">spatialCoords</a></span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">reCluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.5</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">reCluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">colors</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Spatial distribution of clusters"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x-coordinate"</span>, y <span class="op">=</span> <span class="st">"y-coordinate"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -279,9 +270,8 @@ neighbourhoods, as well as the compositions of the neighbouhoods.</p>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
 <span>        axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">spt_clust</span> <span class="op">+</span> <span class="va">box_clust</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="st">"collect"</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">spt_clust</span> <span class="op">+</span> <span class="va">box_clust</span> <span class="op">+</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="st">"collect"</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="seqFISH_mouseEmbryo_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

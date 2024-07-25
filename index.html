@@ -35,9 +35,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/clustSIGNAL_gettingStarted.html">Getting started: clustSIGNAL</a></li>
-    <li><a class="dropdown-item" href="articles/MERFISH_mouseHypothalamus.html">UNKNOWN TITLE</a></li>
-    <li><a class="dropdown-item" href="articles/seqFISH_mouseEmbryo.html">Getting started: clustSIGNAL</a></li>
+<li><a class="dropdown-item" href="articles/MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
+    <li><a class="dropdown-item" href="articles/seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
   </ul>
 </li>
       </ul>
@@ -55,8 +54,8 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="clustsignal">clustSIGNAL<a class="anchor" aria-label="anchor" href="#clustsignal"></a>
 </h1></div>
-<p>An R package to perform spatial clustering on spatially-resolved transcritomics datasets.</p>
-<p>clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. Here, we calculate entropy as a measure of “domainness” of cell neighbourhoods, and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods, whereas heterogeneous neighbourhoods have high entropy and are smoothed less. This approach not only overcomes data sparsity in the gene expression data but also incorporates spatial context in the form of cell arrangement information from the neighbourhoods. The resulting adaptively smoothed gene expression data is used for clustering and could be used for other downstream analyses.</p>
+<p>clustSIGNAL: <strong><em>clust</em></strong>ering of <strong><em>S</em></strong>patially <strong><em>I</em></strong>nformed <strong><em>G</em></strong>ene expression with <strong><em>N</em></strong>eighbourhood <strong><em>A</em></strong>dapted <strong><em>L</em></strong>earning.</p>
+<p>An R package to perform spatial clustering on spatially-resolved transcriptomics datasets. Here, we calculate entropy as a measure of “domainness” of cell neighbourhoods, and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. This approach not only overcomes data sparsity in the gene expression but also incorporates spatial context in the form of cell arrangement information from the neighbourhood. The resulting adaptively smoothed gene expression is used for downstream analyses like clustering.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -64,6 +63,40 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SydneyBioX/clustSIGNAL"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="clustsignal-parameters">clustSIGNAL parameters<a class="anchor" aria-label="anchor" href="#clustsignal-parameters"></a>
+</h2>
+<p>The clustSIGNAL package uses a SpatialExperiment object as input. We provide users with a number of parameters to explore and experiment with, as well as prior tested default values for quick runs. clustSIGNAL can be used for single sample or multisample analysis with just one function call. Below is the list of the parameters offered and their possible values:</p>
+<ul>
+<li><p><strong>spe</strong> - SpatialExperiment object with cell spatial coordinates in <em>spatialCoords</em> matrix.</p></li>
+<li><p><strong>samples</strong> - column name in <a href="colData(spe)">cell metadata</a> containing sample names.</p></li>
+<li><p><strong>cells</strong> - column name in <a href="colData(spe)">cell metadata</a> containing cell IDs.</p></li>
+<li><p><strong>dimRed</strong> - dimensionality reduction method name in <a href="reducedDimNames(spe)">low embedding data</a>. Default is “None”, in which case PCA is calculated and used as reduced dimensions data.</p></li>
+<li><p><strong>NN</strong> - neighbourhood size in terms of the number of nearest neighbours to consider. Value should be &gt; 1. Default value is 30.</p></li>
+<li><p><strong>kernel</strong> - type of weight distribution to use. Can be Gaussian (default) or exponential distribution.</p></li>
+<li><p><strong>spread</strong> - value of distribution parameter - standard deviation of Gaussian distribution or rate of exponential distribution. Default value is 0.05, recommended for Gaussian distribution. For exponential distribution, recommended value is 20.</p></li>
+<li><p><strong>sort</strong> - whether cell neighbourhoods should be sorted by their ‘putative cell type’ grouping. Default value is True.</p></li>
+<li><p><strong>threads</strong> - number of cpus to use for parallel runs. Default value is 1.</p></li>
+<li><p><strong>outputs</strong> - choice of output types. Default value is ‘c’ for data frame of cell IDs and cluster numbers. Other possible values include - ‘n’ for list of data frame of clusters and matrix of neighbourhood cell IDs, ‘s’ for list of data frame of clusters and final SpatialExperiment object, or ‘a’ for list of all 3 outputs.</p></li>
+<li><p><strong>…</strong> - additional options for non-spatial clustering algorithms in the bluster package, e.g., KmeansParam options like centers and iter.max, or NNGraphParam options like k and cluster.fun.</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="running-clustsignal">Running clustSIGNAL<a class="anchor" aria-label="anchor" href="#running-clustsignal"></a>
+</h2>
+<p>Before running clustSIGNAL, it is important to ensure that the SpatialExperiment object input has spatial coordinates stored in the spatialCoords matrix. Otherwise, the method will throw an error asking the user to provide spatial coordinates.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load required packages</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sydneybiox.github.io/clustSIGNAL/">clustSIGNAL</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mouseEmbryo2</span><span class="op">)</span></span>
+<span><span class="va">spe</span></span>
+<span></span>
+<span><span class="co"># Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, samples <span class="op">=</span> <span class="st">"embryo"</span>, cells <span class="op">=</span> <span class="st">"uniqueID"</span>, dimRed <span class="op">=</span> <span class="st">"PCA"</span>, cluster.fun <span class="op">=</span> <span class="st">"leiden"</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
