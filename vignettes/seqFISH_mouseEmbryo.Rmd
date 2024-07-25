@@ -1,5 +1,5 @@
 ---
-title: "Getting started: clustSIGNAL"
+title: "Single sample analysis"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -17,9 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introduction
-
-clustSIGNAL (clustering of Spatially Informed Gene expression with Neighborhood Adapted Learning) is an R package for a spatial clustering method that takes into account the heterogeneity of cell neighborhoods.
+# SeqFISH mouse embryo data analysis
 
 ```{r}
 # load required packages
@@ -32,10 +30,6 @@ library(ggplot2)
 library(patchwork)
 ```
 
-# SeqFISH mouse embryo data analysis
-
-Single sample data analysis
-
 ```{r}
 data(mouseEmbryo2)
 spe
@@ -47,7 +41,7 @@ names(colData(spe))
 
 To run clustSIGNAL, we need the column names of sample and cell labels in the colData dataframe of the spatial experiment object. Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column. 
 
-## Running clustSIGNAL
+# Run clustSIGNAL
 
 ```{r}
 set.seed(100)
@@ -72,7 +66,7 @@ spe = res_emb$spe_final
 spe
 ```
 
-## Calculating clustering metrics
+# Calculate clustering metrics
 
 ```{r}
 # calculating silhouette width
@@ -85,15 +79,15 @@ spe$rcSil <- silCluster[, 3]
 # for datasets with annotated cell type information, we can also calculate 
 # metrics like adjusted rand index (ARI) and normalised mutual information (NMI)
 as.data.frame(colData(spe)) %>%
-  summarise(ARI = ARI(celltype_mapped_refined, reCluster),
-            NMI = NMI(celltype_mapped_refined, reCluster),
+  summarise(ARI = aricode::ARI(celltype_mapped_refined, reCluster),
+            NMI = aricode::NMI(celltype_mapped_refined, reCluster),
             ASW = mean(rcSil),
             min_Entropy = min(entropy),
             max_Entropy = max(entropy),
             mean_Entropy = mean(entropy))
 ```
 
-## Visualising clustSIGNAL outputs
+# Visualise clustSIGNAL outputs
 
 ```{r}
 colors = c("#635547", "#8EC792", "#9e6762", "#FACB12", "#3F84AA", "#0F4A9C", 
@@ -122,7 +116,7 @@ hst_ent <- as.data.frame(colData(spe)) %>%
 spt_ent <- as.data.frame(colData(spe)) %>%
   ggplot(aes(x = spatialCoords(spe)[, 1], 
              y = -spatialCoords(spe)[, 2])) +
-  geom_point(size = 1, 
+  geom_point(size = 0.5, 
              aes(colour = entropy)) +
   scale_colour_gradient2("Entropy", low = "grey", high = "blue") +
   scale_size_continuous(range = c(0, max(spe$entropy))) +
@@ -143,7 +137,7 @@ df_ent = as.data.frame(colData(spe))
 spt_clust <- df_ent %>%
   ggplot(aes(x = spatialCoords(spe)[, 1], 
              y = -spatialCoords(spe)[, 2])) +
-  geom_point(size = 1, aes(colour = reCluster)) +
+  geom_point(size = 0.5, aes(colour = reCluster)) +
   scale_color_manual(values = colors) +
   ggtitle("Spatial distribution of clusters") +
   labs(x = "x-coordinate", y = "y-coordinate") +
@@ -175,5 +169,5 @@ box_clust <- df_ent %>%
         text = element_text(size = 15),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-spt_clust + box_clust + plot_layout(guides = "collect", widths = c(1, 2))
+spt_clust + box_clust + patchwork::plot_layout(guides = "collect", widths = c(1, 2))
 ```
