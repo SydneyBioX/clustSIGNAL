@@ -1,6 +1,6 @@
 # clustSIGNAL
 
-<img src="man/figures/clustSIGNAL_hex.png" align = "right" height = "200"/>
+<img src="man/figures/clustSIGNAL_hex.png" align="right" height="250"/>
 
 clustSIGNAL: ***clust***ering of ***S***patially ***I***nformed ***G***ene expression with ***N***eighbourhood ***A***dapted ***L***earning.
 
@@ -15,18 +15,26 @@ You can install the clustSIGNAL package from [GitHub](https://github.com/SydneyB
 devtools::install_github("SydneyBioX/clustSIGNAL")
 ```
 
-## Method
+## Method description
 
-<img src="man/figures/Fig1_schematic.png" align = "middle"/>
+<img src="man/figures/Fig1_schematic.png" align="middle"/>
 
-**Figure: clustSIGNAL method overview.**\
-Here, we present clustSIGNAL, a spatial clustering method developed to handle data sparsity while considering the variability in cell arrangement of tissue regions. The core steps involved in the method are sequential.\
-**1.** The method starts with non-spatial clustering and subclustering (default louvain clustering) to classify cells into subclusters that we refer to as ‘putative cell type’ groups.\
-**2.** The neighbourhood of each cell is defined in terms of their ‘putative cell type’ group composition.\
-**3.** The cells in the neighbourhood are also sorted and rearranged so that the neighbours belonging to the same ‘putative cell type’ group as the index cell are placed closer to it.\
-**4.** Neighbourhood “domainness” is measured as entropy, where high entropy values indicate more heterogeneous neighbourhoods and low entropy values indicate more homogeneous neighbourhoods.\
-**5.** The entropy values are used to generate weight distributions specific to each neighbourhood.\
-**6.** The gene expressions of cells are adaptively smoothed using the entropy-guided weight distributions; cells in heterogeneous neighbourhoods (high entropy) undergo smoothing over a smaller region, whereas cells in homogeneous neighbourhoods (low entropy) undergo smoothing over a larger region.\
+**Figure: clustSIGNAL method overview.**
+
+Here, we present clustSIGNAL, a spatial clustering method developed to handle data sparsity while considering the variability in cell arrangement of tissue regions. The core steps involved in the method are sequential:
+
+**1.** The method starts with non-spatial clustering and subclustering (default louvain clustering) to classify cells into subclusters that we refer to as ‘putative cell type’ groups.
+
+**2.** The neighbourhood of each cell is defined in terms of their ‘putative cell type’ group composition.
+
+**3.** The cells in the neighbourhood are also sorted and rearranged so that the neighbours belonging to the same ‘putative cell type’ group as the index cell are placed closer to it.
+
+**4.** Neighbourhood “domainness” is measured as entropy, where high entropy values indicate more heterogeneous neighbourhoods and low entropy values indicate more homogeneous neighbourhoods.
+
+**5.** The entropy values are used to generate weight distributions specific to each neighbourhood.
+
+**6.** The gene expressions of cells are adaptively smoothed using the entropy-guided weight distributions; cells in heterogeneous neighbourhoods (high entropy) undergo smoothing over a smaller region, whereas cells in homogeneous neighbourhoods (low entropy) undergo smoothing over a larger region.
+
 **7.** Non-spatial clustering is performed with adaptively smoothed gene expression to generate clustSIGNAL clusters that represent cell types.
 
 ## clustSIGNAL parameters
