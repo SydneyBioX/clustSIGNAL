@@ -9,7 +9,7 @@ output:
   BiocStyle::pdf_document: default
 package: clustSIGNAL
 vignette: |
-  %\VignetteIndexEntry{clustSIGNAL: Multisample analysis}
+  %\VignetteIndexEntry{2. Multisample analysis}
   %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 ---

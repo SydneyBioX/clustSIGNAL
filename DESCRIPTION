@@ -20,7 +20,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
 Depends: R (>= 4.0.0), SpatialExperiment, doParallel
-Imports: BiocNeighbors, bluster, scater, aricode, distances, cluster, ggplot2, patchwork
+Imports: BiocNeighbors, bluster, scater, aricode, distances, cluster, ggplot2, patchwork, BiocStyle
 Suugests: knitr, rmarkdown
 VignetteBuilder: knitr
 URL: https://sydneybiox.github.io/clustSIGNAL/
