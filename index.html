@@ -54,7 +54,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="clustsignal">clustSIGNAL<a class="anchor" aria-label="anchor" href="#clustsignal"></a>
 </h1></div>
-<p><img src="reference/figures/clustSIGNAL_hex.png" align="right" height="250" width="250"></p>
+<p><img src="reference/figures/clustSIGNAL_hex.png" align="right" height="250" width="225"></p>
 <p>clustSIGNAL: <strong><em>clust</em></strong>ering of <strong><em>S</em></strong>patially <strong><em>I</em></strong>nformed <strong><em>G</em></strong>ene expression with <strong><em>N</em></strong>eighbourhood <strong><em>A</em></strong>dapted <strong><em>L</em></strong>earning.</p>
 <p>An R package to perform spatial clustering on spatially-resolved transcriptomics datasets. Here, we calculate entropy as a measure of “domainness” of cell neighbourhoods, and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. This approach not only overcomes data sparsity in the gene expression but also incorporates spatial context in the form of cell arrangement information from the neighbourhood. The resulting adaptively smoothed gene expression is used for downstream analyses like clustering.</p>
 <p>For tutorials on how to use clustSIGNAL, see the vignettes at this <a href="https://sydneybiox.github.io/clustSIGNAL/">website</a>.</p>
