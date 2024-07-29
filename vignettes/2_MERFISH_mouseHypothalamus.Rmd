@@ -195,3 +195,12 @@ spt_clust / (patchwork::wrap_plots(box_clust[1:3], nrow = 1) +
 ```
 
 The spatial location (top) and entropy distribution (bottom) of the clusters can be compared in a multisample analysis, providing spatial context of the cluster cells and their neighbourhood compositions in the different samples.
+
+<details>
+  <summary>**Session Information**</summary>
+  
+```{r}
+sessionInfo()
+```
+
+</details>

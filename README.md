@@ -6,6 +6,8 @@ clustSIGNAL: ***clust***ering of ***S***patially ***I***nformed ***G***ene expre
 
 An R package to perform spatial clustering on spatially-resolved transcriptomics datasets. Here, we calculate entropy as a measure of "domainness" of cell neighbourhoods, and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. This approach not only overcomes data sparsity in the gene expression but also incorporates spatial context in the form of cell arrangement information from the neighbourhood. The resulting adaptively smoothed gene expression is used for downstream analyses like clustering.
 
+For tutorials on how to use clustSIGNAL, see the vignettes at this [website](https://sydneybiox.github.io/clustSIGNAL/).
+
 ## Installation
 
 You can install the clustSIGNAL package from [GitHub](https://github.com/SydneyBioX/clustSIGNAL) with:

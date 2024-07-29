@@ -180,3 +180,12 @@ spt_clust + box_clust + patchwork::plot_layout(guides = "collect", widths = c(1,
 ```
 
 The spatial location (A) and entropy distribution (B) of the clusters provide spatial context of the cluster cells and their neighbourhoods, as well as the compositions of the neighbouhoods.
+
+<details>
+  <summary>**Session Information**</summary>
+  
+```{r}
+sessionInfo()
+```
+
+</details>
