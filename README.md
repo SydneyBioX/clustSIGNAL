@@ -1,6 +1,6 @@
 # clustSIGNAL
 
-<img src="man/figures/clustSIGNAL_hex.png" align="right" height="250" width="250"/>
+<img src="man/figures/clustSIGNAL_hex.png" align="right" height="250" width="225"/>
 
 clustSIGNAL: ***clust***ering of ***S***patially ***I***nformed ***G***ene expression with ***N***eighbourhood ***A***dapted ***L***earning.
 
