@@ -35,8 +35,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
-    <li><a class="dropdown-item" href="articles/seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
+<li><a class="dropdown-item" href="articles/1_seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
+    <li><a class="dropdown-item" href="articles/2_MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
   </ul>
 </li>
       </ul>
@@ -54,8 +54,10 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="clustsignal">clustSIGNAL<a class="anchor" aria-label="anchor" href="#clustsignal"></a>
 </h1></div>
+<p><img src="reference/figures/clustSIGNAL_hex.png" align="right" height="250"></p>
 <p>clustSIGNAL: <strong><em>clust</em></strong>ering of <strong><em>S</em></strong>patially <strong><em>I</em></strong>nformed <strong><em>G</em></strong>ene expression with <strong><em>N</em></strong>eighbourhood <strong><em>A</em></strong>dapted <strong><em>L</em></strong>earning.</p>
 <p>An R package to perform spatial clustering on spatially-resolved transcriptomics datasets. Here, we calculate entropy as a measure of “domainness” of cell neighbourhoods, and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. This approach not only overcomes data sparsity in the gene expression but also incorporates spatial context in the form of cell arrangement information from the neighbourhood. The resulting adaptively smoothed gene expression is used for downstream analyses like clustering.</p>
+<p>For tutorials on how to use clustSIGNAL, see the vignettes at this <a href="https://sydneybiox.github.io/clustSIGNAL/">website</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -65,14 +67,28 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SydneyBioX/clustSIGNAL"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="method-description">Method description<a class="anchor" aria-label="anchor" href="#method-description"></a>
+</h2>
+<p><img src="reference/figures/Fig1_schematic.png" align="middle"></p>
+<p><strong>Figure: clustSIGNAL method overview.</strong></p>
+<p>Here, we present clustSIGNAL, a spatial clustering method developed to handle data sparsity while considering the variability in cell arrangement of tissue regions. The core steps involved in the method are sequential:</p>
+<p><strong>1.</strong> The method starts with non-spatial clustering and subclustering (default louvain clustering) to classify cells into subclusters that we refer to as ‘putative cell type’ groups.</p>
+<p><strong>2.</strong> The neighbourhood of each cell is defined in terms of their ‘putative cell type’ group composition.</p>
+<p><strong>3.</strong> The cells in the neighbourhood are also sorted and rearranged so that the neighbours belonging to the same ‘putative cell type’ group as the index cell are placed closer to it.</p>
+<p><strong>4.</strong> Neighbourhood “domainness” is measured as entropy, where high entropy values indicate more heterogeneous neighbourhoods and low entropy values indicate more homogeneous neighbourhoods.</p>
+<p><strong>5.</strong> The entropy values are used to generate weight distributions specific to each neighbourhood.</p>
+<p><strong>6.</strong> The gene expressions of cells are adaptively smoothed using the entropy-guided weight distributions; cells in heterogeneous neighbourhoods (high entropy) undergo smoothing over a smaller region, whereas cells in homogeneous neighbourhoods (low entropy) undergo smoothing over a larger region.</p>
+<p><strong>7.</strong> Non-spatial clustering is performed with adaptively smoothed gene expression to generate clustSIGNAL clusters that represent cell types.</p>
+</div>
+<div class="section level2">
 <h2 id="clustsignal-parameters">clustSIGNAL parameters<a class="anchor" aria-label="anchor" href="#clustsignal-parameters"></a>
 </h2>
 <p>The clustSIGNAL package uses a SpatialExperiment object as input. We provide users with a number of parameters to explore and experiment with, as well as prior tested default values for quick runs. clustSIGNAL can be used for single sample or multisample analysis with just one function call. Below is the list of the parameters offered and their possible values:</p>
 <ul>
 <li><p><strong>spe</strong> - SpatialExperiment object with cell spatial coordinates in <em>spatialCoords</em> matrix.</p></li>
-<li><p><strong>samples</strong> - column name in <a href="colData(spe)">cell metadata</a> containing sample names.</p></li>
-<li><p><strong>cells</strong> - column name in <a href="colData(spe)">cell metadata</a> containing cell IDs.</p></li>
-<li><p><strong>dimRed</strong> - dimensionality reduction method name in <a href="reducedDimNames(spe)">low embedding data</a>. Default is “None”, in which case PCA is calculated and used as reduced dimensions data.</p></li>
+<li><p><strong>samples</strong> - column name in <a href="#id_#" title="colData(spe)">cell metadata</a> containing sample names.</p></li>
+<li><p><strong>cells</strong> - column name in <a href="#id_#" title="colData(spe)">cell metadata</a> containing cell IDs.</p></li>
+<li><p><strong>dimRed</strong> - dimensionality reduction method name in <a href="#id_#" title="reducedDimNames(spe)">low embedding data</a>. Default is “None”, in which case PCA is calculated and used as low dimension data.</p></li>
 <li><p><strong>NN</strong> - neighbourhood size in terms of the number of nearest neighbours to consider. Value should be &gt; 1. Default value is 30.</p></li>
 <li><p><strong>kernel</strong> - type of weight distribution to use. Can be Gaussian (default) or exponential distribution.</p></li>
 <li><p><strong>spread</strong> - value of distribution parameter - standard deviation of Gaussian distribution or rate of exponential distribution. Default value is 0.05, recommended for Gaussian distribution. For exponential distribution, recommended value is 20.</p></li>
