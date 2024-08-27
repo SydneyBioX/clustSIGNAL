@@ -14,6 +14,10 @@
 # function to retrieve normal distribution weights for neighbors
 .gauss_kernel <- function(ed, NN, sd) {
     # distribution from 0 to entropy, with cells in smoothing radius as cut points
-    cutpoints <- seq(0, ed, length.out = NN)
-    return(as.matrix(dnorm(cutpoints, sd = sd)))
+
+    # cutpoints <- seq(0, ed, length.out = NN)
+    # return(as.matrix(dnorm(cutpoints, sd = sd)))
+    weights = dnorm(sapply(ed, function(x) seq(0, x, length.out = NN)), sd = sd)
+    colnames(weights) <- paste0("E", ed)
+    return (weights)
 }

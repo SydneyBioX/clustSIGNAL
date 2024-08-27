@@ -14,6 +14,10 @@
 # function to retrieve exponential distribution weights for neighbors
 .exp_kernel <- function(ed, NN, rate) {
     # distribution from 0 to entropy, with cells in smoothing radius as cut points
-    cutpoints <- seq(0, ed, length.out = NN)
-    return(as.matrix(dexp(cutpoints, rate = rate)))
+
+    # cutpoints <- seq(0, ed, length.out = NN)
+    # return(as.matrix(dexp(cutpoints, rate = rate)))
+    weights = dexp(sapply(ed, function(x) seq(0, x, length.out = NN)), rate = rate)
+    colnames(weights) <- paste0("E", ed)
+    return (weights)
 }
