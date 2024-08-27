@@ -50,7 +50,7 @@ nsClustering <- function(spe, dimRed, reclust, ...) {
                                                  second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
             subclusters_list[[c]] <- setNames(paste0(c, ".", nsClustX), colnames(speX))
         }
-        spe$nsSubcluster <- unlist(subclusters_list)[colnames(spe)]
+        spe$nsSubcluster <- factor(unlist(subclusters_list)[colnames(spe)])
         print(paste("Nonspatial subclustering performed. Subclusters =", length(unique(spe$nsSubcluster)), Sys.time()))
 
     } else if (reclust == TRUE) {

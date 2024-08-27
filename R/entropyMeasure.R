@@ -42,7 +42,7 @@ entropyMeasure <- function(spe, cells, regXclust, threads) {
     } else if (check.NA.values != 0) {
         stop("Missing entropy values.")
     } else {
-        spe$entropy <- as.matrix(unlist(regEntropy))
+        spe$entropy <- as.vector(unlist(regEntropy))
         print(paste("Region domainness calculated.", Sys.time()))
     }
     return(spe)
