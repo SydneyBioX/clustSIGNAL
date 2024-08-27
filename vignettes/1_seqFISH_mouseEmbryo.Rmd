@@ -51,7 +51,7 @@ To run clustSIGNAL, we need the column names of sample and cell labels in the co
 
 ```{r}
 set.seed(100)
-samples = "embryo"
+samples = "sample_id"
 cells = "uniqueID"
 res_emb = clustSIGNAL(spe, samples, cells, outputs = "a")
 ```

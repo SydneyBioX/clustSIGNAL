@@ -13,7 +13,7 @@
 #' @examples
 #' data(mouseEmbryo2)
 #'
-#' # requires list of containing cluster proportions of each region (regXclust),
+#' # requires list containing cluster proportions of each region (regXclust),
 #' # generated using the neighbourDetect() function
 #' spe <- entropyMeasure(spe, cells = "uniqueID", regXclust, threads = 1)
 #' head(spe$entropy)

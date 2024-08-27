@@ -30,7 +30,7 @@ A function to identify the neighbourhood of each cell. If sort = TRUE, the neigh
 \examples{
 data(mouseEmbryo2)
 
-out_list <- neighbourDetect(spe, samples = "embryo", NN = 30, cells = "uniqueID", sort = TRUE)
+out_list <- neighbourDetect(spe, samples = "sample_id", NN = 30, cells = "uniqueID", sort = TRUE)
 names(out_list)
 
 }

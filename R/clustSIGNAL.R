@@ -28,9 +28,9 @@
 #'
 #' names(colData(spe))
 #' # identify the column names with cell and sample labels
-#' samples = "embryo"
+#' samples = "sample_id"
 #' cells = "uniqueID"
-#' res_list <- clustSIGNAL(spe, samples, cells, dimRed = "PCA", outputs = "c")
+#' res_list <- clustSIGNAL(spe, samples, cells, outputs = "c")
 #'
 #'
 #' @export

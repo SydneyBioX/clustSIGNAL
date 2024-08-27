@@ -20,13 +20,12 @@ A function containing two steps used at different times in the clustSIGNAL workf
 \examples{
 data(mouseEmbryo2)
 
-# for non-spatial clustering of normalised counts
+spe <- scater::runPCA(spe)
+
+# reclust = FALSE for non-spatial clustering of normalised counts
+# reclust = TRUE for non-spatial clustering of adaptively smoothed counts
 spe <- nsClustering(spe, dimRed = "PCA", reclust = FALSE)
 head(spe$nsCluster)
 head(spe$nsSubcluster)
-
-# for non-spatial clustering of adaptively smoothed counts
-spe <- nsClustering(spe, dimRed = "PCA", reclust = TRUE)
-head(spe$reCluster)
 
 }
