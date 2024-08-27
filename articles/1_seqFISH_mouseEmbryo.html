@@ -59,7 +59,7 @@
                         <h4 data-toc-skip class="author">Pratibha
 Panwar</h4>
             
-            <h4 data-toc-skip class="date">2024-07-29</h4>
+            <h4 data-toc-skip class="date">2024-08-27</h4>
       
 
       <div class="d-none name"><code>1_seqFISH_mouseEmbryo.Rmd</code></div>
@@ -90,7 +90,7 @@ Panwar</h4>
 <span><span class="co">#&gt; rowData names(0):</span></span>
 <span><span class="co">#&gt; colnames(14891): embryo2_Pos29_cell10_z2 embryo2_Pos29_cell10_z5 ...</span></span>
 <span><span class="co">#&gt;   embryo2_Pos50_cell99_z2 embryo2_Pos50_cell99_z5</span></span>
-<span><span class="co">#&gt; colData names(4): uniqueID embryo celltype_mapped_refined sample_id</span></span>
+<span><span class="co">#&gt; colData names(7): uniqueID pos ... nsCluster nsSubcluster</span></span>
 <span><span class="co">#&gt; reducedDimNames(0):</span></span>
 <span><span class="co">#&gt; mainExpName: NULL</span></span>
 <span><span class="co">#&gt; altExpNames(0):</span></span>
@@ -98,8 +98,10 @@ Panwar</h4>
 <span><span class="co">#&gt; imgData names(1): sample_id</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "uniqueID"                "embryo"                 </span></span>
-<span><span class="co">#&gt; [3] "celltype_mapped_refined" "sample_id"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "uniqueID"                "pos"                    </span></span>
+<span><span class="co">#&gt; [3] "celltype_mapped_refined" "sample_id"              </span></span>
+<span><span class="co">#&gt; [5] "entropy"                 "nsCluster"              </span></span>
+<span><span class="co">#&gt; [7] "nsSubcluster"</span></span></code></pre></div>
 <p>To run clustSIGNAL, we need the column names of sample and cell
 labels in the colData dataframe of the spatial experiment object. Here,
 the cell labels are in the column ‘uniqueID’ and sample labels are in
@@ -110,18 +112,18 @@ the cell labels are in the column ‘uniqueID’ and sample labels are in
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
-<span><span class="va">samples</span> <span class="op">=</span> <span class="st">"embryo"</span></span>
+<span><span class="va">samples</span> <span class="op">=</span> <span class="st">"sample_id"</span></span>
 <span><span class="va">cells</span> <span class="op">=</span> <span class="st">"uniqueID"</span></span>
 <span><span class="va">res_emb</span> <span class="op">=</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, <span class="va">cells</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Calculating PCA to use as reduced dimension input."</span></span>
-<span><span class="co">#&gt; [1] "clustSIGNAL run started. 2024-07-29 03:55:38.367586"</span></span>
-<span><span class="co">#&gt; [1] "Initial nonspatial clustering performed. Clusters = 16 2024-07-29 03:55:45.476204"</span></span>
-<span><span class="co">#&gt; [1] "Nonspatial subclustering performed. Subclusters = 84 2024-07-29 03:55:50.343114"</span></span>
-<span><span class="co">#&gt; [1] "Regions defined. 2024-07-29 03:55:56.432922"</span></span>
-<span><span class="co">#&gt; [1] "Region domainness calculated. 2024-07-29 03:56:08.366664"</span></span>
-<span><span class="co">#&gt; [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-07-29 03:58:51.250896"</span></span>
-<span><span class="co">#&gt; [1] "Nonspatial clustering performed on smoothed data. Clusters = 25 2024-07-29 03:58:57.415019"</span></span>
-<span><span class="co">#&gt; [1] "clustSIGNAL run completed. 2024-07-29 03:58:57.417033"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "clustSIGNAL run started. 2024-08-27 01:24:44.664024"</span></span>
+<span><span class="co">#&gt; [1] "Initial nonspatial clustering performed. Clusters = 16 2024-08-27 01:24:51.538915"</span></span>
+<span><span class="co">#&gt; [1] "Nonspatial subclustering performed. Subclusters = 84 2024-08-27 01:24:56.321924"</span></span>
+<span><span class="co">#&gt; [1] "Regions defined. 2024-08-27 01:25:02.853719"</span></span>
+<span><span class="co">#&gt; [1] "Region domainness calculated. 2024-08-27 01:25:13.848164"</span></span>
+<span><span class="co">#&gt; [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-08-27 01:27:49.008781"</span></span>
+<span><span class="co">#&gt; [1] "Nonspatial clustering performed on smoothed data. Clusters = 25 2024-08-27 01:27:55.077143"</span></span>
+<span><span class="co">#&gt; [1] "clustSIGNAL run completed. 2024-08-27 01:27:55.078963"</span></span></code></pre></div>
 <p>The output variable is a list that can contain dataframe of cluster
 names, matrix of NN neighbours of each cell, final spe object, or a
 combination of these, depending on the choice of ‘outputs’ selected.</p>
@@ -145,7 +147,7 @@ combination of these, depending on the choice of ‘outputs’ selected.</p>
 <span><span class="co">#&gt; rowData names(0):</span></span>
 <span><span class="co">#&gt; colnames(14891): embryo2_Pos29_cell10_z2 embryo2_Pos29_cell10_z5 ...</span></span>
 <span><span class="co">#&gt;   embryo2_Pos50_cell99_z2 embryo2_Pos50_cell99_z5</span></span>
-<span><span class="co">#&gt; colData names(8): uniqueID embryo ... entropy reCluster</span></span>
+<span><span class="co">#&gt; colData names(8): uniqueID pos ... nsSubcluster reCluster</span></span>
 <span><span class="co">#&gt; reducedDimNames(2): PCA PCA.smooth</span></span>
 <span><span class="co">#&gt; mainExpName: NULL</span></span>
 <span><span class="co">#&gt; altExpNames(0):</span></span>
@@ -295,7 +297,7 @@ as well as the compositions of the neighbouhoods.</p>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] patchwork_1.2.0             ggplot2_3.5.1              </span></span>
 <span><span class="co">#&gt;  [3] dplyr_1.1.4                 aricode_1.0.3              </span></span>
-<span><span class="co">#&gt;  [5] cluster_2.1.6               distances_0.1.10           </span></span>
+<span><span class="co">#&gt;  [5] cluster_2.1.6               distances_0.1.11           </span></span>
 <span><span class="co">#&gt;  [7] clustSIGNAL_0.1.0           doParallel_1.0.17          </span></span>
 <span><span class="co">#&gt;  [9] iterators_1.0.14            foreach_1.5.2              </span></span>
 <span><span class="co">#&gt; [11] SpatialExperiment_1.14.0    SingleCellExperiment_1.26.0</span></span>
@@ -314,23 +316,23 @@ as well as the compositions of the neighbouhoods.</p>
 <span><span class="co">#&gt; [11] fastmap_1.2.0             magick_2.8.4             </span></span>
 <span><span class="co">#&gt; [13] XVector_0.44.0            labeling_0.4.3           </span></span>
 <span><span class="co">#&gt; [15] scuttle_1.14.0            utf8_1.2.4               </span></span>
-<span><span class="co">#&gt; [17] rmarkdown_2.27            UCSC.utils_1.0.0         </span></span>
+<span><span class="co">#&gt; [17] rmarkdown_2.28            UCSC.utils_1.0.0         </span></span>
 <span><span class="co">#&gt; [19] ggbeeswarm_0.7.2          ragg_1.3.2               </span></span>
-<span><span class="co">#&gt; [21] xfun_0.46                 bluster_1.14.0           </span></span>
+<span><span class="co">#&gt; [21] xfun_0.47                 bluster_1.14.0           </span></span>
 <span><span class="co">#&gt; [23] zlibbioc_1.50.0           cachem_1.1.0             </span></span>
 <span><span class="co">#&gt; [25] beachmat_2.20.0           jsonlite_1.8.8           </span></span>
 <span><span class="co">#&gt; [27] highr_0.11                DelayedArray_0.30.1      </span></span>
 <span><span class="co">#&gt; [29] BiocParallel_1.38.0       irlba_2.3.5.1            </span></span>
-<span><span class="co">#&gt; [31] R6_2.5.1                  bslib_0.7.0              </span></span>
+<span><span class="co">#&gt; [31] R6_2.5.1                  bslib_0.8.0              </span></span>
 <span><span class="co">#&gt; [33] jquerylib_0.1.4           Rcpp_1.0.13              </span></span>
 <span><span class="co">#&gt; [35] bookdown_0.40             knitr_1.48               </span></span>
 <span><span class="co">#&gt; [37] igraph_2.0.3              Matrix_1.7-0             </span></span>
 <span><span class="co">#&gt; [39] tidyselect_1.2.1          abind_1.4-5              </span></span>
 <span><span class="co">#&gt; [41] yaml_2.3.10               viridis_0.6.5            </span></span>
 <span><span class="co">#&gt; [43] codetools_0.2-20          lattice_0.22-6           </span></span>
-<span><span class="co">#&gt; [45] tibble_3.2.1              withr_3.0.0              </span></span>
+<span><span class="co">#&gt; [45] tibble_3.2.1              withr_3.0.1              </span></span>
 <span><span class="co">#&gt; [47] evaluate_0.24.0           desc_1.4.3               </span></span>
-<span><span class="co">#&gt; [49] pillar_1.9.0              BiocManager_1.30.23      </span></span>
+<span><span class="co">#&gt; [49] pillar_1.9.0              BiocManager_1.30.24      </span></span>
 <span><span class="co">#&gt; [51] generics_0.1.3            sparseMatrixStats_1.16.0 </span></span>
 <span><span class="co">#&gt; [53] munsell_0.5.1             scales_1.3.0             </span></span>
 <span><span class="co">#&gt; [55] glue_1.7.0                tools_4.4.1              </span></span>
@@ -342,9 +344,9 @@ as well as the compositions of the neighbouhoods.</p>
 <span><span class="co">#&gt; [67] rsvd_1.0.5                textshaping_0.4.0        </span></span>
 <span><span class="co">#&gt; [69] fansi_1.0.6               S4Arrays_1.4.1           </span></span>
 <span><span class="co">#&gt; [71] viridisLite_0.4.2         gtable_0.3.5             </span></span>
-<span><span class="co">#&gt; [73] sass_0.4.9                digest_0.6.36            </span></span>
+<span><span class="co">#&gt; [73] sass_0.4.9                digest_0.6.37            </span></span>
 <span><span class="co">#&gt; [75] SparseArray_1.4.8         ggrepel_0.9.5            </span></span>
-<span><span class="co">#&gt; [77] farver_2.1.2              rjson_0.2.21             </span></span>
+<span><span class="co">#&gt; [77] farver_2.1.2              rjson_0.2.22             </span></span>
 <span><span class="co">#&gt; [79] htmltools_0.5.8.1         pkgdown_2.1.0            </span></span>
 <span><span class="co">#&gt; [81] lifecycle_1.0.4           httr_1.4.7</span></span></code></pre></div>
 </details>
