@@ -18,8 +18,8 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/1_seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/2_MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -81,7 +81,7 @@
 <span class="r-in"><span><span class="co"># requires matrix containing NN nearest neighbour cell labels (nnCells),</span></span></span>
 <span class="r-in"><span><span class="co"># generated using the neighbourDetect() function</span></span></span>
 <span class="r-in"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">adaptiveSmoothing</span><span class="op">(</span><span class="va">spe</span>, <span class="va">nnCells</span>, NN <span class="op">=</span> <span class="fl">30</span>, kernel <span class="op">=</span> <span class="st">"G"</span>, spread <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-08-27 01:20:57.88916"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-08-27 03:06:50.538831"</span>
 <span class="r-in"><span><span class="va">spe</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SpatialExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 351 14891 </span>
