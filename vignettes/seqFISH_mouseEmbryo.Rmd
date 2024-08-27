@@ -1,7 +1,7 @@
 ---
 title: "Single sample analysis"
 author:
-  - Pratibha Panwar
+  - Pratibha Panwar, Boyi Guo, Haowen Zhou, Stephanie Hicks, Shila Ghazanfar
 date: "`r Sys.Date()`"
 output:
   BiocStyle::html_document:
@@ -10,7 +10,7 @@ output:
 package: clustSIGNAL
 vignette: |
   %\VignetteIndexEntry{1. Single sample analysis}
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -45,7 +45,7 @@ spe
 names(colData(spe))
 ```
 
-To run clustSIGNAL, we need the column names of sample and cell labels in the colData dataframe of the spatial experiment object. Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column. 
+To run clustSIGNAL, we need the column names of sample and cell labels in the colData dataframe of the spatial experiment object. Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column.
 
 # Running clustSIGNAL
 
@@ -182,8 +182,9 @@ spt_clust + box_clust + patchwork::plot_layout(guides = "collect", widths = c(1,
 The spatial location (A) and entropy distribution (B) of the clusters provide spatial context of the cluster cells and their neighbourhoods, as well as the compositions of the neighbouhoods.
 
 <details>
-  <summary>**Session Information**</summary>
-  
+
+<summary>**Session Information**</summary>
+
 ```{r}
 sessionInfo()
 ```
