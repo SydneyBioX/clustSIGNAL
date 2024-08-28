@@ -42,6 +42,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/sydneybiox/clustSIGNAL/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -59,9 +60,9 @@
                         <h4 data-toc-skip class="author">Pratibha
 Panwar, Boyi Guo, Haowen Zhou, Stephanie Hicks, Shila Ghazanfar</h4>
             
-            <h4 data-toc-skip class="date">2024-08-27</h4>
+            <h4 data-toc-skip class="date">2024-08-28</h4>
       
-
+      <small class="dont-index">Source: <a href="https://github.com/sydneybiox/clustSIGNAL/blob/main/vignettes/seqFISH_mouseEmbryo.Rmd" class="external-link"><code>vignettes/seqFISH_mouseEmbryo.Rmd</code></a></small>
       <div class="d-none name"><code>seqFISH_mouseEmbryo.Rmd</code></div>
     </div>
 
@@ -80,22 +81,24 @@ Panwar, Boyi Guo, Haowen Zhou, Stephanie Hicks, Shila Ghazanfar</h4>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mouseEmbryo2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mEmbryo2</span><span class="op">)</span></span>
+<span><span class="va">spe</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment.html" class="external-link">SpatialExperiment</a></span><span class="op">(</span>assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>logcounts <span class="op">=</span> <span class="va">me_expr</span><span class="op">)</span>,</span>
+<span>                        colData <span class="op">=</span> <span class="va">me_data</span>, spatialCoordsNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">spe</span></span>
 <span><span class="co">#&gt; class: SpatialExperiment </span></span>
-<span><span class="co">#&gt; dim: 351 14891 </span></span>
+<span><span class="co">#&gt; dim: 351 14185 </span></span>
 <span><span class="co">#&gt; metadata(0):</span></span>
 <span><span class="co">#&gt; assays(1): logcounts</span></span>
 <span><span class="co">#&gt; rownames(351): Abcc4 Acp5 ... Zfp57 Zic3</span></span>
 <span><span class="co">#&gt; rowData names(0):</span></span>
-<span><span class="co">#&gt; colnames(14891): embryo2_Pos29_cell10_z2 embryo2_Pos29_cell10_z5 ...</span></span>
+<span><span class="co">#&gt; colnames(14185): embryo2_Pos29_cell10_z2 embryo2_Pos29_cell10_z5 ...</span></span>
 <span><span class="co">#&gt;   embryo2_Pos50_cell99_z2 embryo2_Pos50_cell99_z5</span></span>
 <span><span class="co">#&gt; colData names(7): uniqueID pos ... nsCluster nsSubcluster</span></span>
 <span><span class="co">#&gt; reducedDimNames(0):</span></span>
 <span><span class="co">#&gt; mainExpName: NULL</span></span>
 <span><span class="co">#&gt; altExpNames(0):</span></span>
-<span><span class="co">#&gt; spatialCoords names(2) : x_global_affine y_global_affine</span></span>
-<span><span class="co">#&gt; imgData names(1): sample_id</span></span></code></pre></div>
+<span><span class="co">#&gt; spatialCoords names(2) : X Y</span></span>
+<span><span class="co">#&gt; imgData names(0):</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "uniqueID"                "pos"                    </span></span>
@@ -116,14 +119,14 @@ the cell labels are in the column ‘uniqueID’ and sample labels are in
 <span><span class="va">cells</span> <span class="op">=</span> <span class="st">"uniqueID"</span></span>
 <span><span class="va">res_emb</span> <span class="op">=</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, <span class="va">cells</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Calculating PCA to use as reduced dimension input."</span></span>
-<span><span class="co">#&gt; [1] "clustSIGNAL run started. 2024-08-27 03:13:27.114023"</span></span>
-<span><span class="co">#&gt; [1] "Initial nonspatial clustering performed. Clusters = 16 2024-08-27 03:13:33.999496"</span></span>
-<span><span class="co">#&gt; [1] "Nonspatial subclustering performed. Subclusters = 84 2024-08-27 03:13:38.839607"</span></span>
-<span><span class="co">#&gt; [1] "Regions defined. 2024-08-27 03:13:45.424239"</span></span>
-<span><span class="co">#&gt; [1] "Region domainness calculated. 2024-08-27 03:13:56.762872"</span></span>
-<span><span class="co">#&gt; [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-08-27 03:16:34.701779"</span></span>
-<span><span class="co">#&gt; [1] "Nonspatial clustering performed on smoothed data. Clusters = 25 2024-08-27 03:16:40.774963"</span></span>
-<span><span class="co">#&gt; [1] "clustSIGNAL run completed. 2024-08-27 03:16:40.776829"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "clustSIGNAL run started. 2024-08-28 03:46:56.505918"</span></span>
+<span><span class="co">#&gt; [1] "Initial nonspatial clustering performed. Clusters = 16 2024-08-28 03:47:02.245294"</span></span>
+<span><span class="co">#&gt; [1] "Nonspatial subclustering performed. Subclusters = 80 2024-08-28 03:47:07.286679"</span></span>
+<span><span class="co">#&gt; [1] "Regions defined. 2024-08-28 03:47:13.02295"</span></span>
+<span><span class="co">#&gt; [1] "Region domainness calculated. 2024-08-28 03:47:23.788145"</span></span>
+<span><span class="co">#&gt; [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 2024-08-28 03:49:39.578434"</span></span>
+<span><span class="co">#&gt; [1] "Nonspatial clustering performed on smoothed data. Clusters = 24 2024-08-28 03:49:45.080824"</span></span>
+<span><span class="co">#&gt; [1] "clustSIGNAL run completed. 2024-08-28 03:49:45.082649"</span></span></code></pre></div>
 <p>The output variable is a list that can contain dataframe of cluster
 names, matrix of NN neighbours of each cell, final spe object, or a
 combination of these, depending on the choice of ‘outputs’ selected.</p>
@@ -133,25 +136,25 @@ combination of these, depending on the choice of ‘outputs’ selected.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res_emb</span><span class="op">$</span><span class="va">clusters</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                      Cells Clusters</span></span>
-<span><span class="co">#&gt; 1  embryo2_Pos29_cell10_z2       23</span></span>
-<span><span class="co">#&gt; 2  embryo2_Pos29_cell10_z5       23</span></span>
-<span><span class="co">#&gt; 3 embryo2_Pos29_cell100_z2       23</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  embryo2_Pos29_cell10_z2       19</span></span>
+<span><span class="co">#&gt; 2  embryo2_Pos29_cell10_z5       19</span></span>
+<span><span class="co">#&gt; 3 embryo2_Pos29_cell100_z2       19</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">=</span> <span class="va">res_emb</span><span class="op">$</span><span class="va">spe_final</span></span>
 <span><span class="va">spe</span></span>
 <span><span class="co">#&gt; class: SpatialExperiment </span></span>
-<span><span class="co">#&gt; dim: 351 14891 </span></span>
+<span><span class="co">#&gt; dim: 351 14185 </span></span>
 <span><span class="co">#&gt; metadata(0):</span></span>
 <span><span class="co">#&gt; assays(2): logcounts smoothed</span></span>
 <span><span class="co">#&gt; rownames(351): Abcc4 Acp5 ... Zfp57 Zic3</span></span>
 <span><span class="co">#&gt; rowData names(0):</span></span>
-<span><span class="co">#&gt; colnames(14891): embryo2_Pos29_cell10_z2 embryo2_Pos29_cell10_z5 ...</span></span>
+<span><span class="co">#&gt; colnames(14185): embryo2_Pos29_cell10_z2 embryo2_Pos29_cell10_z5 ...</span></span>
 <span><span class="co">#&gt;   embryo2_Pos50_cell99_z2 embryo2_Pos50_cell99_z5</span></span>
 <span><span class="co">#&gt; colData names(8): uniqueID pos ... nsSubcluster reCluster</span></span>
 <span><span class="co">#&gt; reducedDimNames(2): PCA PCA.smooth</span></span>
 <span><span class="co">#&gt; mainExpName: NULL</span></span>
 <span><span class="co">#&gt; altExpNames(0):</span></span>
-<span><span class="co">#&gt; spatialCoords names(2) : x_global_affine y_global_affine</span></span>
+<span><span class="co">#&gt; spatialCoords names(2) : X Y</span></span>
 <span><span class="co">#&gt; imgData names(1): sample_id</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -174,8 +177,8 @@ combination of these, depending on the choice of ‘outputs’ selected.</p>
 <span>            min_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">entropy</span><span class="op">)</span>,</span>
 <span>            max_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">entropy</span><span class="op">)</span>,</span>
 <span>            mean_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">entropy</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         ARI       NMI       ASW min_Entropy max_Entropy mean_Entropy</span></span>
-<span><span class="co">#&gt; 1 0.2790963 0.5431904 0.0260925           0    3.254097     1.324275</span></span></code></pre></div>
+<span><span class="co">#&gt;         ARI     NMI        ASW min_Entropy max_Entropy mean_Entropy</span></span>
+<span><span class="co">#&gt; 1 0.3302441 0.58197 0.03808628           0    2.906357     1.246809</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualising-clustsignal-outputs">Visualising clustSIGNAL outputs<a class="anchor" aria-label="anchor" href="#visualising-clustsignal-outputs"></a>
