@@ -4,7 +4,7 @@
 \alias{neighbourDetect}
 \title{Cell neighbourhood detection}
 \usage{
-neighbourDetect(spe, samples, NN, cells, sort)
+neighbourDetect(spe, samples, NN = 30, cells, sort = TRUE)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, and 'putative cell type' groups included.}
@@ -19,10 +19,10 @@ neighbourDetect(spe, samples, NN, cells, sort)
 }
 \value{
 a list containing two items:
-
-1. nnCells, a character matrix of NN nearest neighbours - rows are cells and columns are their nearest neighbours ranged from closest to farthest neighbour. For sort = TRUE, the neighbours belonging to the same 'putative cell type' group as the cell are moved closer to it.
-
-2. regXclust, a list of vectors for each cell's neighbourhood composition indicated by the proportion of 'putative cell type' groups it contains.
+\enumerate{
+\item nnCells, a character matrix of NN nearest neighbours - rows are cells and columns are their nearest neighbours ranged from closest to farthest neighbour. For sort = TRUE, the neighbours belonging to the same 'putative cell type' group as the cell are moved closer to it.
+\item regXclust, a list of vectors for each cell's neighbourhood composition indicated by the proportion of 'putative cell type' groups it contains.
+}
 }
 \description{
 A function to identify the neighbourhood of each cell. If sort = TRUE, the neighbourhoods are also sorted such that cells belonging to the same group as the central cell are arranged closer to it.

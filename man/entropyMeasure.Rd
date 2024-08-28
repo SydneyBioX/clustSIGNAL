@@ -4,7 +4,7 @@
 \alias{entropyMeasure}
 \title{Domainness measure}
 \usage{
-entropyMeasure(spe, cells, regXclust, threads)
+entropyMeasure(spe, cells, regXclust, threads = 1)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, and 'putative cell type' groups included.}

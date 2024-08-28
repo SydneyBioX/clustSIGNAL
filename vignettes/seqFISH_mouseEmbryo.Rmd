@@ -37,7 +37,9 @@ library(patchwork)
 ```
 
 ```{r}
-data(mouseEmbryo2)
+load("mEmbryo2.RData")
+spe = SpatialExperiment(assays = list(logcounts = me_expr),
+                        colData = me_data, spatialCoordsNames = c("X", "Y"))
 spe
 ```
 

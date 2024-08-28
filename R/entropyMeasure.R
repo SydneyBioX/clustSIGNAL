@@ -21,7 +21,7 @@
 #' @export
 
 #### Domainness measure
-entropyMeasure <- function(spe, cells, regXclust, threads) {
+entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
     cellsList <- as.vector(spe[[cells]])
     cl <- parallel::makeCluster(threads)
     doParallel::registerDoParallel(cl)

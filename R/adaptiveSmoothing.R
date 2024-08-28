@@ -21,7 +21,7 @@
 #' @export
 
 #### Smoothing
-adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread) {
+adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05) {
     ed = unique(spe$entropy)
     gXc = as(logcounts(spe), "sparseMatrix")
     if (kernel == "G") {

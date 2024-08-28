@@ -4,12 +4,16 @@
 \alias{nsClustering}
 \title{Non-spatial clustering}
 \usage{
-nsClustering(spe, dimRed, reclust, ...)
+nsClustering(spe, dimRed = "PCA", reclust, ...)
 }
 \arguments{
 \item{spe}{SpatialExperiment object. For reclust = FALSE, the object should contain logcounts and PCA, but for reculst = TRUE, the object should contain smoothed gene expression.}
 
+\item{dimRed}{a character indicating the name of the reduced dimensions to use from the SpatialExperiment object (i.e., from reducedDimNames(spe)). Default value is 'PCA'.}
+
 \item{reclust}{a logical parameter handled within the method.}
+
+\item{...}{additional parameters for TwoStepParam clustering methods. Include parameters like k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".}
 }
 \value{
 SpatialExperiment object containing 'putative cell type' group allotted to each cell (reclust = FALSE) or clusters generated from smoothed data (reclust = TRUE).

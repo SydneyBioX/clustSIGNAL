@@ -4,7 +4,9 @@
 #' A function containing two steps used at different times in the clustSIGNAL workflow. An initial non-spatial clustering and sub-clustering step (reclust = FALSE) is used to generate groups of ‘putative cell types’, whereas a later non-spatial clustering step (reclust = TRUE) is used to cluster adaptively smoothed gene expression data.
 #'
 #' @param spe SpatialExperiment object. For reclust = FALSE, the object should contain logcounts and PCA, but for reculst = TRUE, the object should contain smoothed gene expression.
+#' @param dimRed a character indicating the name of the reduced dimensions to use from the SpatialExperiment object (i.e., from reducedDimNames(spe)). Default value is 'PCA'.
 #' @param reclust a logical parameter handled within the method.
+#' @param ... additional parameters for TwoStepParam clustering methods. Include parameters like k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".
 #'
 #' @return SpatialExperiment object containing 'putative cell type' group allotted to each cell (reclust = FALSE) or clusters generated from smoothed data (reclust = TRUE).
 #'
@@ -22,7 +24,7 @@
 #' @export
 
 #### Non-spatial clustering
-nsClustering <- function(spe, dimRed, reclust, ...) {
+nsClustering <- function(spe, dimRed = "PCA", reclust, ...) {
     # number of centers = 1/5th of total cells in sample
     clustVal <- min(as.integer(ncol(spe) / 5), 50000)
     if (reclust == FALSE) {
