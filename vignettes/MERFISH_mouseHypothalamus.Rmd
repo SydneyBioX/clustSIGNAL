@@ -9,7 +9,7 @@ output:
   BiocStyle::pdf_document: default
 package: clustSIGNAL
 vignette: |
-  %\VignetteIndexEntry{2. Multisample analysis}
+  %\VignetteIndexEntry{2.Multisample analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -37,7 +37,7 @@ library(patchwork)
 ```
 
 ```{r}
-load("mHypothal.RData")
+data(mHypothal)
 spe = SpatialExperiment(assays = list(logcounts = mh_expr),
                         colData = mh_data, spatialCoordsNames = c("X", "Y"))
 spe
