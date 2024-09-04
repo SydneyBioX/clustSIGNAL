@@ -3,20 +3,14 @@
 \docType{data}
 \name{mEmbryo2}
 \alias{mEmbryo2}
-\alias{nnCells}
 \alias{me_data}
 \alias{me_expr}
-\alias{regXclust}
-\title{Mouse Embryo Data as SpatialExperiment object}
+\title{Mouse Embryo Data}
 \format{
 \code{me_expr} a gene expression matrix with normalised counts, where rows indicate
 genes and columns indicate cells.
 \code{me_data} a data frame of cell metadata including cell IDs, sample IDs,
 cell type annotations, and x-y coordinates of cells.
-\code{nnCells} a matrix where each row corresponds to a cell in spe object,
-and the columns correspond to the nearest neighbors.
-\code{regXclust} a list where each element corresponds to a cell in spe object,
-and contains the cluster composition proportions.
 }
 \source{
 Integration of spatial and single-cell transcriptomic data elucidates mouse
@@ -24,13 +18,12 @@ organogenesis, \emph{Nature Biotechnology}, 2022.
 Webpage: \url{https://www.nature.com/articles/s41587-021-01006-2}
 }
 \usage{
-load("mEmbryo2.RData")
+data(mEmbryo2)
 }
 \description{
 This dataset contains spatial transcriptomics data from 3 mouse embryos, with
-351 genes and a total of 57536 cells. For running vignettes and examples, we subset
-the data by selecting only embryo 2 and removed all cells that were annotated
-as 'low quality'. After subsetting, we have 14,185 cells from embryo 2 and 351
-genes.
+351 genes and a total of 57536 cells. For vignettes, we subset the data by selecting
+only embryo 2 and removing all cells that were annotated as 'low quality'. After
+subsetting, we have 14,185 cells from embryo 2 and 351 genes.
 }
 \keyword{datasets}

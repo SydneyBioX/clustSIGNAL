@@ -5,7 +5,7 @@
 \alias{mHypothal}
 \alias{mh_data}
 \alias{mh_expr}
-\title{Mouse Hypothalamus Data as SpatialExperiment object}
+\title{Mouse Hypothalamus Data}
 \format{
 \code{mh_expr} a gene expression matrix with normalised counts, where rows indicate
 genes and columns indicate cells.
@@ -18,7 +18,7 @@ Hypothalamic Preoptic Region, \emph{Science}, 2018.
 Webpage: \url{https://www.science.org/doi/10.1126/science.aau5324}
 }
 \usage{
-load("mHypothal.RData")
+data(mHypothal)
 }
 \description{
 This dataset contains spatial transcriptomics data from 181 mouse hypothalamus

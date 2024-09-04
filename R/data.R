@@ -1,24 +1,19 @@
-#' Mouse Embryo Data as SpatialExperiment object
+#' Mouse Embryo Data
 #'
 #' This dataset contains spatial transcriptomics data from 3 mouse embryos, with
-#' 351 genes and a total of 57536 cells. For running vignettes and examples, we subset
-#' the data by selecting only embryo 2 and removed all cells that were annotated
-#' as 'low quality'. After subsetting, we have 14,185 cells from embryo 2 and 351
-#' genes.
+#' 351 genes and a total of 57536 cells. For vignettes, we subset the data by selecting
+#' only embryo 2 and removing all cells that were annotated as 'low quality'. After
+#' subsetting, we have 14,185 cells from embryo 2 and 351 genes.
 #'
 #'
 #' @name mEmbryo2
-#' @aliases nnCells me_data me_expr regXclust
+#' @aliases me_data me_expr
 #' @docType data
 #' @format
 #' \code{me_expr} a gene expression matrix with normalised counts, where rows indicate
 #' genes and columns indicate cells.
 #' \code{me_data} a data frame of cell metadata including cell IDs, sample IDs,
 #' cell type annotations, and x-y coordinates of cells.
-#' \code{nnCells} a matrix where each row corresponds to a cell in spe object,
-#' and the columns correspond to the nearest neighbors.
-#' \code{regXclust} a list where each element corresponds to a cell in spe object,
-#' and contains the cluster composition proportions.
 #' @usage data(mEmbryo2)
 #' @source Integration of spatial and single-cell transcriptomic data elucidates mouse
 #' organogenesis, \emph{Nature Biotechnology}, 2022.
@@ -27,7 +22,33 @@
 NULL
 
 
-#' Mouse Hypothalamus Data as SpatialExperiment object
+#' Example data as SpatialExperiment object
+#'
+#' This example data was generated from the mouse embryo spatial transcriptomics
+#' dataset of 3 mouse embryos, with 351 genes and a total of 57536 cells. For running
+#' examples, we subset the data by selecting 1000 random cells from embryo 2, excluding
+#' any cells annotated as 'low quality'. After subsetting, we have 1000 cells from
+#' embryo 2 and 351 genes.
+#'
+#'
+#' @name example
+#' @aliases spe nnCells regXclust
+#' @docType data
+#' @format
+#' \code{spe} a spatialExperiment object containing gene expression matrix with
+#' normalised counts, where rows indicate genes and columns indicate cells. Also,
+#' contains a data frame of cell metadata including cell IDs, sample IDs, cell type
+#' annotations, and x-y coordinates of cells.
+#' \code{nnCells} a matrix where each row corresponds to a cell in spe object,
+#' and the columns correspond to the nearest neighbors.
+#' \code{regXclust} a list where each element corresponds to a cell in spe object,
+#' and contains the cluster composition proportions.
+#' @usage data(example)
+#' @keywords datasets
+NULL
+
+
+#' Mouse Hypothalamus Data
 #'
 #' This dataset contains spatial transcriptomics data from 181 mouse hypothalamus
 #' samples embryos, 155 genes and a total of 1,027,080 cells. For running the
