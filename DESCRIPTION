@@ -4,9 +4,9 @@ Title: clustSIGNAL: a spatial clustering method
 Version: 0.1.0
 Author: c(
     person(given = "Pratibha", family = "Panwar", email = "pratibha.panwar@sydney.edu.au", role = c("cre", "aut", "ctb")),
-    person(given = "Boyi", family = "Guo", email = "", role = "aut")),
-    person(given = "Haowen", family = "Zhao", email = "", role = "aut")),
-    person(given = "Stephanie", family = "Hicks", email = "", role = "aut")),
+    person(given = "Boyi", family = "Guo", email = "bguo6@jhu.edu", role = "aut"),
+    person(given = "Haowen", family = "Zhao", email = "haowen.zhou19@gmail.com", role = "aut"),
+    person(given = "Stephanie", family = "Hicks", email = "shicks19@jhu.edu", role = "aut"),
     person(given = "Shila", family = "Ghazanfar", email = "shila.ghazanfar@sydney.edu.au", role = "aut", "ctb"))
 Maintainer: Pratibha Panwar <pratibha.panwar@sydney.edu.au>
 Description: clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. 
@@ -31,17 +31,17 @@ Depends:
 Imports: 
     BiocNeighbors, 
     bluster, 
-    scater, 
-    aricode, 
-    distances, 
-    cluster, 
-    ggplot2, 
-    patchwork, 
+    scater,
     BiocStyle,
-    dplyr
+    aricode,
+    cluster,
+    distances,
+    dplyr,
+    ggplot2, 
+    patchwork
 Suggests: 
     knitr, 
-    rmarkdown
+    rmarkdown,
 VignetteBuilder: 
     knitr, 
     rmarkdown
