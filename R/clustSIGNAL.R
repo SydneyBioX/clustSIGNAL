@@ -24,7 +24,7 @@
 #' 3. spe_final: a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
 #'
 #' @examples
-#' data(mouseEmbryo2)
+#' data(example)
 #'
 #' names(colData(spe))
 #' # identify the column names with cell and sample labels

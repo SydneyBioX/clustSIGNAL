@@ -11,7 +11,7 @@
 #' @return SpatialExperiment object including smoothed gene expression values as another assay.
 #'
 #' @examples
-#' data(mouseEmbryo2)
+#' data(example)
 #'
 #' # requires matrix containing NN nearest neighbour cell labels (nnCells),
 #' # generated using the neighbourDetect() function

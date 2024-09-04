@@ -11,7 +11,7 @@
 #' @return SpatialExperiment object including entropy values for each cell neighbourhood.
 #'
 #' @examples
-#' data(mouseEmbryo2)
+#' data(example)
 #'
 #' # requires list containing cluster proportions of each region (regXclust),
 #' # generated using the neighbourDetect() function

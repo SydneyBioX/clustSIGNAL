@@ -22,7 +22,7 @@ SpatialExperiment object including entropy values for each cell neighbourhood.
 A function to measure the heterogeneity of a cell's neighbourhood in terms of entropy, such that homogeneous neighbourhoods have low entropy and heterogeneous neighbourhoods have high entropy.
 }
 \examples{
-data(mouseEmbryo2)
+data(example)
 
 # requires list containing cluster proportions of each region (regXclust),
 # generated using the neighbourDetect() function

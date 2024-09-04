@@ -11,9 +11,7 @@
 #' @return SpatialExperiment object containing 'putative cell type' group allotted to each cell (reclust = FALSE) or clusters generated from smoothed data (reclust = TRUE).
 #'
 #' @examples
-#' data(mouseEmbryo2)
-#'
-#' spe <- scater::runPCA(spe)
+#' data(example)
 #'
 #' # reclust = FALSE for non-spatial clustering of normalised counts
 #' # reclust = TRUE for non-spatial clustering of adaptively smoothed counts
