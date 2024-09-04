@@ -19,7 +19,7 @@
 #' and the columns correspond to the nearest neighbors.
 #' \code{regXclust} a list where each element corresponds to a cell in spe object,
 #' and contains the cluster composition proportions.
-#' @usage load("mEmbryo2.RData")
+#' @usage data(mEmbryo2)
 #' @source Integration of spatial and single-cell transcriptomic data elucidates mouse
 #' organogenesis, \emph{Nature Biotechnology}, 2022.
 #' Webpage: \url{https://www.nature.com/articles/s41587-021-01006-2}
@@ -45,7 +45,7 @@ NULL
 #' genes and columns indicate cells.
 #' \code{mh_data} a data frame of cell metadata including cell IDs, sample IDs,
 #' cell type annotations, and x-y coordinates of cells.
-#' @usage load("mHypothal.RData")
+#' @usage data(mHypothal)
 #' @source Molecular, Spatial and Functional Single-Cell Profiling of the
 #' Hypothalamic Preoptic Region, \emph{Science}, 2018.
 #' Webpage: \url{https://www.science.org/doi/10.1126/science.aau5324}
