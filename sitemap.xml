@@ -1,8 +1,8 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/404.html</loc></url>
-<url><loc>https://sydneybiox.github.io/clustSIGNAL/articles/01_seqFISH_mouseEmbryo.html</loc></url>
-<url><loc>https://sydneybiox.github.io/clustSIGNAL/articles/02_MERFISH_mouseHypothalamus.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/articles/index.html</loc></url>
+<url><loc>https://sydneybiox.github.io/clustSIGNAL/articles/v1_seqFISH_mouseEmbryo.html</loc></url>
+<url><loc>https://sydneybiox.github.io/clustSIGNAL/articles/v2_MERFISH_mouseHypothalamus.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/authors.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/index.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/adaptiveSmoothing.html</loc></url>
@@ -15,6 +15,7 @@
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/dot-gauss_kernel.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/dot-smoothedData.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/entropyMeasure.html</loc></url>
+<url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/example.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/index.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/mEmbryo2.html</loc></url>
 <url><loc>https://sydneybiox.github.io/clustSIGNAL/reference/mHypothal.html</loc></url>
