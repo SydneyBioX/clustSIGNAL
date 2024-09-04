@@ -9,7 +9,7 @@ output:
   BiocStyle::pdf_document: default
 package: clustSIGNAL
 vignette: |
-  %\VignetteIndexEntry{2.Multisample analysis}
+  %\VignetteIndexEntry{Multisample analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -116,10 +116,9 @@ colors = c("#635547", "#8EC792", "#9e6762", "#FACB12", "#3F84AA", "#0F4A9C",
 hst_ent <- as.data.frame(colData(spe)) %>%
   ggplot(aes(entropy)) +
   geom_histogram(binwidth = 0.05) +
-  ggtitle("A") +
   facet_wrap(vars(samples), nrow = 1) +
   labs(x = "Entropy", y = "Number of regions") +
-  theme_grey() +
+  theme_classic() +
   theme(text = element_text(size = 12))
 
 # Spatial plot showing sample entropy distribution
@@ -131,13 +130,13 @@ spt_ent <- as.data.frame(colData(spe)) %>%
   scale_colour_gradient2("Entropy", low = "grey", high = "blue") +
   scale_size_continuous(range = c(0, max(spe$entropy))) +
   facet_wrap(vars(samples), scales = "free", nrow = 1) +
-  ggtitle("B") +
   labs(x = "x-coordinate", y = "y-coordinate") +
   theme_classic() +
-  theme(text = element_text(size = 12),
+  theme(strip.text = element_blank(), 
+        text = element_text(size = 12),
         axis.text.x = element_text(angle = 90, vjust = 0.5))
-
-hst_ent / spt_ent
+hst_ent / spt_ent + plot_layout(heights = c(3,5)) +
+    plot_annotation(title = "Entropy spread (top) and spatial distribution (bottom)")
 ```
 
 In multisample analysis, the spread (A) and spatial distribution (B) of region entropy measures can be useful in assessing and comparing the tissue structure in the samples.
@@ -146,20 +145,22 @@ In multisample analysis, the spread (A) and spatial distribution (B) of region e
 
 ```{r}
 df_ent = as.data.frame(colData(spe))
+```
 
+```{r}
 # spatial plot
 spt_clust <- df_ent %>%
-  ggplot(aes(x = spatialCoords(spe)[, 1], 
-             y = -spatialCoords(spe)[, 2])) +
-  geom_point(size = 0.5, aes(colour = reCluster)) +
-  scale_color_manual(values = colors) +
-  facet_wrap(vars(samples), scales = "free", nrow = 1) +
-  labs(x = "x-coordinate", y = "y-coordinate") +
-  guides(color = guide_legend(title = "Clusters", 
-                              override.aes = list(size = 3))) +
-  theme_classic() +
-  theme(text = element_text(size = 12),
-        axis.text.x = element_text(angle = 90, vjust = 0.5))
+    ggplot(aes(x = spatialCoords(spe)[, 1], 
+               y = -spatialCoords(spe)[, 2])) +
+    geom_point(size = 0.5, aes(colour = reCluster)) +
+    scale_color_manual(values = colors) +
+    facet_wrap(vars(samples), scales = "free", nrow = 1) +
+    labs(x = "x-coordinate", y = "y-coordinate") +
+    guides(color = guide_legend(title = "Clusters", 
+                                override.aes = list(size = 3))) +
+    theme_classic() +
+    theme(text = element_text(size = 12),
+          axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 box_clust = list()
 for (s in samplesList) {
@@ -185,15 +186,16 @@ for (s in samplesList) {
     labs(x = "clustSIGNAL clusters", y = "Entropy") +
     ylim(0, NA) +
     theme_classic() +
-    theme(legend.position = "none",
+    theme(strip.text = element_blank(), 
+          legend.position = "none",
           text = element_text(size = 12),
           axis.text.x = element_text(angle = 90, vjust = 0.5))
 }
 
-spt_clust / (patchwork::wrap_plots(box_clust[1:3], nrow = 1) + 
-               plot_layout(axes = "collect")) + 
-  plot_layout(guides = "collect") +
-  plot_annotation(title = "Spatial and entropy distributions of clusters")
+spt_clust / (patchwork::wrap_plots(box_clust[1:3], nrow = 1) +
+               plot_layout(axes = "collect")) +
+  plot_layout(guides = "collect", heights = c(5, 3)) +
+  plot_annotation(title = "Spatial (top) and entropy (bottom) distributions of clusters")
 ```
 
 The spatial location (top) and entropy distribution (bottom) of the clusters can be compared in a multisample analysis, providing spatial context of the cluster cells and their neighbourhood compositions in the different samples.

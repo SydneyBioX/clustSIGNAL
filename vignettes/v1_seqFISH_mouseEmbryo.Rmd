@@ -9,7 +9,7 @@ output:
   BiocStyle::pdf_document: default
 package: clustSIGNAL
 vignette: |
-  %\VignetteIndexEntry{1.Single sample analysis}
+  %\VignetteIndexEntry{Single sample analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -178,7 +178,7 @@ box_clust <- df_ent %>%
         text = element_text(size = 12),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
-spt_clust + box_clust + patchwork::plot_layout(guides = "collect", widths = c(1, 2))
+spt_clust + box_clust + patchwork::plot_layout(guides = "collect", widths = c(2, 3))
 ```
 
 The spatial location (A) and entropy distribution (B) of the clusters provide spatial context of the cluster cells and their neighbourhoods, as well as the compositions of the neighbouhoods.
