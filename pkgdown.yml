@@ -2,9 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  MERFISH_mouseHypothalamus: MERFISH_mouseHypothalamus.html
-  seqFISH_mouseEmbryo: seqFISH_mouseEmbryo.html
-last_built: 2024-08-28T03:44Z
+  01_seqFISH_mouseEmbryo: 01_seqFISH_mouseEmbryo.html
+  02_MERFISH_mouseHypothalamus: 02_MERFISH_mouseHypothalamus.html
+last_built: 2024-09-04T06:35Z
 urls:
   reference: https://sydneybiox.github.io/clustSIGNAL/reference
   article: https://sydneybiox.github.io/clustSIGNAL/articles
