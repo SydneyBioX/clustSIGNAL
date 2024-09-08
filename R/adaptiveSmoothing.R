@@ -12,6 +12,7 @@
 #' @importFrom SingleCellExperiment logcounts
 #' @importFrom SummarizedExperiment assay
 #' @importFrom methods show as
+#' @importFrom BiocParallel bplapply
 #'
 #' @examples
 #' data(example)
@@ -24,7 +25,7 @@
 #' @export
 
 #### Smoothing
-adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05) {
+adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05, threads = 1) {
     ed <- unique(spe$entropy)
     gXc <- as(logcounts(spe), "sparseMatrix")
     if (kernel == "G") {
@@ -56,11 +57,17 @@ adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05
                 # gene expression matrix of NN cells
                 inMatList[[x]] <- as.matrix(gXc[, region])
             }
-            # BPPARAM <- .generateBPParam(cores = threads)
-            out <- lapply(inMatList, .smoothedData, weight = weights[, e])
+            BPPARAM <- .generateBPParam(cores = threads)
+            out <- BiocParallel::bplapply(inMatList,
+                                         function(imat){
+                                             omat <- .smoothedData(mat = imat, weight = weights[, e])
+                                             omat
+                                         },
+                                         BPPARAM = BPPARAM)
+            # out <- lapply(inMatList, .smoothedData, weight = weights[, e])
             tmpMat <- matrix(unlist(out),
-                          ncol = length(out),
-                          dimnames = list(rownames(out[[1]]), sapply(out, names)))
+                             ncol = length(out),
+                             dimnames = list(rownames(out[[1]]), sapply(out, names)))
             colnames(tmpMat) <- names(out)
         }
         outMats <- cbind(outMats, tmpMat)
@@ -82,40 +89,4 @@ adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05
     }
     return(spe)
 }
-
-# cl <- makeCluster(threads)
-# doParallel::registerDoParallel(cl)
-# y <- foreach (x = c(1:ncol(gXc))) %dopar% {
-#     # index cell name
-#     cell = colnames(gXc)[x]
-#     # cell entropy
-#     e = paste0("E", spe$entropy[x])
-#     # names of index cell + NN neighbors
-#     region = as.vector(nnCells[x, ])
-#     # gene expression matrix of NN cells
-#     inMat = as.matrix(gXc[, region])
-#     smat <- .smoothedData(inMat, weights[, e])
-#     colnames(smat) <- cell
-#     smat
-# }
-# stopCluster(cl)
-#
-# # QC check
-# check.cells = identical(sapply(y, colnames), as.vector(spe[[cells]]))
-# check.genes = identical(rownames(logcounts(spe)), rownames(y[[1]]))
-# check.NA = sum(is.na(unlist(y)))
-# if (check.cells == FALSE) {
-#     stop("Order of cells in smoothed data does not match cell order in spatial experiment object.")
-# } else if (check.genes == FALSE) {
-#     stop("Order of genes in smoothed data does not match gene order in spatial experiment object.")
-# } else if (check.NA != 0) {
-#     stop("Missing values in smoothed data.")
-# } else {
-#     smoothMat = matrix(unlist(y), ncol = length(y),
-#                         dimnames = list(rownames(y[[1]]), sapply(y, colnames)))
-#     # add data to spatial experiment
-#     assay(spe, i = "smoothed") <- as(smoothMat, "sparseMatrix")
-#     print(paste("Smoothing performed. NN =", NN, "Kernel =", kernel, "Spread =", spread, Sys.time()))
-# }
-
 

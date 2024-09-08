@@ -93,7 +93,7 @@ clustSIGNAL <- function (spe,
     # Weighted smoothing guided by neighbourhood entropy
     # Homogeneous regions are smoothed more
     # Heterogeneous regions are smoothed less
-    spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread)
+    spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, threads)
 
     # Non-spatial clustering of adaptively smoothed expression
     # reclust should always be TRUE here

@@ -4,7 +4,14 @@
 \alias{adaptiveSmoothing}
 \title{Adaptive smoothing}
 \usage{
-adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.05)
+adaptiveSmoothing(
+  spe,
+  nnCells,
+  NN = 30,
+  kernel = "G",
+  spread = 0.05,
+  threads = 1
+)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, 'putative cell type' groups, and entropy outputs included.}
