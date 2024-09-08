@@ -35,5 +35,6 @@ Suggests: knitr,
     distances,
     dplyr,
     ggplot2, 
-    patchwork
+    patchwork,
+    scattermore
 VignetteBuilder: knitr

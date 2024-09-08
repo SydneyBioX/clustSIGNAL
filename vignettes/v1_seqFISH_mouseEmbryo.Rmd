@@ -31,6 +31,7 @@ library(aricode)
 library(dplyr)
 library(ggplot2)
 library(patchwork)
+library(scattermore)
 ```
 
 ```{r}
@@ -120,7 +121,7 @@ hst_ent <- as.data.frame(colData(spe)) %>%
 spt_ent <- as.data.frame(colData(spe)) %>%
   ggplot(aes(x = spatialCoords(spe)[, 1],
              y = -spatialCoords(spe)[, 2])) +
-  geom_point(size = 0.5,
+  geom_scattermore(size = 0.5,
              aes(colour = entropy)) +
   scale_colour_gradient2("Entropy", low = "grey", high = "blue") +
   scale_size_continuous(range = c(0, max(spe$entropy))) +
@@ -143,7 +144,7 @@ df_ent <- as.data.frame(colData(spe))
 spt_clust <- df_ent %>%
   ggplot(aes(x = spatialCoords(spe)[, 1],
              y = -spatialCoords(spe)[, 2])) +
-  geom_point(size = 0.5, aes(colour = reCluster)) +
+  geom_scattermore(size = 0.5, aes(colour = reCluster)) +
   scale_color_manual(values = colors) +
   ggtitle("A") +
   labs(x = "x-coordinate", y = "y-coordinate") +
