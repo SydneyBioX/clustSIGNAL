@@ -9,6 +9,8 @@
 #' @param threads a numeric value for the number of CPU cores to be used for the analysis.
 #'
 #' @return SpatialExperiment object including entropy values for each cell neighbourhood.
+#' @importFrom BiocParallel bplapply
+#' @importFrom methods show
 #'
 #' @examples
 #' data(example)
@@ -22,17 +24,27 @@
 
 #### Domainness measure
 entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
-    cellsList <- as.vector(spe[[cells]])
-    cl <- parallel::makeCluster(threads)
-    doParallel::registerDoParallel(cl)
-    regEntropy <- foreach(c = cellsList[1:length(spe[[cells]])]) %dopar% {
-        arr <- as.vector(unlist(regXclust[c]))
-        # calculate Shannon's entropy
-        y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
-        rownames(y) <- c
-        y
-    }
-    stopCluster(cl)
+    cell_vect <- as.vector(spe[[cells]])
+    BPPARAM <- .generateBPParam(cores = threads)
+    # cl <- parallel::makeCluster(threads)
+    # doParallel::registerDoParallel(cl)
+    # regEntropy <- foreach(c = cell_vect[seq_len(length(spe[[cells]]))]) %dopar% {
+    #     arr <- as.vector(unlist(regXclust[c]))
+    #     # calculate Shannon's entropy
+    #     y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
+    #     rownames(y) <- c
+    #     y
+    # }
+    # stopCluster(cl)
+    regEntropy <- BiocParallel::bplapply(cell_vect,
+                                         function(c){
+                                             arr <- as.vector(unlist(regXclust[c]))
+                                             # calculate Shannon's entropy
+                                             y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
+                                             rownames(y) <- c
+                                             y
+                                         },
+                                         BPPARAM = BPPARAM)
 
     # QC check
     check.cells <- identical(sapply(regEntropy, rownames), spe[[cells]])
@@ -43,7 +55,7 @@ entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
         stop("Missing entropy values.")
     } else {
         spe$entropy <- as.vector(unlist(regEntropy))
-        print(paste("Region domainness calculated.", Sys.time()))
+        show(paste("Region domainness calculated.", Sys.time()))
     }
     return(spe)
 }
