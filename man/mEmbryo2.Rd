@@ -22,8 +22,7 @@ data(mEmbryo2)
 }
 \description{
 This dataset contains spatial transcriptomics data from 3 mouse embryos, with
-351 genes and a total of 57536 cells. For vignettes, we subset the data by selecting
-only embryo 2 and removing all cells that were annotated as 'low quality'. After
-subsetting, we have 14,185 cells from embryo 2 and 351 genes.
+351 genes and a total of 57536 cells. For vignettes, we subset the data by randomly
+selecting 5000 cells from embryo 2, excluding cells that were annotated as 'low quality'.
 }
 \keyword{datasets}

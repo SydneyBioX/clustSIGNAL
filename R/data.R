@@ -1,10 +1,8 @@
 #' Mouse Embryo Data
 #'
 #' This dataset contains spatial transcriptomics data from 3 mouse embryos, with
-#' 351 genes and a total of 57536 cells. For vignettes, we subset the data by selecting
-#' only embryo 2 and removing all cells that were annotated as 'low quality'. After
-#' subsetting, we have 14,185 cells from embryo 2 and 351 genes.
-#'
+#' 351 genes and a total of 57536 cells. For vignettes, we subset the data by randomly
+#' selecting 5000 cells from embryo 2, excluding cells that were annotated as 'low quality'.
 #'
 #' @name mEmbryo2
 #' @aliases me_data me_expr
@@ -30,7 +28,6 @@ NULL
 #' any cells annotated as 'low quality'. After subsetting, we have 1000 cells from
 #' embryo 2 and 351 genes.
 #'
-#'
 #' @name example
 #' @aliases spe nnCells regXclust
 #' @docType data
@@ -55,11 +52,10 @@ NULL
 #'
 #' This dataset contains spatial transcriptomics data from 181 mouse hypothalamus
 #' samples embryos, 155 genes and a total of 1,027,080 cells. For running the
-#' vignettes, we subset the data by selecting only 3 samples - Animal 1 Bregma -0.09
-#' and Animal 7 Bregmas 0.16 and -0.09, removed all cells that were annotated
-#' as 'ambiguous', and removed 20 genes that were assessed using a different technology.
-#' After subsetting, we have 15,848 cells from 3 mouse brain samples and 135 genes.
-#'
+#' vignettes, we subset the data by selecting total 6000 cells from only 3 samples
+#' - Animal 1 Bregma -0.09 (2080 cells) and Animal 7 Bregmas 0.16 (1936 cells) and
+#' -0.09 (1984 cells), excluding cells that were annotated as 'ambiguous', and
+#' removed 20 genes that were assessed using a different technology.
 #'
 #' @name mHypothal
 #' @aliases mh_data mh_expr
