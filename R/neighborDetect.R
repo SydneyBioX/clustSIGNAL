@@ -32,10 +32,8 @@ neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
     nnClusts <- matrix(nrow = 0, ncol = NN)
     for (s in samplesList) {
-        xy_pos <- spatialCoords(spe[, spe[[samples]] == s])
-        # Clust <- subset(as.data.frame(colData(spe)), spe[[samples]] == s, nsCluster)
-        # subClust <- subset(as.data.frame(colData(spe)), spe[[samples]] == s, nsSubcluster)
         speX <- spe[, spe[[samples]] == s]
+        xy_pos <- spatialCoords(speX)
         Clust <- as.data.frame(as.character(speX$nsCluster))
         rownames(Clust) <- speX[[cells]]
         subClust <- as.data.frame(speX$nsSubcluster)

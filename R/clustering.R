@@ -41,7 +41,7 @@ nsClustering <- function(spe, dimRed = "PCA", reclust, ...) {
         show(paste("Initial nonspatial clustering performed. Clusters =", length(unique(nsClust)), Sys.time()))
         # Initial subclustering
         clusters <- length(unique(spe$nsCluster))
-        subclusters_list = list()
+        subclusters_list <- list()
         for (c in seq_len(clusters)){
             speX <- spe[, spe$nsCluster == c]
             speX <- scater::runPCA(speX)

@@ -26,16 +26,6 @@
 entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
     cell_vect <- as.vector(spe[[cells]])
     BPPARAM <- .generateBPParam(cores = threads)
-    # cl <- parallel::makeCluster(threads)
-    # doParallel::registerDoParallel(cl)
-    # regEntropy <- foreach(c = cell_vect[seq_len(length(spe[[cells]]))]) %dopar% {
-    #     arr <- as.vector(unlist(regXclust[c]))
-    #     # calculate Shannon's entropy
-    #     y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
-    #     rownames(y) <- c
-    #     y
-    # }
-    # stopCluster(cl)
     regEntropy <- BiocParallel::bplapply(cell_vect,
                                          function(c){
                                              arr <- as.vector(unlist(regXclust[c]))
