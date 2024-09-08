@@ -15,11 +15,11 @@
     cellDF <- data.frame(cellName = rownames(Clust)[cell], cluster = Clust[cell, 1])
     if (length(unique(Clust[cell,])) == 1) { # all cells belong to same putative cell type
         return(rownames(Clust)[cell])
-    } else if (cellDF$cluster[1] %in% cellDF$cluster[2:length(cell)]) {
+    } else if (cellDF$cluster[1] %in% cellDF$cluster[seq(2, length(cell))]) {
         centralClust <- cellDF$cluster[1]
         sameClust <- c()
         diffClust <- c()
-        for (c in 1:nrow(cellDF)) {
+        for (c in seq_len(nrow(cellDF))) {
             if (cellDF$cluster[c] == centralClust){
                 sameClust <- append(sameClust, cellDF$cellName[c])
             } else {

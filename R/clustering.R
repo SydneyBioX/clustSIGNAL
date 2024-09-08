@@ -9,6 +9,11 @@
 #' @param ... additional parameters for TwoStepParam clustering methods. Include parameters like k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".
 #'
 #' @return SpatialExperiment object containing 'putative cell type' group allotted to each cell (reclust = FALSE) or clusters generated from smoothed data (reclust = TRUE).
+#' @importFrom bluster clusterRows TwoStepParam KmeansParam NNGraphParam
+#' @importFrom scater runPCA
+#' @importFrom SingleCellExperiment reducedDim
+#' @importFrom methods show
+#' @importFrom stats setNames
 #'
 #' @examples
 #' data(example)
@@ -33,11 +38,11 @@ nsClustering <- function(spe, dimRed = "PCA", reclust, ...) {
                                             first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
                                             second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
         spe$nsCluster <- factor(nsClust)
-        print(paste("Initial nonspatial clustering performed. Clusters =", length(unique(nsClust)), Sys.time()))
+        show(paste("Initial nonspatial clustering performed. Clusters =", length(unique(nsClust)), Sys.time()))
         # Initial subclustering
         clusters <- length(unique(spe$nsCluster))
         subclusters_list = list()
-        for (c in 1:clusters){
+        for (c in seq_len(clusters)){
             speX <- spe[, spe$nsCluster == c]
             speX <- scater::runPCA(speX)
             matX <- reducedDim(speX, "PCA")
@@ -51,7 +56,7 @@ nsClustering <- function(spe, dimRed = "PCA", reclust, ...) {
             subclusters_list[[c]] <- setNames(paste0(c, ".", nsClustX), colnames(speX))
         }
         spe$nsSubcluster <- factor(unlist(subclusters_list)[colnames(spe)])
-        print(paste("Nonspatial subclustering performed. Subclusters =", length(unique(spe$nsSubcluster)), Sys.time()))
+        show(paste("Nonspatial subclustering performed. Subclusters =", length(unique(spe$nsSubcluster)), Sys.time()))
 
     } else if (reclust == TRUE) {
         # Clustering adaptively smoothed data
@@ -64,7 +69,7 @@ nsClustering <- function(spe, dimRed = "PCA", reclust, ...) {
                                             first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
                                             second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
         spe$reCluster <- factor(reClust)
-        print(paste("Nonspatial clustering performed on smoothed data. Clusters =", length(unique(reClust)), Sys.time()))
+        show(paste("Nonspatial clustering performed on smoothed data. Clusters =", length(unique(reClust)), Sys.time()))
     }
     return (spe)
 }

@@ -2,13 +2,12 @@ Package: clustSIGNAL
 Type: Package
 Title: clustSIGNAL: a spatial clustering method
 Version: 0.1.0
-Author: c(
-    person(given = "Pratibha", family = "Panwar", email = "pratibha.panwar@sydney.edu.au", role = c("cre", "aut", "ctb")),
+Authors@R: c(
+    person(given = "Pratibha", family = "Panwar", email = "pratibhapanwar.4@gmail.com", role = c("cre", "aut", "ctb")),
     person(given = "Boyi", family = "Guo", email = "bguo6@jhu.edu", role = "aut"),
     person(given = "Haowen", family = "Zhao", email = "haowen.zhou19@gmail.com", role = "aut"),
     person(given = "Stephanie", family = "Hicks", email = "shicks19@jhu.edu", role = "aut"),
-    person(given = "Shila", family = "Ghazanfar", email = "shila.ghazanfar@sydney.edu.au", role = "aut", "ctb"))
-Maintainer: Pratibha Panwar <pratibha.panwar@sydney.edu.au>
+    person(given = "Shila", family = "Ghazanfar", email = "shila.ghazanfar@sydney.edu.au", role = c("aut", "ctb")))
 Description: clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. 
     A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure 
     heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous 
@@ -17,21 +16,19 @@ Description: clustSIGNAL: clustering of Spatially Informed Gene expression with 
     expression data is used for clustering and could be used for other downstream analyses.
 License: GPL-2
 Encoding: UTF-8
-LazyData: true
-LazyDataCompression: xz
-URL: https://sydneybiox.github.io/clustSIGNAL/, https://sydneybiox.github.io/clustSIGNAL/
+URL: https://sydneybiox.github.io/clustSIGNAL/
 BugReports: https://github.com/sydneybiox/clustSIGNAL/issues
-biocViews: Clustering, Software 
-Roxygen: list(markdown = TRUE)
+biocViews: Clustering, Software, GeneExpression, Spatial
 RoxygenNote: 7.3.2
-Depends: 
-    R (>= 4.0.0), 
-    SpatialExperiment, 
-    doParallel
-Imports: 
+Depends: R (>= 4.4.0), SpatialExperiment
+Imports: BiocParallel,
     BiocNeighbors, 
     bluster, 
     scater,
+    SingleCellExperiment,
+    SummarizedExperiment,
+    methods
+Suggests: knitr,
     BiocStyle,
     aricode,
     cluster,
@@ -39,9 +36,4 @@ Imports:
     dplyr,
     ggplot2, 
     patchwork
-Suggests: 
-    knitr, 
-    rmarkdown,
-VignetteBuilder: 
-    knitr, 
-    rmarkdown
+VignetteBuilder: knitr

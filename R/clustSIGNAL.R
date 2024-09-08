@@ -22,6 +22,9 @@
 #' 2. neighbours: a matrix of cell names and the names of their NN nearest neighbour cells.
 #'
 #' 3. spe_final: a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
+#' @importFrom SpatialExperiment spatialCoords
+#' @importFrom SingleCellExperiment reducedDimNames
+#' @importFrom methods show
 #'
 #' @examples
 #' data(example)
@@ -66,14 +69,14 @@ clustSIGNAL <- function (spe,
     }
 
     if (dimRed == "None") {
-        print("Calculating PCA to use as reduced dimension input.")
+        show("Calculating PCA to use as reduced dimension input.")
         spe <- scater::runPCA(spe)
-        dimRed = "PCA"
+        dimRed <- "PCA"
     } else if (!(dimRed %in% reducedDimNames(spe))){
         stop("The specified reduced dimension data does not exist.")
     }
 
-    print(paste("clustSIGNAL run started.", Sys.time()))
+    show(paste("clustSIGNAL run started.", Sys.time()))
 
     # Non-spatial clustering to identify 'putative celltype' groups
     # reclust should always be FALSE here
@@ -98,7 +101,7 @@ clustSIGNAL <- function (spe,
 
     cluster_df <- data.frame("Cells" = spe[[cells]], "Clusters" = spe$reCluster)
 
-    print(paste("clustSIGNAL run completed.", Sys.time()))
+    show(paste("clustSIGNAL run completed.", Sys.time()))
 
     if (outputs == "c"){
         return (list("clusters" = cluster_df))

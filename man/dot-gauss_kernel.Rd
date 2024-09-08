@@ -14,9 +14,8 @@
 \item{sd}{a numeric value for standard deviation of Gaussian distribution.}
 }
 \value{
-a numeric vector of weights.
+a matrix where each column contains weights related to specific entropy values.
 }
 \description{
 A function to generate weights from a Gaussian distribution.
 }
-\keyword{internal}

@@ -44,6 +44,9 @@ NULL
 #' \code{regXclust} a list where each element corresponds to a cell in spe object,
 #' and contains the cluster composition proportions.
 #' @usage data(example)
+#' @source Integration of spatial and single-cell transcriptomic data elucidates mouse
+#' organogenesis, \emph{Nature Biotechnology}, 2022.
+#' Webpage: \url{https://www.nature.com/articles/s41587-021-01006-2}
 #' @keywords datasets
 NULL
 

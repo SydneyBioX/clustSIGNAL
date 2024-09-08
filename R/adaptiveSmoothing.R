@@ -9,6 +9,9 @@
 #' @param kernel a character for type of distribution to be used. The two valid values are "G" or "E". G for Gaussian distribution, and E for exponential distribution. Default value is "G".
 #' @param spread a numeric value for distribution spread, represented by standard deviation for Gaussian distribution and rate for exponential distribution. Default value is 0.05 for Gaussian distribution and 20 for exponential distribution.
 #' @return SpatialExperiment object including smoothed gene expression values as another assay.
+#' @importFrom SingleCellExperiment logcounts
+#' @importFrom SummarizedExperiment assay
+#' @importFrom methods show as
 #'
 #' @examples
 #' data(example)
@@ -22,23 +25,23 @@
 
 #### Smoothing
 adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05) {
-    ed = unique(spe$entropy)
-    gXc = as(logcounts(spe), "sparseMatrix")
+    ed <- unique(spe$entropy)
+    gXc <- as(logcounts(spe), "sparseMatrix")
     if (kernel == "G") {
         # normal distribution weights
         # for each unique entropy value
-        weights = .gauss_kernel(ed, NN + 1, spread)
+        weights <- .gauss_kernel(ed, NN + 1, spread)
     } else if (kernel == "E") {
         # exponential distribution weights
         # for each unique entropy value
-        weights = .exp_kernel(ed, NN + 1, spread)
+        weights <- .exp_kernel(ed, NN + 1, spread)
     }
 
-    outMats = matrix(nrow = nrow(spe), ncol = 0)
-    for (val in 1:length(ed)) {
+    outMats <- matrix(nrow = nrow(spe), ncol = 0)
+    for (val in seq_len(length(ed))) {
         # cells with same entropy value will have same weights
         entCells <- colnames(spe[, spe$entropy == ed[val]])
-        e = paste0("E", ed[val])
+        e <- paste0("E", ed[val])
 
         if (length(entCells) == 1) {
             region <- as.vector(nnCells[entCells, ])
@@ -46,13 +49,14 @@ adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05
             tmpMat <- .smoothedData(inMat, weights[, e])
             colnames(tmpMat) <- entCells
         } else {
-            inMatList = list()
+            inMatList <- list()
             for (x in entCells) {
                 # names of central cell + NN cells
                 region <- as.vector(nnCells[x, ])
                 # gene expression matrix of NN cells
                 inMatList[[x]] <- as.matrix(gXc[, region])
             }
+            # BPPARAM <- .generateBPParam(cores = threads)
             out <- lapply(inMatList, .smoothedData, weight = weights[, e])
             tmpMat <- matrix(unlist(out),
                           ncol = length(out),
@@ -74,7 +78,7 @@ adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05
     } else {
         # add data to spatial experiment
         assay(spe, "smoothed") <- as(smoothMat, "sparseMatrix")
-        print(paste("Smoothing performed. NN =", NN, "Kernel =", kernel, "Spread =", spread, Sys.time()))
+        show(paste("Smoothing performed. NN =", NN, "Kernel =", kernel, "Spread =", spread, Sys.time()))
     }
     return(spe)
 }

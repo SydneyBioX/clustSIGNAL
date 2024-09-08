@@ -14,9 +14,8 @@
 \item{rate}{a numeric value for rate of exponential distribution.}
 }
 \value{
-a numeric vector of weights.
+a matrix where each column contains weights related to specific entropy values.
 }
 \description{
 A function to generate weights from an exponential distribution.
 }
-\keyword{internal}

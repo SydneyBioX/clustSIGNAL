@@ -14,7 +14,10 @@
 #' 1. nnCells, a character matrix of NN nearest neighbours - rows are cells and columns are their nearest neighbours ranged from closest to farthest neighbour. For sort = TRUE, the neighbours belonging to the same 'putative cell type' group as the cell are moved closer to it.
 #'
 #' 2. regXclust, a list of vectors for each cell's neighbourhood composition indicated by the proportion of 'putative cell type' groups it contains.
-#
+#' @importFrom BiocNeighbors findKNN KmknnParam
+#' @importFrom SpatialExperiment spatialCoords
+#' @importFrom methods show
+#'
 #' @examples
 #' data(example)
 #'
@@ -41,7 +44,7 @@ neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
         nnMatlist <- BiocNeighbors::findKNN(xy_pos, k = NN, BNPARAM = BiocNeighbors::KmknnParam())
         rownames(nnMatlist$index) <- rownames(subClust)
         # adding central cell indices as first column of matrix of NN neighborhood indices
-        nnMatlist$indexNew <- cbind(seq(1:nrow(nnMatlist$index)), nnMatlist$index)
+        nnMatlist$indexNew <- cbind(seq_len(nrow(nnMatlist$index)), nnMatlist$index)
         if (sort == TRUE) {
             nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1, .cellNameSort, Clust = Clust)))
         } else if (sort == FALSE) {
@@ -73,7 +76,7 @@ neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
     } else if (check.cells.NA != 0 | check.clusts.NA != 0) {
         stop("Missing values in neighbor data.")
     } else {
-        print(paste("Regions defined.", Sys.time()))
+        show(paste("Regions defined.", Sys.time()))
     }
     return(list("nnCells" = nnCells,
                 "regXclust" = regXclust))

@@ -43,11 +43,12 @@ clustSIGNAL(
 }
 \value{
 a list of outputs
-\enumerate{
-\item clusters: a data frame of cell names and their cluster classification.
-\item neighbours: a matrix of cell names and the names of their NN nearest neighbour cells.
-\item spe_final: a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
-}
+
+1. clusters: a data frame of cell names and their cluster classification.
+
+2. neighbours: a matrix of cell names and the names of their NN nearest neighbour cells.
+
+3. spe_final: a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
 }
 \description{
 A clustering method for cell type classification of spatial transcriptomics data. The tool generates and uses an adaptively smoothed, spatially informed gene expression data for clustering.

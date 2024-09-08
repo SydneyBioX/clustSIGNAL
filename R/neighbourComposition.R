@@ -11,7 +11,7 @@
 
 # function to retrieve cluster proportions of each region
 .calculateProp <- function(arr) {
-    prop = prop.table(table(arr))
+    prop <- prop.table(table(arr))
     if (round(sum(prop)) != 1){ # check if the proportions for each region sum up to 1
         stop(paste("Proportions are incorrect.", "row =", c, "proportion =", sum(arr)))
     }
