@@ -77,7 +77,7 @@ adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G", spread = 0.05
         stop("Missing values in smoothed data.")
     } else {
         # add data to spatial experiment
-        assay(spe, "smoothed") <- as(smoothMat, "sparseMatrix")
+        SummarizedExperiment::assay(spe, "smoothed") <- as(smoothMat, "sparseMatrix")
         show(paste("Smoothing performed. NN =", NN, "Kernel =", kernel, "Spread =", spread, Sys.time()))
     }
     return(spe)
