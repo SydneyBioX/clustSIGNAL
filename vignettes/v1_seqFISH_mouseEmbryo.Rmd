@@ -9,9 +9,9 @@ output:
   BiocStyle::pdf_document: default
 package: clustSIGNAL
 vignette: |
-  %\VignetteIndexEntry{Single sample analysis}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteIndexEntry{Single sample analysis}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -38,7 +38,7 @@ library(patchwork)
 
 ```{r}
 data(mEmbryo2)
-spe = SpatialExperiment(assays = list(logcounts = me_expr),
+spe <- SpatialExperiment(assays = list(logcounts = me_expr),
                         colData = me_data, spatialCoordsNames = c("X", "Y"))
 spe
 ```
@@ -53,9 +53,9 @@ To run clustSIGNAL, we need the column names of sample and cell labels in the co
 
 ```{r}
 set.seed(100)
-samples = "sample_id"
-cells = "uniqueID"
-res_emb = clustSIGNAL(spe, samples, cells, outputs = "a")
+samples <- "sample_id"
+cells <- "uniqueID"
+res_emb <- clustSIGNAL(spe, samples, cells, outputs = "a")
 ```
 
 The output variable is a list that can contain dataframe of cluster names, matrix of NN neighbours of each cell, final spe object, or a combination of these, depending on the choice of 'outputs' selected.
@@ -69,7 +69,7 @@ head(res_emb$clusters, n = 3)
 ```
 
 ```{r}
-spe = res_emb$spe_final
+spe <- res_emb$spe_final
 spe
 ```
 
@@ -83,7 +83,7 @@ distMat <- distances(cXg_mat)
 silCluster <- as.matrix(silhouette(clusts, distMat))
 spe$rcSil <- silCluster[, 3]
 
-# for datasets with annotated cell type information, we can also calculate 
+# for datasets with annotated cell type information, we can also calculate
 # metrics like adjusted rand index (ARI) and normalised mutual information (NMI)
 as.data.frame(colData(spe)) %>%
   summarise(ARI = aricode::ARI(celltype_mapped_refined, reCluster),
@@ -97,7 +97,7 @@ as.data.frame(colData(spe)) %>%
 # Visualising clustSIGNAL outputs
 
 ```{r}
-colors = c("#635547", "#8EC792", "#9e6762", "#FACB12", "#3F84AA", "#0F4A9C", 
+colors <- c("#635547", "#8EC792", "#9e6762", "#FACB12", "#3F84AA", "#0F4A9C", 
            "#ff891c", "#EF5A9D", "#C594BF", "#DFCDE4", "#139992", "#65A83E", 
            "#8DB5CE", "#005579", "#C9EBFB", "#B51D8D", "#532C8A", "#8870ad", 
            "#cc7818", "#FBBE92", "#EF4E22", "#f9decf", "#c9a997", "#C72228", 
@@ -121,9 +121,9 @@ hst_ent <- as.data.frame(colData(spe)) %>%
 
 # Spatial plot showing sample entropy distribution
 spt_ent <- as.data.frame(colData(spe)) %>%
-  ggplot(aes(x = spatialCoords(spe)[, 1], 
+  ggplot(aes(x = spatialCoords(spe)[, 1],
              y = -spatialCoords(spe)[, 2])) +
-  geom_point(size = 0.5, 
+  geom_point(size = 0.5,
              aes(colour = entropy)) +
   scale_colour_gradient2("Entropy", low = "grey", high = "blue") +
   scale_size_continuous(range = c(0, max(spe$entropy))) +
@@ -140,33 +140,33 @@ The spread (A) and spatial distribution (B) of region entropy measures can be ve
 ## clustSIGNAL clusters visualisation
 
 ```{r}
-df_ent = as.data.frame(colData(spe))
+df_ent <- as.data.frame(colData(spe))
 
 # spatial plot
 spt_clust <- df_ent %>%
-  ggplot(aes(x = spatialCoords(spe)[, 1], 
+  ggplot(aes(x = spatialCoords(spe)[, 1],
              y = -spatialCoords(spe)[, 2])) +
   geom_point(size = 0.5, aes(colour = reCluster)) +
   scale_color_manual(values = colors) +
   ggtitle("A") +
   labs(x = "x-coordinate", y = "y-coordinate") +
-  guides(color = guide_legend(title = "Clusters", 
+  guides(color = guide_legend(title = "Clusters",
                               override.aes = list(size = 3))) +
   theme_classic() +
   theme(text = element_text(size = 12))
 
 # calculating median entropy of each cluster
-celltype_ent = df_ent %>%
+celltype_ent <- df_ent %>%
   group_by(as.character(reCluster)) %>%
   summarise(meanEntropy = median(entropy))
 # reordering clusters by their median entropy
 # low to high median entropy
-cellOrder = celltype_ent$meanEntropy
-names(cellOrder) = celltype_ent$`as.character(reCluster)`
-cellOrder = sort(cellOrder)
-df_ent$reCluster = factor(df_ent$reCluster, levels = names(cellOrder))
+cellOrder <- celltype_ent$meanEntropy
+names(cellOrder) <- celltype_ent$`as.character(reCluster)`
+cellOrder <- sort(cellOrder)
+df_ent$reCluster <- factor(df_ent$reCluster, levels = names(cellOrder))
 # box plot of cluster entropy
-colors_ent = colors[as.numeric(names(cellOrder))]
+colors_ent <- colors[as.numeric(names(cellOrder))]
 box_clust <- df_ent %>%
   ggplot(aes(x = reCluster, y = entropy, fill = reCluster)) +
   geom_boxplot() +
