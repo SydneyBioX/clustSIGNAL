@@ -16,16 +16,13 @@ vignette: |
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  message = FALSE,
-  warning = FALSE,
-  comment = "#>"
+  collapse = FALSE
 )
 ```
 
 # SeqFISH mouse embryo data analysis
 
-```{r}
+```{r setup, message = FALSE, warning = FALSE}
 # load required packages
 library(clustSIGNAL)
 library(distances)
