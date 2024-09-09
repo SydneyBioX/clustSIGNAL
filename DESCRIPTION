@@ -4,7 +4,7 @@ Title: clustSIGNAL: a spatial clustering method
 Version: 0.1.0
 Authors@R: c(
     person("Pratibha", "Panwar", email = "pratibhapanwar.4@gmail.com", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-7437-7084")),
-    person("Boyi", "Guo", email = "bguo6@jhu.edu", role = "aut"),
+    person("Boyi", "Guo", email = "boyi.guo.work@gmail.com", role = "aut"),
     person("Haowen", "Zhao", email = "haowen.zhou19@gmail.com", role = "aut"),
     person("Stephanie", "Hicks", email = "shicks19@jhu.edu", role = "aut"),
     person("Shila", "Ghazanfar", email = "shazanfar@gmail.com", role = c("aut", "ctb")))
