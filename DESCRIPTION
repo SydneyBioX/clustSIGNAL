@@ -7,7 +7,7 @@ Authors@R: c(
     person("Boyi", "Guo", email = "bguo6@jhu.edu", role = "aut"),
     person("Haowen", "Zhao", email = "haowen.zhou19@gmail.com", role = "aut"),
     person("Stephanie", "Hicks", email = "shicks19@jhu.edu", role = "aut"),
-    person("Shila", "Ghazanfar", email = "shila.ghazanfar@sydney.edu.au", role = c("aut", "ctb")))
+    person("Shila", "Ghazanfar", email = "shazanfar@gmail.com", role = c("aut", "ctb")))
 Description: clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. 
     A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure 
     heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous 
