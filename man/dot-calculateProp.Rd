@@ -7,12 +7,14 @@
 .calculateProp(arr)
 }
 \arguments{
-\item{arr}{a vector of 'putative cell type' assignments of each cell in the neighbourhood.}
+\item{arr}{a vector of 'putative cell type' assignments of each cell in the
+neighbourhood.}
 }
 \value{
 a table of 'putative cell type' proportions in a neighbourhood.
 }
 \description{
-A function to calculate the cell neighbourhood composition of 'putative' cell types.
+A function to calculate the cell neighbourhood composition of 'putative' cell
+types.
 }
 \keyword{internal}

@@ -7,14 +7,18 @@
 .cellNameSort(cell, Clust)
 }
 \arguments{
-\item{cell}{a vector of neighbourhood cell indices. The cell indices indicate the row number of cells in sample metadata.}
+\item{cell}{a vector of neighbourhood cell indices. The cell indices indicate
+the row number of cells in sample metadata.}
 
-\item{Clust}{a data frame of initial cluster assignments of all cells in the sample.}
+\item{Clust}{a data frame of initial cluster assignments of all cells in the
+sample.}
 }
 \value{
 a data frame of cell IDs of sorted neighbourhood cells.
 }
 \description{
-A function to perform neighbourhood cell sorting. Neighbourhood cells that belong to the same 'putative cell type' as the central cell are moved closer to the central cell.
+A function to perform neighbourhood cell sorting. Neighbourhood cells that
+belong to the same 'putative cell type' as the central cell are moved closer
+to the central cell.
 }
 \keyword{internal}

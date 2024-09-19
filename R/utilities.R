@@ -11,9 +11,10 @@
     seed <- .Random.seed[1]
     if (cores == 1) {
         BPparam <- BiocParallel::SerialParam(RNGseed = seed)
-    } else { ## Parallel processing is desired.
-        ## Also set the BPparam RNGseed if the user ran set.seed(someNumber) themselves.
-        if (Sys.info()["sysname"] == "Windows") { # Only SnowParam suits Windows.
+    } else { # Parallel processing is desired.
+        # Set the BPparam RNGseed if the user ran set.seed(someNumber) themselves
+        if (Sys.info()["sysname"] == "Windows") {
+            # Only SnowParam suits Windows
             BPparam <- BiocParallel::SnowParam(min(
                 cores,
                 BiocParallel::snowWorkers("SOCK")
@@ -27,10 +28,8 @@
             ),
             RNGseed = seed
             )
-            ## Multicore is faster than SNOW, but it doesn't work on Windows.
-        } else { ## Something weird.
-            BPparam <- BiocParallel::bpparam() ## BiocParallel will figure it out.
-        }
-    }
+            # Multicore is faster than SNOW, but it does not work on Windows
+        } else {
+            BPparam <- BiocParallel::bpparam()}}
     BPparam
 }

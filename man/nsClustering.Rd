@@ -4,22 +4,38 @@
 \alias{nsClustering}
 \title{Non-spatial clustering}
 \usage{
-nsClustering(spe, dimRed = "PCA", reclust, ...)
+nsClustering(spe, samples, dimRed = "PCA", batch = FALSE, reclust, ...)
 }
 \arguments{
-\item{spe}{SpatialExperiment object. For reclust = FALSE, the object should contain logcounts and PCA, but for reculst = TRUE, the object should contain smoothed gene expression.}
+\item{spe}{SpatialExperiment object. For reclust = FALSE, the object should
+contain logcounts and PCA, but for reculst = TRUE, the object should contain
+smoothed gene expression.}
 
-\item{dimRed}{a character indicating the name of the reduced dimensions to use from the SpatialExperiment object (i.e., from reducedDimNames(spe)). Default value is 'PCA'.}
+\item{dimRed}{a character indicating the name of the reduced dimensions to
+use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
+Default value is 'PCA'.}
+
+\item{batch}{a logical parameter for whether or not to perform batch
+correction. Default value is FALSE.}
 
 \item{reclust}{a logical parameter handled within the method.}
 
-\item{...}{additional parameters for TwoStepParam clustering methods. Include parameters like k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".}
+\item{...}{additional parameters for TwoStepParam clustering methods. Include
+parameters like k for number of nearest neighbours and cluster.fun for
+selecting community detection method. Default values k = 5, cluster.fun =
+"louvain".}
 }
 \value{
-SpatialExperiment object containing 'putative cell type' group allotted to each cell (reclust = FALSE) or clusters generated from smoothed data (reclust = TRUE).
+SpatialExperiment object containing 'putative cell type' group
+allotted to each cell (reclust = FALSE) or clusters generated from smoothed
+data (reclust = TRUE).
 }
 \description{
-A function containing two steps used at different times in the clustSIGNAL workflow. An initial non-spatial clustering and sub-clustering step (reclust = FALSE) is used to generate groups of ‘putative cell types’, whereas a later non-spatial clustering step (reclust = TRUE) is used to cluster adaptively smoothed gene expression data.
+A function containing two steps used at different times in the clustSIGNAL
+workflow. An initial non-spatial clustering and sub-clustering step (reclust =
+FALSE) is used to generate groups of ‘putative cell types’, whereas a later
+non-spatial clustering step (reclust = TRUE) is used to cluster adaptively
+smoothed gene expression data.
 }
 \examples{
 data(example)

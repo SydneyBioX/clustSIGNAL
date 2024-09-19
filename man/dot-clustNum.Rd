@@ -7,12 +7,15 @@
 .clustNum(cell, subClust)
 }
 \arguments{
-\item{cell}{a vector of neighbourhood cell indices. The cell indices indicate the row number of cells in sample metadata.}
+\item{cell}{a vector of neighbourhood cell indices. The cell indices indicate
+the row number of cells in sample metadata.}
 
-\item{subClust}{a data frame of 'putative cell type' assignments of all cells in the sample.}
+\item{subClust}{a data frame of 'putative cell type' assignments of all cells
+in the sample.}
 }
 \value{
-a data frame of 'putative cell type' assignments of neighbourhood cells.
+a data frame of 'putative cell type' assignments of neighbourhood
+cells.
 }
 \description{
 A function to fetch 'putative cell type' assignments of cell.

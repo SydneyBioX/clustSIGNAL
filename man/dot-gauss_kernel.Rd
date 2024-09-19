@@ -9,12 +9,15 @@
 \arguments{
 \item{ed}{a numeric value for entropy of the neighbourhood.}
 
-\item{NN}{an integer for the number of neighbourhood cells the function should consider. The value must be greater than or equal to 1. Default value is 30.}
+\item{NN}{an integer for the number of neighbourhood cells the function
+should consider. The value must be greater than or equal to 1. Default value
+is 30.}
 
 \item{sd}{a numeric value for standard deviation of Gaussian distribution.}
 }
 \value{
-a matrix where each column contains weights related to specific entropy values.
+a matrix where each column contains weights related to specific
+entropy values.
 }
 \description{
 A function to generate weights from a Gaussian distribution.

@@ -9,6 +9,7 @@ clustSIGNAL(
   samples,
   cells,
   dimRed = "None",
+  batch = FALSE,
   NN = 30,
   kernel = "G",
   spread = 0.05,
@@ -21,37 +22,64 @@ clustSIGNAL(
 \arguments{
 \item{spe}{a SpatialExperiment object.}
 
-\item{samples}{a character indicating name of colData(spe) column containing sample names.}
+\item{samples}{a character indicating name of colData(spe) column containing
+sample names.}
 
-\item{cells}{a character indicating name of colData(spe) column containing cell IDs.}
+\item{cells}{a character indicating name of colData(spe) column containing
+cell IDs.}
 
-\item{dimRed}{a character indicating the name of the reduced dimensions to use from the SpatialExperiment object (i.e., from reducedDimNames(spe)). Default value is 'PCA'.}
+\item{dimRed}{a character indicating the name of the reduced dimensions to
+use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
+Default value is 'None'.}
 
-\item{NN}{an integer for the number of neighbourhood cells the function should consider. The value must be greater than or equal to 1. Default value is 30.}
+\item{batch}{a logical parameter for whether or not to perform batch
+correction. Default value is FALSE.}
 
-\item{kernel}{a character for type of distribution to be used. The two valid values are "G" or "E". G for Gaussian distribution, and E for exponential distribution. Default value is "G".}
+\item{NN}{an integer for the number of neighbourhood cells the function
+should consider. The value must be greater than or equal to 1. Default value
+is 30.}
 
-\item{spread}{a numeric value for distribution spread, represented by standard deviation for Gaussian distribution and rate for exponential distribution. Default value is 0.05 for Gaussian distribution and 20 for exponential distribution.}
+\item{kernel}{a character for type of distribution to be used. The two valid
+values are "G" or "E". G for Gaussian distribution, and E for exponential
+distribution. Default value is "G".}
 
-\item{sort}{a logical parameter for whether or not to sort the neighbourhood after region description. Default value is TRUE.}
+\item{spread}{a numeric value for distribution spread, represented by standard
+deviation for Gaussian distribution and rate for exponential distribution.
+Default value is 0.05 for Gaussian distribution and 20 for exponential
+distribution.}
 
-\item{threads}{a numeric value for the number of CPU cores to be used for the analysis. Default value set to 4 cores.}
+\item{sort}{a logical parameter for whether or not to sort the neighbourhood
+after region description. Default value is TRUE.}
 
-\item{outputs}{a character for the type of output to return to the user. "c" for data frame of cell IDs and their respective cluster numbers (default), "n" for list of dataframe of clusters plus neighbourhood matrix, "s" for list of dataframe of clusters plus final spatialExperiment object, or "a" for list of all outputs.}
+\item{threads}{a numeric value for the number of CPU cores to be used for the
+analysis. Default value set to 1.}
 
-\item{...}{additional parameters for TwoStepParam clustering methods. Include parameters like k for number of nearest neighbours and cluster.fun for selecting community detection method. Default values k = 5, cluster.fun = "louvain".}
+\item{outputs}{a character for the type of output to return to the user. "c"
+for data frame of cell IDs and their respective cluster numbers (default), "n"
+for list of dataframe of clusters plus neighbourhood matrix, "s" for list of
+dataframe of clusters plus final spatialExperiment object, or "a" for list of
+all outputs.}
+
+\item{...}{additional parameters for TwoStepParam clustering methods. Include
+parameters like k for number of nearest neighbours and cluster.fun for
+selecting community detection method.}
 }
 \value{
 a list of outputs
 
 1. clusters: a data frame of cell names and their cluster classification.
 
-2. neighbours: a matrix of cell names and the names of their NN nearest neighbour cells.
+2. neighbours: a matrix of cell names and the names of their NN nearest
+neighbour cells.
 
-3. spe_final: a SpatialExperiment object with initial 'putative cell type' groups, entropy values, smoothed gene expression, post-smoothing clusters, and silhouette widths included.
+3. spe_final: a SpatialExperiment object with initial 'putative cell type'
+groups, entropy values, smoothed gene expression, post-smoothing clusters,
+and silhouette widths included.
 }
 \description{
-A clustering method for cell type classification of spatial transcriptomics data. The tool generates and uses an adaptively smoothed, spatially informed gene expression data for clustering.
+A clustering method for cell type classification of spatial transcriptomics
+data. The tool generates and uses an adaptively smoothed, spatially informed
+gene expression data for clustering.
 }
 \examples{
 data(example)

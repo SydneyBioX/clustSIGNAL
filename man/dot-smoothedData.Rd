@@ -7,14 +7,17 @@
 .smoothedData(mat, weight)
 }
 \arguments{
-\item{mat}{a gene expression matrix with genes as rows and neighbourhood cells as columns.}
+\item{mat}{a gene expression matrix with genes as rows and neighbourhood
+cells as columns.}
 
-\item{weight}{a column matrix of weights, where number of rows is equal to number of neighbourhood cells.}
+\item{weight}{a column matrix of weights, where number of rows is equal to
+number of neighbourhood cells.}
 }
 \value{
 a column matrix of smoothed gene expression.
 }
 \description{
-A function to perform a weighted moving average of gene expression in a neighbourhood.
+A function to perform a weighted moving average of gene expression in a
+neighbourhood.
 }
 \keyword{internal}
