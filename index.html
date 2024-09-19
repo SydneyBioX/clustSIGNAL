@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="clustSIGNAL: a spatial clustering method">
-<meta name="description" content="clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous nwighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.">
-<meta property="og:description" content="clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous nwighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.">
+<meta name="description" content="clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous neighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.">
+<meta property="og:description" content="clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous neighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,14 +31,8 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/clustSIGNAL.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/v1_seqFISH_mouseEmbryo.html">Single sample analysis</a></li>
-    <li><a class="dropdown-item" href="articles/v2_MERFISH_mouseHypothalamus.html">Multisample analysis</a></li>
-  </ul>
-</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -57,8 +51,8 @@
 </h1></div>
 <p><img src="reference/figures/clustSIGNAL_hex.jpg" align="right" height="250" width="225"></p>
 <p>clustSIGNAL: <strong><em>clust</em></strong>ering of <strong><em>S</em></strong>patially <strong><em>I</em></strong>nformed <strong><em>G</em></strong>ene expression with <strong><em>N</em></strong>eighbourhood <strong><em>A</em></strong>dapted <strong><em>L</em></strong>earning.</p>
-<p>An R package to perform spatial clustering on spatially-resolved transcriptomics datasets. Here, we calculate entropy as a measure of “domainness” of cell neighbourhoods, and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. This approach not only overcomes data sparsity in the gene expression but also incorporates spatial context in the form of cell arrangement information from the neighbourhood. The resulting adaptively smoothed gene expression is used for downstream analyses like clustering.</p>
-<p>For tutorials on how to use clustSIGNAL, see the vignettes at this <a href="https://sydneybiox.github.io/clustSIGNAL/">website</a>.</p>
+<p>An R package to perform spatially-resolved clustering on spatial transcriptomics data. Here, we calculate entropy as a measure of “domainness” of cell neighbourhoods and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. This approach not only overcomes data sparsity in the gene expression but also incorporates spatial context in the form of cell arrangement information from the neighbourhood. The resulting adaptively smoothed gene expression is used for downstream analyses like clustering.</p>
+<p>For a tutorial on how to use clustSIGNAL, see the vignette at this <a href="https://sydneybiox.github.io/clustSIGNAL/">website</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -70,7 +64,7 @@
 <div class="section level2">
 <h2 id="method-description">Method description<a class="anchor" aria-label="anchor" href="#method-description"></a>
 </h2>
-<p><img src="reference/figures/Fig1_schematic.png" align="middle"></p>
+<p><img src="reference/figures/Fig1_schematic.jpg" align="middle"></p>
 <p><strong>Figure: clustSIGNAL method overview.</strong></p>
 <p>Here, we present clustSIGNAL, a spatial clustering method developed to handle data sparsity while considering the variability in cell arrangement of tissue regions. The core steps involved in the method are sequential:</p>
 <p><strong>1.</strong> The method starts with non-spatial clustering and subclustering (default louvain clustering) to classify cells into subclusters that we refer to as ‘putative cell type’ groups.</p>
@@ -86,10 +80,11 @@
 </h2>
 <p>The clustSIGNAL package uses a SpatialExperiment object as input. We provide users with a number of parameters to explore and experiment with, as well as prior tested default values for quick runs. clustSIGNAL can be used for single sample or multisample analysis with just one function call. Below is the list of the parameters offered and their possible values:</p>
 <ul>
-<li><p><strong>spe</strong> - SpatialExperiment object with cell spatial coordinates in <em>spatialCoords</em> matrix.</p></li>
+<li><p><strong>spe</strong> - SpatialExperiment object with cell <a href="#id_#" title="spatialCoords(spe)">spatial coordinates</a> matrix and <a href="#id_#" title="logcounts(spe)">normalized counts</a> of gene expression.</p></li>
 <li><p><strong>samples</strong> - column name in <a href="#id_#" title="colData(spe)">cell metadata</a> containing sample names.</p></li>
 <li><p><strong>cells</strong> - column name in <a href="#id_#" title="colData(spe)">cell metadata</a> containing cell IDs.</p></li>
-<li><p><strong>dimRed</strong> - dimensionality reduction method name in <a href="#id_#" title="reducedDimNames(spe)">low embedding data</a>. Default is “None”, in which case PCA is calculated and used as low dimension data.</p></li>
+<li><p><strong>dimRed</strong> - dimensionality reduction method name in <a href="#id_#" title="reducedDimNames(spe)">low embedding data</a>. Default value is “None”, in which case PCA is calculated and used as low dimension data.</p></li>
+<li><p><strong>batch</strong> - whether batch correction should be performed. Default value is FALSE.</p></li>
 <li><p><strong>NN</strong> - neighbourhood size in terms of the number of nearest neighbours to consider. Value should be &gt; 1. Default value is 30.</p></li>
 <li><p><strong>kernel</strong> - type of weight distribution to use. Can be Gaussian (default) or exponential distribution.</p></li>
 <li><p><strong>spread</strong> - value of distribution parameter - standard deviation of Gaussian distribution or rate of exponential distribution. Default value is 0.05, recommended for Gaussian distribution. For exponential distribution, recommended value is 20.</p></li>
@@ -107,13 +102,12 @@
 <code class="sourceCode R"><span><span class="co"># load required packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sydneybiox.github.io/clustSIGNAL/">clustSIGNAL</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mouseEmbryo2</span><span class="op">)</span></span>
-<span><span class="va">spe</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Here, the cell labels are in the column 'uniqueID' and sample labels are in 'embryo' column.</span></span>
-<span></span>
+<span><span class="co"># Here, the cell labels are in the column 'uniqueID' and sample labels are in 'sample_id' column.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
-<span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, samples <span class="op">=</span> <span class="st">"embryo"</span>, cells <span class="op">=</span> <span class="st">"uniqueID"</span>, dimRed <span class="op">=</span> <span class="st">"PCA"</span>, cluster.fun <span class="op">=</span> <span class="st">"leiden"</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, samples <span class="op">=</span> <span class="st">"sample_id"</span>, cells <span class="op">=</span> <span class="st">"uniqueID"</span>, </span>
+<span>                   cluster.fun <span class="op">=</span> <span class="st">"leiden"</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -146,7 +140,7 @@
 <li>Boyi Guo <br><small class="roles"> Author </small>  </li>
 <li>Haowen Zhao <br><small class="roles"> Author </small>  </li>
 <li>Stephanie Hicks <br><small class="roles"> Author </small>  </li>
-<li>Shila Ghazanfar <br><small class="roles"> Author, contributor </small>  </li>
+<li>Shila Ghazanfar <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0001-7861-6997" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -161,7 +155,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
