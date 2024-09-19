@@ -11,6 +11,9 @@ nsClustering(spe, samples, dimRed = "PCA", batch = FALSE, reclust, ...)
 contain logcounts and PCA, but for reculst = TRUE, the object should contain
 smoothed gene expression.}
 
+\item{samples}{a character indicating name of colData(spe) column containing
+sample names.}
+
 \item{dimRed}{a character indicating the name of the reduced dimensions to
 use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
 Default value is 'PCA'.}
