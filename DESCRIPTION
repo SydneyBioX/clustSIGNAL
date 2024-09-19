@@ -1,19 +1,24 @@
 Package: clustSIGNAL
 Type: Package
 Title: clustSIGNAL: a spatial clustering method
-Version: 0.1.0
+Version: 0.99.0
 Authors@R: c(
-    person("Pratibha", "Panwar", email = "pratibhapanwar.4@gmail.com", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-7437-7084")),
+    person("Pratibha", "Panwar", email = "pratibhapanwar.4@gmail.com", 
+    role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-7437-7084")),
     person("Boyi", "Guo", email = "boyi.guo.work@gmail.com", role = "aut"),
     person("Haowen", "Zhao", email = "haowen.zhou19@gmail.com", role = "aut"),
     person("Stephanie", "Hicks", email = "shicks19@jhu.edu", role = "aut"),
-    person("Shila", "Ghazanfar", email = "shazanfar@gmail.com", role = c("aut", "ctb")))
-Description: clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. 
-    A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure 
-    heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous 
-    neighbourhoods are smoothed more and heterogeneous nwighbourhoods are smoothed less. This not only overcomes 
-    data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene 
-    expression data is used for clustering and could be used for other downstream analyses.
+    person("Shila", "Ghazanfar", email = "shazanfar@gmail.com", 
+    role = c("aut", "ctb"), comment = c(ORCID = "0000-0001-7861-6997")))
+Description: clustSIGNAL: clustering of Spatially Informed Gene expression with 
+    Neighbourhood Adapted Learning. A tool for adaptively smoothing and clustering 
+    gene expression data. clustSIGNAL uses entropy to measure heterogeneity of 
+    cell neighbourhoods and performs a weighted, adaptive smoothing, where 
+    homogeneous neighbourhoods are smoothed more and heterogeneous neighbourhoods 
+    are smoothed less. This not only overcomes data sparsity but also incorporates 
+    spatial context into the gene expression data. The resulting smoothed gene 
+    expression data is used for clustering and could be used for other downstream 
+    analyses.
 License: GPL-2
 Encoding: UTF-8
 URL: https://sydneybiox.github.io/clustSIGNAL/
@@ -25,6 +30,7 @@ Imports: BiocParallel,
     BiocNeighbors, 
     bluster, 
     scater,
+    harmony,
     SingleCellExperiment,
     SummarizedExperiment,
     methods
