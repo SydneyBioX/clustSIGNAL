@@ -95,18 +95,25 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
 
     # Non-spatial clustering to identify initial cluster groups
     # reclust should always be FALSE here
-    spe <- nsClustering(spe, samples, dimRed, batch, reclust = FALSE, ...)
+    spe <- nsClustering(spe = spe, samples = samples, dimRed = dimRed,
+                        batch = batch, reclust = FALSE, ...)
     # Neighborhood detection, and sorting if sort = TRUE
-    outReg <- neighbourDetect(spe, samples, NN, cells, sort)
+    outReg <- neighbourDetect(spe = spe, samples = samples, NN = NN,
+                              cells = cells, sort = sort)
     # Calculating domainness of cell neighborhoods
-    spe <- entropyMeasure(spe, cells, outReg$regXclust, threads)
+    spe <- entropyMeasure(spe = spe, cells = cells,
+                          regXclust = outReg$regXclust, threads = threads)
     # Weighted smoothing guided by neighbourhood entropy
-    spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, threads)
+    spe <- adaptiveSmoothing(spe = spe, nnCells = outReg$nnCells, NN = NN,
+                             kernel = kernel, spread = spread,
+                             threads = threads)
     # Non-spatial clustering of adaptively smoothed expression
     # reclust should always be TRUE here
-    spe <- nsClustering(spe, batch, reclust = TRUE, ...)
+    spe <- nsClustering(spe = spe, samples = samples, batch = batch,
+                        reclust = TRUE, ...)
 
-    cluster_df <- data.frame("Cells" = spe[[cells]], "Clusters" = spe$clustSIGNAL)
+    cluster_df <- data.frame("Cells" = spe[[cells]],
+                             "Clusters" = spe$clustSIGNAL)
     time_end <- Sys.time()
     show(paste("clustSIGNAL run completed.", format(Sys.time(),'%H:%M:%S')))
     show(time_end - time_start)
