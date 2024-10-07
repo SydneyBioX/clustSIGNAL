@@ -30,20 +30,21 @@
 #' @importFrom SummarizedExperiment assay
 #' @importFrom methods show as
 #' @importFrom BiocParallel bplapply
+#' @importFrom rlist list.cbind
 #'
 #' @examples
 #' data(example)
 #'
 #' # requires matrix containing NN nearest neighbour cell labels (nnCells),
 #' # generated using the neighbourDetect() function
-#' spe <- adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.05)
+#' spe <- adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.05,
+#'                          threads = 1)
 #' spe
 #'
 #' @export
 
 #### Smoothing
-adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G",
-                              spread = 0.05, threads = 1) {
+adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, threads) {
     ed <- unique(spe$entropy)
     gXc <- as(logcounts(spe), "sparseMatrix")
     if (kernel == "G") {
@@ -54,38 +55,39 @@ adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G",
         weights <- .exp_kernel(ed, NN + 1, spread)}
 
     outMats <- matrix(nrow = nrow(spe), ncol = 0)
-    for (val in seq_len(length(ed))) {
-        # cells with same entropy value will have same weights
-        entCells <- colnames(spe[, spe$entropy == ed[val]])
-        e <- paste0("E", ed[val])
-        if (length(entCells) == 1) {
-            region <- as.vector(nnCells[entCells, ])
-            inMat <- as.matrix(gXc[, region])
-            tmpMat <- .smoothedData(inMat, weights[, e])
-            colnames(tmpMat) <- entCells
-        } else {
-            inMatList <- list()
-            for (x in entCells) {
-                # names of central cell + NN cells
-                region <- as.vector(nnCells[x, ])
-                # gene expression matrix of NN cells
-                inMatList[[x]] <- as.matrix(gXc[, region])}
-            BPPARAM <- .generateBPParam(cores = threads)
-            out <- BiocParallel::bplapply(inMatList,
-                                          function(imat){
-                                              omat <- .smoothedData(mat = imat,
-                                                                    weight = weights[, e])
-                                              omat},
-                                          BPPARAM = BPPARAM)
-            # out <- lapply(inMatList, .smoothedData, weight = weights[, e])
-            tmpMat <- matrix(unlist(out),
-                             ncol = length(out),
-                             dimnames = list(rownames(out[[1]]),
-                                             sapply(out, names)))
-            colnames(tmpMat) <- names(out)}
-        outMats <- cbind(outMats, tmpMat)}
+    BPPARAM <- .generateBPParam(cores = threads)
+    out_main <- BiocParallel::bplapply(ed,
+                                       function(val){
+                                           entCells <- colnames(spe[, spe$entropy == val])
+                                           # show(paste(val, length(entCells)))
+                                           e <- paste0("E", val)
+                                           if (length(entCells) == 1) {
+                                               region <- as.vector(nnCells[entCells, ])
+                                               inMat <- as.matrix(gXc[, region])
+                                               tmpMat <- .smoothedData(inMat, weights[, e])
+                                               colnames(tmpMat) <- entCells
+                                               tmpMat
+                                           } else {
+                                               out_sub <- lapply(entCells, function(x){
+                                                   # names of central cell + NN cells
+                                                   region <- as.vector(nnCells[x, ])
+                                                   # gene expression matrix of NN cells
+                                                   inMat <- as.matrix(gXc[, region])
+                                                   omat <- .smoothedData(mat = inMat,
+                                                                         weight = weights[, e])
+                                                   omat})
+                                               tmpMat <- matrix(unlist(out_sub),
+                                                                ncol = length(out_sub),
+                                                                dimnames = list(rownames(out_sub[[1]]),
+                                                                                entCells))
+                                               tmpMat}
+                                           outMats <- cbind(outMats, tmpMat)
+                                           outMats
+                                       },
+                                       BPPARAM = BPPARAM)
+    out_main_comb <- rlist::list.cbind(out_main)
     # rearrange the cells in smoothed data matrix
-    smoothMat <- outMats[, as.vector(colnames(spe))]
+    smoothMat <- out_main_comb[, as.vector(colnames(spe))]
 
     # QC check
     check.genes <- identical(rownames(spe), rownames(smoothMat))
