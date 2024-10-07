@@ -39,15 +39,15 @@
 #'
 #' # reclust = FALSE for non-spatial clustering of normalised counts
 #' # reclust = TRUE for non-spatial clustering of adaptively smoothed counts
-#' spe <- nsClustering(spe, dimRed = "PCA", reclust = FALSE)
+#' spe <- nsClustering(spe, samples = "sample_id", dimRed = "PCA", batch = FALSE,
+#'                     reclust = FALSE)
 #' head(spe$nsCluster)
 #' head(spe$nsSubcluster)
 #'
 #' @export
 
 #### Non-spatial clustering
-nsClustering <- function(spe, samples, dimRed = "PCA", batch = FALSE,
-                         reclust, ...) {
+nsClustering <- function(spe, samples, dimRed, batch, reclust, ...) {
     # number of centers = 1/5th of total cells in sample
     clustVal <- min(as.integer(ncol(spe) / 5), 5000)
     if (reclust == FALSE) {

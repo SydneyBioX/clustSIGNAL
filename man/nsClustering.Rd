@@ -4,7 +4,7 @@
 \alias{nsClustering}
 \title{Non-spatial clustering}
 \usage{
-nsClustering(spe, samples, dimRed = "PCA", batch = FALSE, reclust, ...)
+nsClustering(spe, samples, dimRed, batch, reclust, ...)
 }
 \arguments{
 \item{spe}{SpatialExperiment object. For reclust = FALSE, the object should
@@ -45,7 +45,8 @@ data(example)
 
 # reclust = FALSE for non-spatial clustering of normalised counts
 # reclust = TRUE for non-spatial clustering of adaptively smoothed counts
-spe <- nsClustering(spe, dimRed = "PCA", reclust = FALSE)
+spe <- nsClustering(spe, samples = "sample_id", dimRed = "PCA", batch = FALSE,
+                    reclust = FALSE)
 head(spe$nsCluster)
 head(spe$nsSubcluster)
 
