@@ -4,7 +4,7 @@
 \alias{neighbourDetect}
 \title{Cell neighbourhood detection}
 \usage{
-neighbourDetect(spe, samples, NN = 30, cells, sort = TRUE)
+neighbourDetect(spe, samples, NN, cells, sort)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, and 'putative cell

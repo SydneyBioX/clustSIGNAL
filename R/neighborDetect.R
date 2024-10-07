@@ -41,7 +41,7 @@
 #' @export
 
 #### Region description + sorting
-neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
+neighbourDetect <- function(spe, samples, NN, cells, sort) {
     samplesList <- unique(spe[[samples]])
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
     nnClusts <- matrix(nrow = 0, ncol = NN)
