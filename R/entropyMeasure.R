@@ -31,13 +31,13 @@
 #' @export
 
 #### Domainness measure
-entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
+entropyMeasure <- function(spe, cells, regXclust, threads) {
     cell_vect <- as.vector(spe[[cells]])
     BPPARAM <- .generateBPParam(cores = threads)
     regEntropy <- BiocParallel::bplapply(cell_vect, function(c){
         arr <- as.vector(unlist(regXclust[c]))
         # calculate Shannon's entropy
-        y <- matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1)
+        y <- round(matrix(-sum(arr * log2(arr)), nrow = 1, ncol = 1), 5)
         rownames(y) <- c
         y}, BPPARAM = BPPARAM)
 
