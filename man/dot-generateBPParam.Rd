@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{.generateBPParam}
 \alias{.generateBPParam}
-\title{Exponential distribution weights}
+\title{Generating BPParam object}
 \usage{
 .generateBPParam(cores = 1)
 }

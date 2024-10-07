@@ -1,4 +1,4 @@
-#' Exponential distribution weights
+#' Generating BPParam object
 #'
 #' @description
 #' A utility function to generate BPPARAM object.
