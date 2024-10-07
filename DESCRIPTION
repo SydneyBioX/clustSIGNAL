@@ -1,7 +1,7 @@
 Package: clustSIGNAL
 Type: Package
 Title: clustSIGNAL: a spatial clustering method
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: c(
     person("Pratibha", "Panwar", email = "pratibhapanwar.4@gmail.com", 
     role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-7437-7084")),
@@ -33,7 +33,8 @@ Imports: BiocParallel,
     harmony,
     SingleCellExperiment,
     SummarizedExperiment,
-    methods
+    methods,
+    rlist
 Suggests: knitr,
     BiocStyle,
     aricode,
