@@ -10,7 +10,14 @@ For a tutorial on how to use clustSIGNAL, see the vignette at this [website](htt
 
 ## Installation
 
-You can install the clustSIGNAL package from [GitHub](https://github.com/SydneyBioX/clustSIGNAL) with:
+To install clustSIGNAL via Bioconductor:
+
+``` r
+library(BiocManager)
+BiocManager::install("clustSIGNAL")
+```
+
+To install clustSIGNAL from [GitHub](https://github.com/SydneyBioX/clustSIGNAL):
 
 ``` r
 # install.packages("devtools")

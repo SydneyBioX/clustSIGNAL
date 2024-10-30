@@ -10,13 +10,15 @@ clustSIGNAL(
   cells,
   dimRed = "None",
   batch = FALSE,
+  batch_by = "None",
   NN = 30,
   kernel = "G",
   spread = 0.05,
   sort = TRUE,
   threads = 1,
   outputs = "c",
-  ...
+  clustParams = list(clust_c = 0, subclust_c = 0, iter.max = 30, k = 5, cluster.fun =
+    "louvain")
 )
 }
 \arguments{
@@ -34,6 +36,9 @@ Default value is 'None'.}
 
 \item{batch}{a logical parameter for whether or not to perform batch
 correction. Default value is FALSE.}
+
+\item{batch_by}{a character indicating name of colData(spe) column containing
+the batch names.}
 
 \item{NN}{an integer for the number of neighbourhood cells the function
 should consider. The value must be greater than or equal to 1. Default value
@@ -55,24 +60,23 @@ after region description. Default value is TRUE.}
 analysis. Default value set to 1.}
 
 \item{outputs}{a character for the type of output to return to the user. "c"
-for data frame of cell IDs and their respective cluster numbers (default), "n"
-for list of dataframe of clusters plus neighbourhood matrix, "s" for list of
-dataframe of clusters plus final spatialExperiment object, or "a" for list of
-all outputs.}
+for data frame of cell IDs and their respective cluster numbers (default)
+and "a" for list of dataframe of clusters plus final SpatialExperiment
+object.}
 
-\item{...}{additional parameters for TwoStepParam clustering methods. Include
-parameters like k for number of nearest neighbours and cluster.fun for
-selecting community detection method.}
+\item{clustParams}{a list of parameters for TwoStepParam clustering methods.
+The clustering parameters are in the order - centers (centers) for clustering
+with KmeansParam, centers (centers) for sub-clustering clusters with
+KmeansParam, maximum iterations (iter.max) for clustering with KmeansParam,
+k values (k) for clustering with NNGraphParam, and community detection method
+(cluster.fun) to use with NNGraphParam.}
 }
 \value{
 a list of outputs
 
 1. clusters: a data frame of cell names and their cluster classification.
 
-2. neighbours: a matrix of cell names and the names of their NN nearest
-neighbour cells.
-
-3. spe_final: a SpatialExperiment object with initial 'putative cell type'
+2. spe_final: a SpatialExperiment object with initial 'putative cell type'
 groups, entropy values, smoothed gene expression, post-smoothing clusters,
 and silhouette widths included.
 }

@@ -46,8 +46,8 @@ data(example)
 
 # requires matrix containing NN nearest neighbour cell labels (nnCells),
 # generated using the neighbourDetect() function
-spe <- adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.05,
-                         threads = 1)
+spe <- clustSIGNAL::adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G",
+                                      spread = 0.05, threads = 1)
 spe
 
 }

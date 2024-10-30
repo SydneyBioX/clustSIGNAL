@@ -43,8 +43,8 @@ the central cell are arranged closer to it.
 \examples{
 data(example)
 
-out_list <- neighbourDetect(spe, samples = "sample_id", NN = 30,
-                            cells = "uniqueID", sort = TRUE)
+out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id", NN = 30,
+                                         cells = "uniqueID", sort = TRUE)
 names(out_list)
 
 }

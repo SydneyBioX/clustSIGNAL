@@ -17,6 +17,7 @@
 #'
 #' @return SpatialExperiment object including entropy values for each cell
 #' neighbourhood.
+#'
 #' @importFrom BiocParallel bplapply
 #' @importFrom methods show
 #'
@@ -25,7 +26,7 @@
 #'
 #' # requires list containing cluster proportions of each region (regXclust),
 #' # generated using the neighbourDetect() function
-#' spe <- entropyMeasure(spe, cells = "uniqueID", regXclust, threads = 1)
+#' spe <- clustSIGNAL::entropyMeasure(spe, cells = "uniqueID", regXclust, threads = 1)
 #' head(spe$entropy)
 #'
 #' @export

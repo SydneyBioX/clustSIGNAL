@@ -34,8 +34,8 @@
 #' @examples
 #' data(example)
 #'
-#' out_list <- neighbourDetect(spe, samples = "sample_id", NN = 30,
-#'                             cells = "uniqueID", sort = TRUE)
+#' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id", NN = 30,
+#'                                          cells = "uniqueID", sort = TRUE)
 #' names(out_list)
 #'
 #' @export
@@ -50,7 +50,7 @@ neighbourDetect <- function(spe, samples, NN, cells, sort) {
         xy_pos <- spatialCoords(speX)
         Clust <- as.data.frame(as.character(speX$nsCluster))
         rownames(Clust) <- speX[[cells]]
-        subClust <- as.data.frame(speX$nsSubcluster)
+        subClust <- as.data.frame(speX$initCluster)
         rownames(subClust) <- speX[[cells]]
         # finding NN nearest neighbors for each cell
         nnMatlist <- BiocNeighbors::findKNN(xy_pos, k = NN,

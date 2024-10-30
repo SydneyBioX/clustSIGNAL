@@ -37,6 +37,7 @@ Imports: BiocParallel,
     rlist
 Suggests: knitr,
     BiocStyle,
+    testthat (>= 3.0.0),
     aricode,
     cluster,
     distances,
