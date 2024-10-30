@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
                         <h4 data-toc-skip class="author">Pratibha
 Panwar, Boyi Guo, Haowen Zhou, Stephanie Hicks, Shila Ghazanfar</h4>
             
-            <h4 data-toc-skip class="date">2024-10-08</h4>
+            <h4 data-toc-skip class="date">2024-10-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sydneybiox/clustSIGNAL/blob/main/vignettes/clustSIGNAL.Rmd" class="external-link"><code>vignettes/clustSIGNAL.Rmd</code></a></small>
       <div class="d-none name"><code>clustSIGNAL.Rmd</code></div>
@@ -88,7 +88,7 @@ explore multisample analysis with clustSIGNAL.</p>
 <h2 id="single-sample-analysis-with-clustsignal">Single sample analysis with clustSIGNAL<a class="anchor" aria-label="anchor" href="#single-sample-analysis-with-clustsignal"></a>
 </h2>
 <p>Here, we use the SeqFISH mouse embryo dataset from <a href="https://www.nature.com/articles/s41587-021-01006-2" class="external-link">Lohoff et al,
-2021</a>, which contains spatial transcriptomics data from 3 mouse
+2021</a> , which contains spatial transcriptomics data from 3 mouse
 embryos, with 351 genes and a total of 57,536 cells. For this vignette,
 we subset the data by randomly selecting 5000 cells from Embryo 2,
 excluding cells that were manually annotated as ‘Low quality’.</p>
@@ -136,10 +136,11 @@ SpatialExperiment object, two variables holding colData column names
 containing sample and cell labels, and the type of output the user would
 like to see. Other parameters that can be modified include dimRed to
 specify the low dimension data to use, batch to perform batch
-correction, NN to specify the neighbourhood size, kernel for weight
+correction, batch_by to indicate sample batches contributing to batch
+effect, NN to specify the neighbourhood size, kernel for weight
 distribution to use, spread for distribution spread value, sort to sort
 the neighbourhood, threads to specify the number of cpus to use in
-parallel runs, and … for additional parameters for clustering steps.</p>
+parallel runs, and clustParams to specify clustering parameters.</p>
 <p>Furthermore, the adaptively smoothed gene expression data generated
 by clustSIGNAL could be useful for other downstream analyses and will be
 accessible to the user if they choose to output the final
@@ -149,16 +150,16 @@ SpatialExperiment object.</p>
 <span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="st">"sample_id"</span></span>
 <span><span class="va">cells</span> <span class="op">&lt;-</span> <span class="st">"uniqueID"</span></span>
 <span><span class="va">res_emb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, <span class="va">cells</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Calculating PCA. Time 00:22:28"</span></span>
-<span><span class="co">## [1] "clustSIGNAL run started. Time 00:22:28"</span></span>
-<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 11 Time 00:22:29"</span></span>
-<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 52 Time 00:22:31"</span></span>
-<span><span class="co">## [1] "Regions defined. Time 00:22:34"</span></span>
-<span><span class="co">## [1] "Region domainness calculated. Time 00:22:34"</span></span>
-<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 00:23:29"</span></span>
-<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 14 Time 00:23:31"</span></span>
-<span><span class="co">## [1] "clustSIGNAL run completed. 00:23:31"</span></span>
-<span><span class="co">## Time difference of 1.049867 mins</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Calculating PCA. Time 23:22:09"</span></span>
+<span><span class="co">## [1] "clustSIGNAL run started. Time 23:22:10"</span></span>
+<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 11 Time 23:22:11"</span></span>
+<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 50 Time 23:22:13"</span></span>
+<span><span class="co">## [1] "Regions defined. Time 23:22:15"</span></span>
+<span><span class="co">## [1] "Region domainness calculated. Time 23:22:16"</span></span>
+<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 23:23:06"</span></span>
+<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 16 Time 23:23:07"</span></span>
+<span><span class="co">## [1] "clustSIGNAL run completed. 23:23:07"</span></span>
+<span><span class="co">## Time difference of 58.13375 secs</span></span></code></pre>
 <p>This returns a list that can contain a dataframe of cluster names, a
 matrix of cell labels from each region’s neighbourhood, a final
 SpatialExperiment object, or a combination of these, depending on the
@@ -166,15 +167,15 @@ choice of ‘outputs’ selected. Here, the output contains all three data
 types.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">res_emb</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "clusters"   "neighbours" "spe_final"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "clusters"  "spe_final"</span></span></code></pre>
 <p>The cluster dataframe contains cell labels and their cluster numbers
 allotted by clustSIGNAL.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res_emb</span><span class="op">$</span><span class="va">clusters</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                      Cells Clusters</span></span>
-<span><span class="co">## 1 embryo2_Pos29_cell100_z2       10</span></span>
-<span><span class="co">## 2 embryo2_Pos29_cell101_z5       10</span></span>
-<span><span class="co">## 3 embryo2_Pos29_cell104_z2       10</span></span></code></pre>
+<span><span class="co">## 1 embryo2_Pos29_cell100_z2       13</span></span>
+<span><span class="co">## 2 embryo2_Pos29_cell101_z5       13</span></span>
+<span><span class="co">## 3 embryo2_Pos29_cell104_z2       13</span></span></code></pre>
 <p>The final SpatialExperiment object contains the adaptively smoothed
 gene expression data as an additional assay, as well initial clusters,
 entropy values, and clustSIGNAL clusters.</p>
@@ -254,7 +255,8 @@ entropy values to visualize the clustering output.</p>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
 <span>        axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">spt_clust</span> <span class="op">+</span> <span class="va">box_clust</span> <span class="op">+</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="st">"collect"</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">spt_clust</span> <span class="op">+</span> <span class="va">box_clust</span> <span class="op">+</span> <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="st">"collect"</span>, </span>
+<span>                                               widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="clustSIGNAL_files/figure-html/embryo_spatialPlots-1.png" width="700"></p>
 <p>The spatial location (A) and entropy distribution (B) of the clusters
 provide spatial context of the cells and their neighbourhoods, as well
@@ -289,7 +291,7 @@ a cell fits within its assigned cluster compared to other clusters.</p>
 <span>            NMI <span class="op">=</span> <span class="fu">aricode</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/aricode/man/NMI.html" class="external-link">NMI</a></span><span class="op">(</span><span class="va">celltype_mapped_refined</span>, <span class="va">clustSIGNAL</span><span class="op">)</span>,</span>
 <span>            ASW <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">rcSil</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         ARI       NMI        ASW</span></span>
-<span><span class="co">## 1 0.3668453 0.6469266 0.05075243</span></span></code></pre>
+<span><span class="co">## 1 0.3420434 0.6281433 0.03767501</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="entropy-spread-and-distribution">Entropy spread and distribution<a class="anchor" aria-label="anchor" href="#entropy-spread-and-distribution"></a>
@@ -310,7 +312,7 @@ structures.</p>
 <span>            max_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">entropy</span><span class="op">)</span>,</span>
 <span>            mean_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">entropy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   min_Entropy max_Entropy mean_Entropy</span></span>
-<span><span class="co">## 1           0     3.10969     1.420308</span></span></code></pre>
+<span><span class="co">## 1           0     3.05603      1.37066</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Histogram of entropy spread</span></span>
 <span><span class="va">hst_ent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -357,20 +359,21 @@ structure.</p>
 <span>                         colData <span class="op">=</span> <span class="va">me_data</span>, spatialCoordsNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">spe</span><span class="op">)</span></span>
-<span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/nsClustering.html">nsClustering</a></span><span class="op">(</span><span class="va">spe</span>, samples <span class="op">=</span> <span class="st">"sample_id"</span>, dimRed <span class="op">=</span> <span class="st">"PCA"</span>, </span>
-<span>                                 batch <span class="op">=</span> <span class="cn">FALSE</span>, reclust <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 11 Time 00:23:40"</span></span>
-<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 52 Time 00:23:43"</span></span></code></pre>
+<span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/p1_clustering.html">p1_clustering</a></span><span class="op">(</span><span class="va">spe</span>, dimRed <span class="op">=</span> <span class="st">"PCA"</span>, batch <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>                                  batch_by <span class="op">=</span> <span class="st">"None"</span>, clustParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                    <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">30</span>, <span class="fl">5</span>, <span class="st">"louvain"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 11 Time 23:23:17"</span></span>
+<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 50 Time 23:23:19"</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outReg</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/neighbourDetect.html">neighbourDetect</a></span><span class="op">(</span><span class="va">spe</span>, samples <span class="op">=</span> <span class="st">"sample_id"</span>, NN <span class="op">=</span> <span class="fl">30</span>, </span>
 <span>                                       cells <span class="op">=</span> <span class="st">"uniqueID"</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Regions defined. Time 00:23:45"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Regions defined. Time 23:23:21"</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entropyMeasure.html">entropyMeasure</a></span><span class="op">(</span><span class="va">spe</span>, cells <span class="op">=</span> <span class="st">"uniqueID"</span>, <span class="va">outReg</span><span class="op">$</span><span class="va">regXclust</span>, threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Region domainness calculated. Time 00:23:45"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Region domainness calculated. Time 23:23:21"</span></span></code></pre>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spe</span><span class="op">$</span><span class="va">entropy</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1.30331 0.56083 0.87851 0.97034 0.94808 0.35336</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 1.03701 0.42003 0.62749 0.76651 0.56651 0.21084</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="multisample-analysis-with-clustsignal">Multisample analysis with clustSIGNAL<a class="anchor" aria-label="anchor" href="#multisample-analysis-with-clustsignal"></a>
@@ -428,17 +431,17 @@ internally for batch correction.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">110</span><span class="op">)</span></span>
 <span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="st">"samples"</span></span>
 <span><span class="va">cells</span> <span class="op">&lt;-</span> <span class="st">"Cell_ID"</span></span>
-<span><span class="va">res_hyp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe2</span>, <span class="va">samples</span>, <span class="va">cells</span>, batch <span class="op">=</span> <span class="cn">TRUE</span>, threads <span class="op">=</span> <span class="fl">4</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Calculating PCA. Time 00:23:45"</span></span>
-<span><span class="co">## [1] "clustSIGNAL run started. Time 00:23:46"</span></span>
-<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 13 Time 00:23:49"</span></span></code></pre>
-<pre><code><span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 57 Time 00:23:51"</span></span>
-<span><span class="co">## [1] "Regions defined. Time 00:23:54"</span></span>
-<span><span class="co">## [1] "Region domainness calculated. Time 00:23:56"</span></span>
-<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 00:24:17"</span></span>
-<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 11 Time 00:24:20"</span></span>
-<span><span class="co">## [1] "clustSIGNAL run completed. 00:24:20"</span></span>
-<span><span class="co">## Time difference of 35.06137 secs</span></span></code></pre>
+<span><span class="va">res_hyp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe2</span>, <span class="va">samples</span>, <span class="va">cells</span>, threads <span class="op">=</span> <span class="fl">4</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "Calculating PCA. Time 23:23:21"</span></span>
+<span><span class="co">## [1] "clustSIGNAL run started. Time 23:23:22"</span></span>
+<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 11 Time 23:23:23"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 52 Time 23:23:25"</span></span>
+<span><span class="co">## [1] "Regions defined. Time 23:23:27"</span></span>
+<span><span class="co">## [1] "Region domainness calculated. Time 23:23:29"</span></span>
+<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 23:23:50"</span></span>
+<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 11 Time 23:23:52"</span></span>
+<span><span class="co">## [1] "clustSIGNAL run completed. 23:23:52"</span></span>
+<span><span class="co">## Time difference of 30.47005 secs</span></span></code></pre>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe2</span> <span class="op">&lt;-</span> <span class="va">res_hyp</span><span class="op">$</span><span class="va">spe_final</span></span>
 <span><span class="va">spe2</span></span></code></pre></div>
@@ -493,9 +496,9 @@ distribution of cells.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
 <span><span class="co">##   samples   ARI   NMI    ASW min_Entropy max_Entropy mean_Entropy</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 1.-0.09 0.410 0.611 0.074<span style="text-decoration: underline;">6</span>       1.21         4.55         3.33</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 7.-0.09 0.498 0.672 0.121        0.970        4.51         3.41</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 7.0.16  0.532 0.679 0.102        1.17         4.48         3.34</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 1.-0.09 0.445 0.624 0.080<span style="text-decoration: underline;">7</span>       1.32         4.42         3.30</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 7.-0.09 0.511 0.679 0.115        0.970        4.64         3.30</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 7.0.16  0.645 0.744 0.104        0.970        4.42         3.26</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="visualizing-clustsignal-clusters">Visualizing clustSIGNAL clusters<a class="anchor" aria-label="anchor" href="#visualizing-clustsignal-clusters"></a>
@@ -534,7 +537,8 @@ needing explicit mapping between samples.</p>
 <span>  <span class="va">cellOrder</span> <span class="op">&lt;-</span> <span class="va">celltype_ent</span><span class="op">$</span><span class="va">meanEntropy</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cellOrder</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">celltype_ent</span><span class="op">$</span><span class="va">`as.character(clustSIGNAL)`</span></span>
 <span>  <span class="va">cellOrder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">cellOrder</span><span class="op">)</span></span>
-<span>  <span class="va">df_ent_sub</span><span class="op">$</span><span class="va">clustSIGNAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">df_ent_sub</span><span class="op">$</span><span class="va">clustSIGNAL</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cellOrder</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">df_ent_sub</span><span class="op">$</span><span class="va">clustSIGNAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">df_ent_sub</span><span class="op">$</span><span class="va">clustSIGNAL</span>, </span>
+<span>                                   levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cellOrder</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># box plot of cluster entropy</span></span>
 <span>  <span class="va">colors_ent</span> <span class="op">&lt;-</span> <span class="va">colors</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cellOrder</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
@@ -555,7 +559,8 @@ needing explicit mapping between samples.</p>
 <span><span class="va">spt_clust</span> <span class="op">/</span> <span class="op">(</span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">box_clust</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>               <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>axes <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="st">"collect"</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Spatial (top) and entropy (bottom) distributions of clusters"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Spatial (top) and entropy (bottom) distributions of clusters"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="clustSIGNAL_files/figure-html/hypothal_spatialPlots-1.png" width="700"></p>
 <p>The spatial location (top) and entropy distribution (bottom) of the
 clusters can be compared in a multisample analysis, providing spatial
@@ -594,7 +599,8 @@ tissue structure in the samples.</p>
 <span>        axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">hst_ent</span> <span class="op">/</span> <span class="va">spt_ent</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Entropy spread (top) and spatial distribution (bottom)"</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span></span>
+<span>      title <span class="op">=</span> <span class="st">"Entropy spread (top) and spatial distribution (bottom)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="clustSIGNAL_files/figure-html/hypothal_entropyPlots-1.png" width="700"></p>
 <details><summary><strong>Session Information</strong>
 </summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
@@ -624,59 +630,44 @@ tissue structure in the samples.</p>
 <span><span class="co">##  [1] scattermore_1.2             patchwork_1.3.0            </span></span>
 <span><span class="co">##  [3] ggplot2_3.5.1               dplyr_1.1.4                </span></span>
 <span><span class="co">##  [5] aricode_1.0.3               cluster_2.1.6              </span></span>
-<span><span class="co">##  [7] distances_0.1.11            clustSIGNAL_0.99.2         </span></span>
-<span><span class="co">##  [9] SpatialExperiment_1.14.0    SingleCellExperiment_1.26.0</span></span>
-<span><span class="co">## [11] SummarizedExperiment_1.34.0 Biobase_2.64.0             </span></span>
-<span><span class="co">## [13] GenomicRanges_1.56.1        GenomeInfoDb_1.40.1        </span></span>
-<span><span class="co">## [15] IRanges_2.38.1              S4Vectors_0.42.1           </span></span>
-<span><span class="co">## [17] BiocGenerics_0.50.0         MatrixGenerics_1.16.0      </span></span>
-<span><span class="co">## [19] matrixStats_1.4.1           BiocStyle_2.32.1           </span></span>
+<span><span class="co">##  [7] distances_0.1.11            clustSIGNAL_0.99.3         </span></span>
+<span><span class="co">##  [9] SpatialExperiment_1.16.0    SingleCellExperiment_1.28.0</span></span>
+<span><span class="co">## [11] SummarizedExperiment_1.36.0 Biobase_2.66.0             </span></span>
+<span><span class="co">## [13] GenomicRanges_1.58.0        GenomeInfoDb_1.42.0        </span></span>
+<span><span class="co">## [15] IRanges_2.40.0              S4Vectors_0.44.0           </span></span>
+<span><span class="co">## [17] BiocGenerics_0.52.0         MatrixGenerics_1.18.0      </span></span>
+<span><span class="co">## [19] matrixStats_1.4.1           BiocStyle_2.34.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] gridExtra_2.3             rlang_1.1.4              </span></span>
-<span><span class="co">##  [3] magrittr_2.0.3            scater_1.32.1            </span></span>
-<span><span class="co">##  [5] compiler_4.4.1            DelayedMatrixStats_1.26.0</span></span>
-<span><span class="co">##  [7] systemfonts_1.1.0         vctrs_0.6.5              </span></span>
-<span><span class="co">##  [9] pkgconfig_2.0.3           crayon_1.5.3             </span></span>
-<span><span class="co">## [11] fastmap_1.2.0             magick_2.8.5             </span></span>
-<span><span class="co">## [13] XVector_0.44.0            labeling_0.4.3           </span></span>
-<span><span class="co">## [15] scuttle_1.14.0            utf8_1.2.4               </span></span>
-<span><span class="co">## [17] rmarkdown_2.28            UCSC.utils_1.0.0         </span></span>
-<span><span class="co">## [19] ggbeeswarm_0.7.2          ragg_1.3.3               </span></span>
-<span><span class="co">## [21] xfun_0.48                 bluster_1.14.0           </span></span>
-<span><span class="co">## [23] zlibbioc_1.50.0           cachem_1.1.0             </span></span>
-<span><span class="co">## [25] beachmat_2.20.0           jsonlite_1.8.9           </span></span>
-<span><span class="co">## [27] highr_0.11                DelayedArray_0.30.1      </span></span>
-<span><span class="co">## [29] BiocParallel_1.38.0       irlba_2.3.5.1            </span></span>
-<span><span class="co">## [31] parallel_4.4.1            R6_2.5.1                 </span></span>
-<span><span class="co">## [33] bslib_0.8.0               rlist_0.4.6.2            </span></span>
-<span><span class="co">## [35] jquerylib_0.1.4           Rcpp_1.0.13              </span></span>
-<span><span class="co">## [37] bookdown_0.40             knitr_1.48               </span></span>
-<span><span class="co">## [39] Matrix_1.7-0              igraph_2.0.3             </span></span>
-<span><span class="co">## [41] tidyselect_1.2.1          abind_1.4-8              </span></span>
-<span><span class="co">## [43] yaml_2.3.10               viridis_0.6.5            </span></span>
-<span><span class="co">## [45] codetools_0.2-20          lattice_0.22-6           </span></span>
-<span><span class="co">## [47] tibble_3.2.1              withr_3.0.1              </span></span>
-<span><span class="co">## [49] evaluate_1.0.0            desc_1.4.3               </span></span>
-<span><span class="co">## [51] pillar_1.9.0              BiocManager_1.30.25      </span></span>
-<span><span class="co">## [53] generics_0.1.3            sparseMatrixStats_1.16.0 </span></span>
-<span><span class="co">## [55] munsell_0.5.1             scales_1.3.0             </span></span>
-<span><span class="co">## [57] RhpcBLASctl_0.23-42       glue_1.8.0               </span></span>
-<span><span class="co">## [59] tools_4.4.1               BiocNeighbors_1.22.0     </span></span>
-<span><span class="co">## [61] data.table_1.16.0         ScaledMatrix_1.12.0      </span></span>
-<span><span class="co">## [63] fs_1.6.4                  cowplot_1.1.3            </span></span>
-<span><span class="co">## [65] grid_4.4.1                colorspace_2.1-1         </span></span>
-<span><span class="co">## [67] GenomeInfoDbData_1.2.12   beeswarm_0.4.0           </span></span>
-<span><span class="co">## [69] BiocSingular_1.20.0       vipor_0.4.7              </span></span>
-<span><span class="co">## [71] cli_3.6.3                 rsvd_1.0.5               </span></span>
-<span><span class="co">## [73] textshaping_0.4.0         fansi_1.0.6              </span></span>
-<span><span class="co">## [75] S4Arrays_1.4.1            viridisLite_0.4.2        </span></span>
-<span><span class="co">## [77] gtable_0.3.5              sass_0.4.9               </span></span>
-<span><span class="co">## [79] digest_0.6.37             SparseArray_1.4.8        </span></span>
-<span><span class="co">## [81] ggrepel_0.9.6             farver_2.1.2             </span></span>
-<span><span class="co">## [83] rjson_0.2.23              htmltools_0.5.8.1        </span></span>
-<span><span class="co">## [85] pkgdown_2.1.1             lifecycle_1.0.4          </span></span>
-<span><span class="co">## [87] httr_1.4.7                harmony_1.2.1</span></span></code></pre>
+<span><span class="co">##  [1] gridExtra_2.3           rlang_1.1.4             magrittr_2.0.3         </span></span>
+<span><span class="co">##  [4] scater_1.34.0           compiler_4.4.1          systemfonts_1.1.0      </span></span>
+<span><span class="co">##  [7] vctrs_0.6.5             pkgconfig_2.0.3         crayon_1.5.3           </span></span>
+<span><span class="co">## [10] fastmap_1.2.0           magick_2.8.5            XVector_0.46.0         </span></span>
+<span><span class="co">## [13] labeling_0.4.3          scuttle_1.16.0          utf8_1.2.4             </span></span>
+<span><span class="co">## [16] rmarkdown_2.28          UCSC.utils_1.2.0        ggbeeswarm_0.7.2       </span></span>
+<span><span class="co">## [19] ragg_1.3.3              xfun_0.48               bluster_1.16.0         </span></span>
+<span><span class="co">## [22] zlibbioc_1.52.0         cachem_1.1.0            beachmat_2.22.0        </span></span>
+<span><span class="co">## [25] jsonlite_1.8.9          highr_0.11              DelayedArray_0.32.0    </span></span>
+<span><span class="co">## [28] BiocParallel_1.40.0     irlba_2.3.5.1           parallel_4.4.1         </span></span>
+<span><span class="co">## [31] R6_2.5.1                bslib_0.8.0             rlist_0.4.6.2          </span></span>
+<span><span class="co">## [34] jquerylib_0.1.4         Rcpp_1.0.13             bookdown_0.41          </span></span>
+<span><span class="co">## [37] knitr_1.48              Matrix_1.7-0            igraph_2.1.1           </span></span>
+<span><span class="co">## [40] tidyselect_1.2.1        abind_1.4-8             yaml_2.3.10            </span></span>
+<span><span class="co">## [43] viridis_0.6.5           codetools_0.2-20        lattice_0.22-6         </span></span>
+<span><span class="co">## [46] tibble_3.2.1            withr_3.0.2             evaluate_1.0.1         </span></span>
+<span><span class="co">## [49] desc_1.4.3              pillar_1.9.0            BiocManager_1.30.25    </span></span>
+<span><span class="co">## [52] generics_0.1.3          munsell_0.5.1           scales_1.3.0           </span></span>
+<span><span class="co">## [55] glue_1.8.0              tools_4.4.1             BiocNeighbors_2.0.0    </span></span>
+<span><span class="co">## [58] data.table_1.16.2       ScaledMatrix_1.14.0     fs_1.6.4               </span></span>
+<span><span class="co">## [61] cowplot_1.1.3           grid_4.4.1              colorspace_2.1-1       </span></span>
+<span><span class="co">## [64] GenomeInfoDbData_1.2.13 beeswarm_0.4.0          BiocSingular_1.22.0    </span></span>
+<span><span class="co">## [67] vipor_0.4.7             cli_3.6.3               rsvd_1.0.5             </span></span>
+<span><span class="co">## [70] textshaping_0.4.0       fansi_1.0.6             S4Arrays_1.6.0         </span></span>
+<span><span class="co">## [73] viridisLite_0.4.2       gtable_0.3.6            sass_0.4.9             </span></span>
+<span><span class="co">## [76] digest_0.6.37           SparseArray_1.6.0       ggrepel_0.9.6          </span></span>
+<span><span class="co">## [79] farver_2.1.2            rjson_0.2.23            htmltools_0.5.8.1      </span></span>
+<span><span class="co">## [82] pkgdown_2.1.1           lifecycle_1.0.4         httr_1.4.7             </span></span>
+<span><span class="co">## [85] harmony_1.2.1</span></span></code></pre>
 </details>
 </div>
 </div>

@@ -15,7 +15,7 @@ to most cells."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,9 +105,9 @@ another assay.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># requires matrix containing NN nearest neighbour cell labels (nnCells),</span></span></span>
 <span class="r-in"><span><span class="co"># generated using the neighbourDetect() function</span></span></span>
-<span class="r-in"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">adaptiveSmoothing</span><span class="op">(</span><span class="va">spe</span>, <span class="va">nnCells</span>, NN <span class="op">=</span> <span class="fl">30</span>, kernel <span class="op">=</span> <span class="st">"G"</span>, spread <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
-<span class="r-in"><span>                         threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 00:21:56"</span>
+<span class="r-in"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu">adaptiveSmoothing</span><span class="op">(</span><span class="va">spe</span>, <span class="va">nnCells</span>, NN <span class="op">=</span> <span class="fl">30</span>, kernel <span class="op">=</span> <span class="st">"G"</span>,</span></span>
+<span class="r-in"><span>                                      spread <span class="op">=</span> <span class="fl">0.05</span>, threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 23:21:37"</span>
 <span class="r-in"><span><span class="va">spe</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SpatialExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 351 1000 </span>
@@ -117,7 +117,7 @@ another assay.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(0):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(1000): embryo2_Pos29_cell110_z2 embryo2_Pos29_cell117_z2 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   embryo2_Pos50_cell361_z5 embryo2_Pos50_cell372_z2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colData names(7): uniqueID pos ... nsCluster nsSubcluster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> colData names(5): uniqueID sample_id entropy nsCluster initCluster</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> reducedDimNames(1): PCA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mainExpName: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> altExpNames(0):</span>
