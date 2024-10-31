@@ -60,6 +60,8 @@ The clustSIGNAL package uses a SpatialExperiment object as input. We provide use
 
 -   **batch** - whether batch correction should be performed. Default value is FALSE.
 
+-   **batch_by** - column name in [cell metadata](## "colData(spe)") containing the groups by which to perform batch correction.
+
 -   **NN** - neighbourhood size in terms of the number of nearest neighbours to consider. Value should be \> 1. Default value is 30.
 
 -   **kernel** - type of weight distribution to use. Can be Gaussian (default) or exponential distribution.
@@ -70,9 +72,9 @@ The clustSIGNAL package uses a SpatialExperiment object as input. We provide use
 
 -   **threads** - number of cpus to use for parallel runs. Default value is 1.
 
--   **outputs** - choice of output types. Default value is 'c' for data frame of cell IDs and cluster numbers. Other possible values include - 'n' for list of data frame of clusters and matrix of neighbourhood cell IDs, 's' for list of data frame of clusters and final SpatialExperiment object, or 'a' for list of all 3 outputs.
+-   **outputs** - choice of output types. Default value is 'c' for data frame of cell IDs and cluster numbers. Other possible value is "a" for a list of dataframe of clusters plus final SpatialExperiment object.
 
--   **...** - additional options for non-spatial clustering algorithms in the bluster package, e.g., KmeansParam options like centers and iter.max, or NNGraphParam options like k and cluster.fun.
+-   **clustParams** - parameter options for TwoStepParam clustering methods in the bluster package. The clustering parameters are in the order - centers (centers) for clustering with KmeansParam, centers (centers) for sub-clustering clusters with KmeansParam, maximum iterations (iter.max) for clustering with KmeansParam, k values (k) for clustering with NNGraphParam, and community detection method (cluster.fun) to use with NNGraphParam.
 
 ## Running clustSIGNAL
 
@@ -86,6 +88,5 @@ data(example)
 
 # Here, the cell labels are in the column 'uniqueID' and sample labels are in 'sample_id' column.
 set.seed(100)
-res <- clustSIGNAL(spe, samples = "sample_id", cells = "uniqueID", 
-                   cluster.fun = "leiden", outputs = "a")
+res <- clustSIGNAL(spe, samples = "sample_id", cells = "uniqueID", outputs = "a")
 ```
