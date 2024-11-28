@@ -87,8 +87,8 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
         stop("NN cannot be less than 1.")
     } else if (!(kernel %in% c("G", "E"))) {
         stop("Invalid kernel type.")
-    } else if (!(outputs %in% c('c', 'n', 's', 'a'))) {
-        stop("Invalid output type.")}
+    } else if (!(outputs %in% c('c', 'a'))) {
+        stop("Invalid character for output type.")}
 
     if (dimRed == "None") {
         show(paste("Calculating PCA. Time", format(Sys.time(),'%H:%M:%S')))
@@ -99,7 +99,6 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
     show(paste("clustSIGNAL run started. Time", format(Sys.time(),'%H:%M:%S')))
 
     # Non-spatial clustering to identify initial cluster groups
-    # reclust should always be FALSE here
     spe <- p1_clustering(spe, dimRed, batch, batch_by, clustParams)
     # Neighborhood detection, and sorting if sort = TRUE
     outReg <- neighbourDetect(spe, samples, NN, cells, sort)
@@ -108,7 +107,6 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
     # Weighted smoothing guided by neighbourhood entropy
     spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, threads)
     # Non-spatial clustering of adaptively smoothed expression
-    # reclust should always be TRUE here
     spe <- p2_clustering(spe, batch, batch_by, clustParams)
 
     cluster_df <- data.frame("Cells" = spe[[cells]],
