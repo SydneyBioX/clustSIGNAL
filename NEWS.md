@@ -1,3 +1,6 @@
+## clustSIGNAL v0.99.5 (2024-11-28)
+* Fixed issue where absence of spatial coordinates was not throwing error at the beginning of the run.
+
 ## clustSIGNAL v0.99.4 (2024-11-28)
 * Corrected character check for output format type.
 

@@ -75,7 +75,7 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
                                             cluster.fun = "louvain")) {
     time_start <- Sys.time()
     # data and parameter checks
-    if (is.null(spatialCoords(spe)) == TRUE){
+    if (length(spatialCoords(spe)) == 0){
         stop("Spatial coordinates not found.")
     } else if (is.null(logcounts(spe)) == TRUE) {
         stop("Normalised gene expression not found.")
