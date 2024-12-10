@@ -4,7 +4,7 @@
 \alias{neighbourDetect}
 \title{Cell neighbourhood detection}
 \usage{
-neighbourDetect(spe, samples, NN = 30, cells, sort = TRUE)
+neighbourDetect(spe, samples, NN = 30, sort = TRUE)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, and 'putative cell
@@ -16,10 +16,6 @@ object (i.e. the number of rows in colData(spe)).}
 
 \item{NN}{an integer for the number of neighbourhood cells the function should
 consider. The value must be greater than or equal to 1. Default value is 30.}
-
-\item{cells}{a character vector of cell IDs of each cell. Length of vector
-must be equal to the number of cells in SpatialExperiment object (i.e. the
-number of rows in colData(spe)).}
 
 \item{sort}{a logical parameter for whether or not to sort the neighbourhood
 after region description. Default value is TRUE.}
@@ -43,8 +39,7 @@ the central cell are arranged closer to it.
 \examples{
 data(example)
 
-out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id",
-                                         cells = "uniqueID")
+out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
 names(out_list)
 
 }

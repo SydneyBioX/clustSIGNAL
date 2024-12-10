@@ -9,8 +9,6 @@
 #'
 #' @param spe SpatialExperiment object with logcounts, PCA, 'putative cell type'
 #' groups, and entropy outputs included.
-#' @param cells a character indicating name of colData(spe) column containing
-#' cell IDs.
 #' @param nnCells a character matrix of NN nearest neighbours - rows are cells
 #' and columns are their nearest neighbours ranged from closest to farthest
 #' neighbour. For sort = TRUE, the neighbours belonging to the same 'putative
@@ -40,27 +38,27 @@
 #'
 #' # requires matrix containing NN nearest neighbour cell labels (nnCells),
 #' # generated using the neighbourDetect() function
-#' spe <- clustSIGNAL::adaptiveSmoothing(spe, cells = "uniqueID", nnCells)
+#' spe <- clustSIGNAL::adaptiveSmoothing(spe, nnCells)
 #' spe
 #'
 #' @export
 
 #### Smoothing
-adaptiveSmoothing <- function(spe, cells, nnCells, NN = 30, kernel = "G",
+adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G",
                               spread = 0.05, threads = 1) {
     G_mat <- as(logcounts(spe), "sparseMatrix")
     if (kernel == "G") { # generate normal distribution weights
         wts <- .gauss_kernel(spe$entropy, NN + 1, spread)
     } else if (kernel == "E") { # generate exponential distribution weights
         wts <- .exp_kernel(spe$entropy, NN + 1, spread)}
-    colnames(wts) <- spe[[cells]]
+    colnames(wts) <- colnames(spe)
     # scale weights
     wts <- sweep(wts, 2, colSums(wts), FUN = "/")
     # create a cell by cell weight matrix
     BPPARAM <- .generateBPParam(cores = threads)
     all_w <- BiocParallel::bplapply(colnames(wts), function(x) {
         neigh_c <- nnCells[x, ]
-        other_c <- spe[[cells]][!spe[[cells]] %in% neigh_c]
+        other_c <- colnames(spe)[!colnames(spe) %in% neigh_c]
         # tmp_df <- rbind(cbind(neigh_c, rep(x, length(neigh_c)), wts[, x]),
         #                 cbind(other_c, rep(x, length(other_c)), 0)) |>
         #     as.data.frame()
@@ -68,9 +66,9 @@ adaptiveSmoothing <- function(spe, cells, nnCells, NN = 30, kernel = "G",
                         cbind(other_c, 1, 0)) |>
             as.data.frame()
         colnames(tmp_df) <- c("ci", "c", "wci")
-        tmp_df <- tmp_df[match(spe[[cells]], tmp_df$ci), ]
-        tmp_df$ci <- as.integer(match(tmp_df$ci, spe[[cells]]))
-        # tmp_df$c <- as.integer(match(tmp_df$c, spe[[cells]]))
+        tmp_df <- tmp_df[match(colnames(spe), tmp_df$ci), ]
+        tmp_df$ci <- as.integer(match(tmp_df$ci, colnames(spe)))
+        # tmp_df$c <- as.integer(match(tmp_df$c, colnames(spe)))
         tmp_df$c <- as.integer(tmp_df$c)
         tmp_df$wci <- as.numeric(tmp_df$wci)
         tmp_smat <- Matrix::sparseMatrix(i = tmp_df$ci, j = tmp_df$c,
@@ -83,7 +81,7 @@ adaptiveSmoothing <- function(spe, cells, nnCells, NN = 30, kernel = "G",
     rm(all_w, wts)
     invisible(gc())
     smoothMat <- G_mat %*% W_mat
-    colnames(smoothMat) <- spe[[cells]]
+    colnames(smoothMat) <- colnames(spe)
 
     # QC check
     check.genes <- identical(rownames(spe), rownames(smoothMat))

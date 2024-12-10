@@ -12,9 +12,6 @@
 #' object (i.e. the number of rows in colData(spe)).
 #' @param NN an integer for the number of neighbourhood cells the function should
 #' consider. The value must be greater than or equal to 1. Default value is 30.
-#' @param cells a character vector of cell IDs of each cell. Length of vector
-#' must be equal to the number of cells in SpatialExperiment object (i.e. the
-#' number of rows in colData(spe)).
 #' @param sort a logical parameter for whether or not to sort the neighbourhood
 #' after region description. Default value is TRUE.
 #'
@@ -34,14 +31,13 @@
 #' @examples
 #' data(example)
 #'
-#' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id",
-#'                                          cells = "uniqueID")
+#' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
 #' names(out_list)
 #'
 #' @export
 
 #### Region description + sorting
-neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
+neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE) {
     samplesList <- unique(spe[[samples]])
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
     nnClusts <- matrix(nrow = 0, ncol = NN)
@@ -49,9 +45,9 @@ neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
         speX <- spe[, spe[[samples]] == s]
         xy_pos <- spatialCoords(speX)
         Clust <- as.data.frame(as.character(speX$nsCluster))
-        rownames(Clust) <- speX[[cells]]
+        rownames(Clust) <- colnames(speX)
         subClust <- as.data.frame(speX$initCluster)
-        rownames(subClust) <- speX[[cells]]
+        rownames(subClust) <- colnames(speX)
         # finding NN nearest neighbors for each cell
         nnMatlist <- BiocNeighbors::findKNN(xy_pos, k = NN,
                                             BNPARAM = BiocNeighbors::KmknnParam())
@@ -72,14 +68,14 @@ neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
 
     # QC check
     check.cells.dim <- identical(dim(nnCells),
-                                 as.integer(c(length(spe[[cells]]), NN + 1)))
-    check.cells.names <- identical(as.character(nnCells[,1]), spe[[cells]])
+                                 as.integer(c(ncol(spe), NN + 1)))
+    check.cells.names <- identical(as.character(nnCells[,1]), colnames(spe))
     check.cells.NA <- sum(is.na(nnCells))
     check.clusts.dim <- identical(dim(nnClusts),
-                                  as.integer(c(length(spe[[cells]]), NN)))
-    check.clusts.names <- identical(rownames(nnClusts), spe[[cells]])
+                                  as.integer(c(ncol(spe), NN)))
+    check.clusts.names <- identical(rownames(nnClusts), colnames(spe))
     check.clusts.NA <- sum(is.na(nnClusts))
-    check.region <- identical(length(regXclust), length(spe[[cells]]))
+    check.region <- identical(length(regXclust), ncol(spe))
     if (check.cells.dim == FALSE) {
         stop("Cell name issue - all neighbors were not detected for all cells.")
     } else if (check.cells.names == FALSE) {

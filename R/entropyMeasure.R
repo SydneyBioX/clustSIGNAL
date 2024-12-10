@@ -7,9 +7,6 @@
 #'
 #' @param spe SpatialExperiment object with logcounts, PCA, and 'putative cell
 #' type' groups included.
-#' @param cells a character vector of cell IDs of each cell. Length of vector
-#' must be equal to the number of cells in spatialExperiment object (i.e. the
-#' number of rows in colData(spe)).
 #' @param regXclust a list of vectors for each cell's neighbourhood composition
 #' indicated by the proportion of 'putative cell type' groups it contains.
 #' @param threads a numeric value for the number of CPU cores to be used for the
@@ -26,14 +23,14 @@
 #'
 #' # requires list containing cluster proportions of each region (regXclust),
 #' # generated using the neighbourDetect() function
-#' spe <- clustSIGNAL::entropyMeasure(spe, cells = "uniqueID", regXclust)
+#' spe <- clustSIGNAL::entropyMeasure(spe, regXclust)
 #' head(spe$entropy)
 #'
 #' @export
 
 #### Domainness measure
-entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
-    cell_vect <- as.vector(spe[[cells]])
+entropyMeasure <- function(spe, regXclust, threads = 1) {
+    cell_vect <- as.vector(colnames(spe))
     BPPARAM <- .generateBPParam(cores = threads)
     regEntropy <- BiocParallel::bplapply(cell_vect, function(c){
         arr <- as.vector(unlist(regXclust[c]))
@@ -43,7 +40,7 @@ entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
         y}, BPPARAM = BPPARAM)
 
     # QC check
-    check.cells <- identical(sapply(regEntropy, rownames), spe[[cells]])
+    check.cells <- identical(sapply(regEntropy, rownames), colnames(spe))
     check.NA.values <- sum(is.na(unlist(regEntropy)))
     if (check.cells == FALSE) {
         stop("Cell order in entropy data does not match cell order in Spatial Experiment object")

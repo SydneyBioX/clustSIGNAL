@@ -7,7 +7,6 @@
 clustSIGNAL(
   spe,
   samples,
-  cells,
   dimRed = "None",
   batch = FALSE,
   batch_by = "None",
@@ -26,9 +25,6 @@ clustSIGNAL(
 
 \item{samples}{a character indicating name of colData(spe) column containing
 sample names.}
-
-\item{cells}{a character indicating name of colData(spe) column containing
-cell IDs.}
 
 \item{dimRed}{a character indicating the name of the reduced dimensions to
 use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
@@ -60,9 +56,9 @@ after region description. Default value is TRUE.}
 analysis. Default value set to 1.}
 
 \item{outputs}{a character for the type of output to return to the user. "c"
-for data frame of cell IDs and their respective cluster numbers (default)
-and "a" for list of dataframe of clusters plus final SpatialExperiment
-object.}
+for data frame of cell IDs and their respective cluster numbers (default),
+"n" for dataframe of clusters plus neighbourhood matrix, "s" for  dataframe
+of clusters plus final spatialExperiment object, or "a" for all outputs.}
 
 \item{clustParams}{a list of parameters for TwoStepParam clustering methods.
 The clustering parameters are in the order - centers (centers) for clustering
@@ -91,8 +87,7 @@ data(example)
 names(colData(spe))
 # identify the column names with cell and sample labels
 samples = "sample_id"
-cells = "uniqueID"
-res_list <- clustSIGNAL(spe, samples, cells, outputs = "c")
+res_list <- clustSIGNAL(spe, samples, outputs = "c")
 
 
 }

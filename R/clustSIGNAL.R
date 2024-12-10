@@ -59,8 +59,7 @@
 #' names(colData(spe))
 #' # identify the column names with cell and sample labels
 #' samples = "sample_id"
-#' cells = "uniqueID"
-#' res_list <- clustSIGNAL(spe, samples, cells, outputs = "c")
+#' res_list <- clustSIGNAL(spe, samples, outputs = "c")
 #'
 #'
 #' @export
@@ -100,15 +99,15 @@ clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
     # Non-spatial clustering to identify initial cluster groups
     spe <- p1_clustering(spe, dimRed, batch, batch_by, clustParams)
     # Neighborhood detection, and sorting if sort = TRUE
-    outReg <- neighbourDetect(spe, samples, NN, cells, sort)
+    outReg <- neighbourDetect(spe, samples, NN, sort)
     # Calculating domainness of cell neighborhoods
-    spe <- entropyMeasure(spe, cells, outReg$regXclust, threads)
+    spe <- entropyMeasure(spe, outReg$regXclust, threads)
     # Weighted smoothing guided by neighbourhood entropy
-    spe <- adaptiveSmoothing(spe, cells, outReg$nnCells, NN, kernel, spread, threads)
+    spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, threads)
     # Non-spatial clustering of adaptively smoothed expression
     spe <- p2_clustering(spe, batch, batch_by, clustParams)
 
-    cluster_df <- data.frame("Cells" = spe[[cells]],
+    cluster_df <- data.frame("Cells" = colnames(spe),
                              "Clusters" = spe$clustSIGNAL)
     time_end <- Sys.time()
     show(paste("clustSIGNAL run completed.", format(Sys.time(),'%H:%M:%S')))

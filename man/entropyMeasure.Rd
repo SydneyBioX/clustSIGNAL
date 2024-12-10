@@ -4,15 +4,11 @@
 \alias{entropyMeasure}
 \title{Domainness measure}
 \usage{
-entropyMeasure(spe, cells, regXclust, threads = 1)
+entropyMeasure(spe, regXclust, threads = 1)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, and 'putative cell
 type' groups included.}
-
-\item{cells}{a character vector of cell IDs of each cell. Length of vector
-must be equal to the number of cells in spatialExperiment object (i.e. the
-number of rows in colData(spe)).}
 
 \item{regXclust}{a list of vectors for each cell's neighbourhood composition
 indicated by the proportion of 'putative cell type' groups it contains.}
@@ -34,7 +30,7 @@ data(example)
 
 # requires list containing cluster proportions of each region (regXclust),
 # generated using the neighbourDetect() function
-spe <- clustSIGNAL::entropyMeasure(spe, cells = "uniqueID", regXclust)
+spe <- clustSIGNAL::entropyMeasure(spe, regXclust)
 head(spe$entropy)
 
 }
