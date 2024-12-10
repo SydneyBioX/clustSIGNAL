@@ -4,7 +4,7 @@
 \alias{neighbourDetect}
 \title{Cell neighbourhood detection}
 \usage{
-neighbourDetect(spe, samples, NN, cells, sort)
+neighbourDetect(spe, samples, NN = 30, cells, sort = TRUE)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, and 'putative cell
@@ -43,8 +43,8 @@ the central cell are arranged closer to it.
 \examples{
 data(example)
 
-out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id", NN = 30,
-                                         cells = "uniqueID", sort = TRUE)
+out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id",
+                                         cells = "uniqueID")
 names(out_list)
 
 }

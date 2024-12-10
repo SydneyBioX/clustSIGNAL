@@ -32,14 +32,16 @@
 #' data(example)
 #'
 #' # For non-spatial clustering of normalised counts
-#' spe <- clustSIGNAL::p2_clustering(spe, batch = FALSE, batch_by = "None",
-#'                                  clustParams = list(0, 0, 30, 5, "louvain"))
+#' spe <- clustSIGNAL::p2_clustering(spe)
 #' head(spe$clustSIGNAL)
 #'
 #' @export
 
 #### Non-spatial clustering
-p2_clustering <- function(spe, batch, batch_by, clustParams) {
+p2_clustering <- function(spe, batch = FALSE, batch_by = "None",
+                          clustParams = list(clust_c = 0, subclust_c = 0,
+                                             iter.max = 30, k = 5,
+                                             cluster.fun = "louvain")) {
     if (clustParams[[1]] == 0){
         # number of centers = 1/5th of total cells in sample
         clustVal <- min(as.integer(ncol(spe) / 5), 5000)

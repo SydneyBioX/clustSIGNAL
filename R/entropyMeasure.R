@@ -26,13 +26,13 @@
 #'
 #' # requires list containing cluster proportions of each region (regXclust),
 #' # generated using the neighbourDetect() function
-#' spe <- clustSIGNAL::entropyMeasure(spe, cells = "uniqueID", regXclust, threads = 1)
+#' spe <- clustSIGNAL::entropyMeasure(spe, cells = "uniqueID", regXclust)
 #' head(spe$entropy)
 #'
 #' @export
 
 #### Domainness measure
-entropyMeasure <- function(spe, cells, regXclust, threads) {
+entropyMeasure <- function(spe, cells, regXclust, threads = 1) {
     cell_vect <- as.vector(spe[[cells]])
     BPPARAM <- .generateBPParam(cores = threads)
     regEntropy <- BiocParallel::bplapply(cell_vect, function(c){

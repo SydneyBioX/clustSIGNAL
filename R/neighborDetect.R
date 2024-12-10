@@ -34,14 +34,14 @@
 #' @examples
 #' data(example)
 #'
-#' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id", NN = 30,
-#'                                          cells = "uniqueID", sort = TRUE)
+#' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id",
+#'                                          cells = "uniqueID")
 #' names(out_list)
 #'
 #' @export
 
 #### Region description + sorting
-neighbourDetect <- function(spe, samples, NN, cells, sort) {
+neighbourDetect <- function(spe, samples, NN = 30, cells, sort = TRUE) {
     samplesList <- unique(spe[[samples]])
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
     nnClusts <- matrix(nrow = 0, ncol = NN)

@@ -4,7 +4,14 @@
 \alias{p1_clustering}
 \title{Initial non-spatial clustering}
 \usage{
-p1_clustering(spe, dimRed, batch, batch_by, clustParams)
+p1_clustering(
+  spe,
+  dimRed = "None",
+  batch = FALSE,
+  batch_by = "None",
+  clustParams = list(clust_c = 0, subclust_c = 0, iter.max = 30, k = 5, cluster.fun =
+    "louvain")
+)
 }
 \arguments{
 \item{spe}{SpatialExperiment object. For reclust = FALSE, the object should
@@ -39,9 +46,7 @@ normalised gene expression to generate 'initial clusters'.
 \examples{
 data(example)
 
-spe <- clustSIGNAL::p1_clustering(spe, dimRed = "PCA", batch = FALSE,
-                                 batch_by = "None",
-                                 clustParams = list(0, 0, 30, 5, "louvain"))
+spe <- clustSIGNAL::p1_clustering(spe, dimRed = "PCA")
 head(spe$nsCluster)
 head(spe$initCluster)
 
