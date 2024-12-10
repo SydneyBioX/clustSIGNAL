@@ -9,6 +9,8 @@
 #'
 #' @param spe SpatialExperiment object with logcounts, PCA, 'putative cell type'
 #' groups, and entropy outputs included.
+#' @param cells a character indicating name of colData(spe) column containing
+#' cell IDs.
 #' @param nnCells a character matrix of NN nearest neighbours - rows are cells
 #' and columns are their nearest neighbours ranged from closest to farthest
 #' neighbour. For sort = TRUE, the neighbours belonging to the same 'putative
@@ -30,75 +32,69 @@
 #' @importFrom SummarizedExperiment assay
 #' @importFrom methods show as
 #' @importFrom BiocParallel bplapply
-#' @importFrom rlist list.cbind
+#' @importFrom dplyr bind_rows
+#' @importFrom Matrix sparseMatrix
 #'
 #' @examples
 #' data(example)
 #'
 #' # requires matrix containing NN nearest neighbour cell labels (nnCells),
 #' # generated using the neighbourDetect() function
-#' spe <- clustSIGNAL::adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G",
-#'                                       spread = 0.05, threads = 1)
+#' spe <- clustSIGNAL::adaptiveSmoothing(spe, cells = "uniqueID", nnCells)
 #' spe
 #'
 #' @export
 
 #### Smoothing
-adaptiveSmoothing <- function(spe, nnCells, NN, kernel, spread, threads) {
-    ed <- unique(spe$entropy)
-    gXc <- as(logcounts(spe), "sparseMatrix")
-    if (kernel == "G") {
-        # normal distribution weights
-        weights <- .gauss_kernel(ed, NN + 1, spread)
-    } else if (kernel == "E") {
-        # exponential distribution weights
-        weights <- .exp_kernel(ed, NN + 1, spread)}
-
-    outMats <- matrix(nrow = nrow(spe), ncol = 0)
+adaptiveSmoothing <- function(spe, cells, nnCells, NN = 30, kernel = "G",
+                              spread = 0.05, threads = 1) {
+    G_mat <- as(logcounts(spe), "sparseMatrix")
+    if (kernel == "G") { # generate normal distribution weights
+        wts <- .gauss_kernel(spe$entropy, NN + 1, spread)
+    } else if (kernel == "E") { # generate exponential distribution weights
+        wts <- .exp_kernel(spe$entropy, NN + 1, spread)}
+    colnames(wts) <- spe[[cells]]
+    # scale weights
+    wts <- sweep(wts, 2, colSums(wts), FUN = "/")
+    # create a cell by cell weight matrix
     BPPARAM <- .generateBPParam(cores = threads)
-    out_main <- BiocParallel::bplapply(ed,
-                                       function(val){
-                                           entCells <- colnames(spe[, spe$entropy == val])
-                                           # show(paste(val, length(entCells)))
-                                           e <- paste0("E", val)
-                                           if (length(entCells) == 1) {
-                                               region <- as.vector(nnCells[entCells, ])
-                                               inMat <- as.matrix(gXc[, region])
-                                               tmpMat <- .smoothedData(inMat, weights[, e])
-                                               colnames(tmpMat) <- entCells
-                                               tmpMat
-                                           } else {
-                                               out_sub <- lapply(entCells, function(x){
-                                                   # names of central cell + NN cells
-                                                   region <- as.vector(nnCells[x, ])
-                                                   # gene expression matrix of NN cells
-                                                   inMat <- as.matrix(gXc[, region])
-                                                   omat <- .smoothedData(mat = inMat,
-                                                                         weight = weights[, e])
-                                                   omat})
-                                               tmpMat <- matrix(unlist(out_sub),
-                                                                ncol = length(out_sub),
-                                                                dimnames = list(rownames(out_sub[[1]]),
-                                                                                entCells))
-                                               tmpMat}
-                                           outMats <- cbind(outMats, tmpMat)
-                                           outMats
-                                       },
-                                       BPPARAM = BPPARAM)
-    out_main_comb <- rlist::list.cbind(out_main)
-    # rearrange the cells in smoothed data matrix
-    smoothMat <- out_main_comb[, as.vector(colnames(spe))]
+    all_w <- BiocParallel::bplapply(colnames(wts), function(x) {
+        neigh_c <- nnCells[x, ]
+        other_c <- spe[[cells]][!spe[[cells]] %in% neigh_c]
+        # tmp_df <- rbind(cbind(neigh_c, rep(x, length(neigh_c)), wts[, x]),
+        #                 cbind(other_c, rep(x, length(other_c)), 0)) |>
+        #     as.data.frame()
+        tmp_df <- rbind(cbind(neigh_c, 1, wts[, x]),
+                        cbind(other_c, 1, 0)) |>
+            as.data.frame()
+        colnames(tmp_df) <- c("ci", "c", "wci")
+        tmp_df <- tmp_df[match(spe[[cells]], tmp_df$ci), ]
+        tmp_df$ci <- as.integer(match(tmp_df$ci, spe[[cells]]))
+        # tmp_df$c <- as.integer(match(tmp_df$c, spe[[cells]]))
+        tmp_df$c <- as.integer(tmp_df$c)
+        tmp_df$wci <- as.numeric(tmp_df$wci)
+        tmp_smat <- Matrix::sparseMatrix(i = tmp_df$ci, j = tmp_df$c,
+                                         x = tmp_df$wci)
+        tmp_smat}, BPPARAM = BPPARAM)
+    # W_mat <- dplyr::bind_cols(all_w)
+    # W_mat <- rlist::list.cbind(all_w)
+    W_mat <- do.call(cbind, all_w)
+    # removing unwanted large variable to free memory
+    rm(all_w, wts)
+    invisible(gc())
+    smoothMat <- G_mat %*% W_mat
+    colnames(smoothMat) <- spe[[cells]]
 
     # QC check
     check.genes <- identical(rownames(spe), rownames(smoothMat))
     check.NA <- sum(is.na(smoothMat))
     if (check.genes == FALSE) {
-        stop("Gene order in smoothed data does not match gene order in SpatialExperiment object.")
+        stop("Gene order in smoothed data does not match gene order
+             in SpatialExperiment object.")
     } else if (check.NA != 0) {
         stop("Smoothed data has missing values.")
     } else {
-        # add data to spatial experiment
-        SummarizedExperiment::assay(spe, "smoothed") <- as(smoothMat, "sparseMatrix")
+        SummarizedExperiment::assay(spe, "smoothed") <- smoothMat
         show(paste("Smoothing performed. NN =", NN, "Kernel =", kernel,
                    "Spread =", spread, "Time", format(Sys.time(),'%H:%M:%S')))}
     return(spe)

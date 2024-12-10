@@ -4,11 +4,22 @@
 \alias{adaptiveSmoothing}
 \title{Adaptive smoothing}
 \usage{
-adaptiveSmoothing(spe, nnCells, NN, kernel, spread, threads)
+adaptiveSmoothing(
+  spe,
+  cells,
+  nnCells,
+  NN = 30,
+  kernel = "G",
+  spread = 0.05,
+  threads = 1
+)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with logcounts, PCA, 'putative cell type'
 groups, and entropy outputs included.}
+
+\item{cells}{a character indicating name of colData(spe) column containing
+cell IDs.}
 
 \item{nnCells}{a character matrix of NN nearest neighbours - rows are cells
 and columns are their nearest neighbours ranged from closest to farthest
@@ -46,8 +57,7 @@ data(example)
 
 # requires matrix containing NN nearest neighbour cell labels (nnCells),
 # generated using the neighbourDetect() function
-spe <- clustSIGNAL::adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G",
-                                      spread = 0.05, threads = 1)
+spe <- clustSIGNAL::adaptiveSmoothing(spe, cells = "uniqueID", nnCells)
 spe
 
 }
