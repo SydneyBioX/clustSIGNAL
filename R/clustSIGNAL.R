@@ -8,8 +8,6 @@
 #' @param spe a SpatialExperiment object.
 #' @param samples a character indicating name of colData(spe) column containing
 #' sample names.
-#' @param cells a character indicating name of colData(spe) column containing
-#' cell IDs.
 #' @param dimRed a character indicating the name of the reduced dimensions to
 #' use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
 #' Default value is 'None'.
@@ -38,9 +36,9 @@
 #' k values (k) for clustering with NNGraphParam, and community detection method
 #' (cluster.fun) to use with NNGraphParam.
 #' @param outputs a character for the type of output to return to the user. "c"
-#' for data frame of cell IDs and their respective cluster numbers (default)
-#' and "a" for list of dataframe of clusters plus final SpatialExperiment
-#' object.
+#' for data frame of cell IDs and their respective cluster numbers (default),
+#' "n" for dataframe of clusters plus neighbourhood matrix, "s" for  dataframe
+#' of clusters plus final spatialExperiment object, or "a" for all outputs.
 #'
 #' @return a list of outputs
 #'
@@ -67,7 +65,7 @@
 #'
 #' @export
 
-clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
+clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
                          batch_by = "None", NN = 30, kernel = "G",
                          spread = 0.05, sort = TRUE, threads = 1, outputs = "c",
                          clustParams = list(clust_c = 0, subclust_c = 0,
@@ -80,14 +78,15 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
     } else if (is.null(logcounts(spe)) == TRUE) {
         stop("Normalised gene expression not found.")
     } else if (is.null(spe[[samples]]) == TRUE) {
-        stop("samples name not found.")
-    } else if (is.null(spe[[cells]]) == TRUE) {
-        stop("cells name not found.")
+        stop("The column 'samples' not found.")
+    } else if (length(unique(colnames(spe))) < ncol(spe)) {
+        stop("The cell names are repeated. Provide specific object with unique
+             cell names.")
     } else if (NN < 1){
         stop("NN cannot be less than 1.")
     } else if (!(kernel %in% c("G", "E"))) {
         stop("Invalid kernel type.")
-    } else if (!(outputs %in% c('c', 'a'))) {
+    } else if (!(outputs %in% c('c', 'n', 's', 'a'))) {
         stop("Invalid character for output type.")}
 
     if (dimRed == "None") {
@@ -105,7 +104,7 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
     # Calculating domainness of cell neighborhoods
     spe <- entropyMeasure(spe, cells, outReg$regXclust, threads)
     # Weighted smoothing guided by neighbourhood entropy
-    spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, threads)
+    spe <- adaptiveSmoothing(spe, cells, outReg$nnCells, NN, kernel, spread, threads)
     # Non-spatial clustering of adaptively smoothed expression
     spe <- p2_clustering(spe, batch, batch_by, clustParams)
 
@@ -116,8 +115,15 @@ clustSIGNAL <- function (spe, samples, cells, dimRed = "None", batch = FALSE,
     show(time_end - time_start)
     if (outputs == "c"){
         return (list("clusters" = cluster_df))
+    } else if (outputs == "n") {
+        return (list("clusters" = cluster_df,
+                     "neighbours" = outReg$nnCells))
+    } else if (outputs == "s") {
+        return (list("clusters" = cluster_df,
+                     "spe_final" = spe))
     } else if (outputs == "a") {
         return (list("clusters" = cluster_df,
+                     "neighbours" = outReg$nnCells,
                      "spe_final" = spe))
     }
 }

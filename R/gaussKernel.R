@@ -16,8 +16,8 @@
 .gauss_kernel <- function(ed, NN, sd) {
     # Distribution from 0 - entropy, with cells in neighbourhood as cut points
 
-    weights <- dnorm(sapply(ed, function(x) seq(0, x, length.out = NN)),
+    weight_mat <- dnorm(sapply(ed, function(x) seq(0, x, length.out = NN)),
                      sd = sd)
-    colnames(weights) <- paste0("E", ed)
-    return (weights)
+    # colnames(weight_mat) <- paste0("E", ed)
+    return (weight_mat)
 }

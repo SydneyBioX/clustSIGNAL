@@ -15,8 +15,8 @@
 
 .exp_kernel <- function(ed, NN, rate) {
     # distribution from 0 - entropy, with cells in neighbourhood as cut points
-    weights <- dexp(sapply(ed, function(x) seq(0, x, length.out = NN)),
+    weight_mat <- dexp(sapply(ed, function(x) seq(0, x, length.out = NN)),
                     rate = rate)
-    colnames(weights) <- paste0("E", ed)
-    return (weights)
+    # colnames(weight_mat) <- paste0("E", ed)
+    return (weight_mat)
 }
