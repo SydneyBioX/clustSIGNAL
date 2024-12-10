@@ -7,7 +7,7 @@
 .exp_kernel(ed, NN, rate)
 }
 \arguments{
-\item{ed}{a numeric value for entropy of the neighbourhood.}
+\item{ed}{a numeric vector of entropy values of all cell neighbourhoods.}
 
 \item{NN}{an integer for the number of neighbourhood cells the function
 should consider. The value must be greater than or equal to 1. Default value
