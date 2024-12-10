@@ -31,6 +31,6 @@ data(example)
 # requires list containing cluster proportions of each region (regXclust),
 # generated using the neighbourDetect() function
 spe <- clustSIGNAL::entropyMeasure(spe, regXclust)
-head(spe$entropy)
+spe$entropy |> head()
 
 }

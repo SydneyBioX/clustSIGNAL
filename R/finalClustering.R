@@ -33,7 +33,7 @@
 #'
 #' # For non-spatial clustering of normalised counts
 #' spe <- clustSIGNAL::p2_clustering(spe)
-#' head(spe$clustSIGNAL)
+#' spe$ClustSIGNAL |> head()
 #'
 #' @export
 
@@ -58,10 +58,6 @@ p2_clustering <- function(spe, batch = FALSE, batch_by = "None",
         mat <- emb
     } else {
         mat <- reducedDim(spe, "PCA.smooth")}
-    # reClust <- bluster::clusterRows(mat,
-    #                                 bluster::TwoStepParam(
-    #                                     first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
-    #                                     second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
     reClust <- bluster::clusterRows(
         mat,
         bluster::TwoStepParam(
@@ -69,7 +65,7 @@ p2_clustering <- function(spe, batch = FALSE, batch_by = "None",
                                          iter.max = clustParams[[3]]),
             second = bluster::NNGraphParam(k = clustParams[[4]],
                                            cluster.fun = clustParams[[5]])))
-    spe$clustSIGNAL <- factor(reClust)
+    spe$ClustSIGNAL <- factor(reClust)
     show(paste("Nonspatial clustering performed on smoothed data. Clusters =",
                length(unique(reClust)), "Time",
                format(Sys.time(),'%H:%M:%S')))

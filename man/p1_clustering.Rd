@@ -47,7 +47,7 @@ normalised gene expression to generate 'initial clusters'.
 data(example)
 
 spe <- clustSIGNAL::p1_clustering(spe, dimRed = "PCA")
-head(spe$nsCluster)
-head(spe$initCluster)
+spe$nsCluster |> head()
+spe$initCluster |> head()
 
 }

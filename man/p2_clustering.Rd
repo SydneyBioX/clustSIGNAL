@@ -42,6 +42,6 @@ data(example)
 
 # For non-spatial clustering of normalised counts
 spe <- clustSIGNAL::p2_clustering(spe)
-head(spe$clustSIGNAL)
+spe$ClustSIGNAL |> head()
 
 }

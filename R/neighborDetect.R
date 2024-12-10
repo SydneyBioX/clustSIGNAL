@@ -32,7 +32,7 @@
 #' data(example)
 #'
 #' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
-#' names(out_list)
+#' out_list |> names()
 #'
 #' @export
 
