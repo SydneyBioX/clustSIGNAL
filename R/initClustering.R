@@ -14,6 +14,8 @@
 #' correction. Default value is FALSE.
 #' @param batch_by a character indicating name of colData(spe) column containing
 #' the batch names.
+#' @param threads a numeric value for the number of CPU cores to be used for the
+#' analysis. Default value set to 1.
 #' @param clustParams a list of parameters for TwoStepParam clustering methods.
 #' The clustering parameters are in the order - centers (centers) for clustering
 #' with KmeansParam, centers (centers) for sub-clustering clusters with
@@ -43,16 +45,14 @@
 
 #### Non-spatial clustering
 p1_clustering <- function(spe, dimRed = "None", batch = FALSE,
-                          batch_by = "None",
+                          batch_by = "None", threads = 1,
                           clustParams = list(clust_c = 0, subclust_c = 0,
                                              iter.max = 30, k = 5,
                                              cluster.fun = "louvain")) {
-    if (clustParams[[1]] == 0) {
+    if (clustParams[[1]] == 0)
         # number of centers = 1/5th of total cells in sample
-        clustVal <- min(as.integer(ncol(spe) / 5), 5000)
-    } else {
-        clustVal <- clustParams[[1]]
-    }
+        clustVal <- min(as.integer(ncol(spe) / 5), 5000) else
+            clustVal <- clustParams[[1]]
     # Initial clustering
     if (batch == TRUE) {
         emb <- harmony::RunHarmony(data_mat = reducedDim(spe, dimRed),
@@ -63,16 +63,12 @@ p1_clustering <- function(spe, dimRed = "None", batch = FALSE,
     } else {
         mat <- reducedDim(spe, dimRed)
     }
-    # nsClust <- bluster::clusterRows(
-    #     mat,
-    #     bluster::TwoStepParam(
-    #         first = bluster::KmeansParam(centers = clustVal, iter.max = 30),
-    #         second = bluster::NNGraphParam(k = 5, cluster.fun = "louvain")))
     nsClust <- bluster::clusterRows(mat, bluster::TwoStepParam(
         first = bluster::KmeansParam(centers = clustVal,
                                      iter.max = clustParams[[3]]),
         second = bluster::NNGraphParam(k = clustParams[[4]],
-                                       cluster.fun = clustParams[[5]])))
+                                       cluster.fun = clustParams[[5]],
+                                       num.threads = threads)))
     spe$nsCluster <- factor(nsClust)
     show(paste("Initial nonspatial clustering performed. Clusters =",
                length(unique(nsClust)), "Time",
@@ -84,27 +80,19 @@ p1_clustering <- function(spe, dimRed = "None", batch = FALSE,
         speX <- spe[, spe$nsCluster == cl]
         speX <- scater::runPCA(speX)
         matX <- reducedDim(speX, "PCA")
-        if (clustParams[[2]] == 0){
+        if (clustParams[[2]] == 0)
             # number of centers = half of total cells in cluster or 1,
             # if only one cell in cluster
-            subclustVal <- max(as.integer(ncol(speX) / 2), 1)
-        } else {
-            subclustVal <- clustParams[[2]]
-        }
-        # nsClustX <- bluster::clusterRows(
-        #     matX,
-        #     bluster::TwoStepParam(
-        #         first = bluster::KmeansParam(centers = subclustVal,
-        #                                      iter.max = 30),
-        #         second = bluster::NNGraphParam(k = 5,
-        #                                        cluster.fun = "louvain")))
+            subclustVal <- max(as.integer(ncol(speX) / 2), 1) else
+                subclustVal <- clustParams[[2]]
         nsClustX <- bluster::clusterRows(
             matX,
             bluster::TwoStepParam(
                 first = bluster::KmeansParam(centers = subclustVal,
                                              iter.max = clustParams[[3]]),
-                second = bluster::NNGraphParam(
-                    k = clustParams[[4]], cluster.fun = clustParams[[5]])))
+                second = bluster::NNGraphParam(k = clustParams[[4]],
+                                               cluster.fun = clustParams[[5]],
+                                               num.threads = threads)))
         subclusters_list[[cl]] <- setNames(paste0(cl, ".", nsClustX),
                                           colnames(speX))}
     spe$initCluster <- factor(unlist(subclusters_list)[colnames(spe)])

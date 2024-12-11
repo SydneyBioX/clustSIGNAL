@@ -10,6 +10,8 @@
 #' correction. Default value is FALSE.
 #' @param batch_by a character indicating name of colData(spe) column containing
 #' the batch names.
+#' @param threads a numeric value for the number of CPU cores to be used for the
+#' analysis. Default value set to 1.
 #' @param clustParams a list of parameters for TwoStepParam clustering methods.
 #' The clustering parameters are in the order - centers (centers) for clustering
 #' with KmeansParam, centers (centers) for sub-clustering clusters with
@@ -38,16 +40,14 @@
 #' @export
 
 #### Non-spatial clustering
-p2_clustering <- function(spe, batch = FALSE, batch_by = "None",
+p2_clustering <- function(spe, batch = FALSE, batch_by = "None", threads = 1,
                           clustParams = list(clust_c = 0, subclust_c = 0,
                                              iter.max = 30, k = 5,
                                              cluster.fun = "louvain")) {
-    if (clustParams[[1]] == 0){
+    if (clustParams[[1]] == 0)
         # number of centers = 1/5th of total cells in sample
-        clustVal <- min(as.integer(ncol(spe) / 5), 5000)
-    } else {
-        clustVal <- clustParams[[1]]
-    }
+        clustVal <- min(as.integer(ncol(spe) / 5), 5000) else
+            clustVal <- clustParams[[1]]
     # Clustering adaptively smoothed data
     spe <- scater::runPCA(spe, assay.type = "smoothed", name = "PCA.smooth")
     if (batch == TRUE) {
@@ -64,7 +64,8 @@ p2_clustering <- function(spe, batch = FALSE, batch_by = "None",
             first = bluster::KmeansParam(centers = clustVal,
                                          iter.max = clustParams[[3]]),
             second = bluster::NNGraphParam(k = clustParams[[4]],
-                                           cluster.fun = clustParams[[5]])))
+                                           cluster.fun = clustParams[[5]],
+                                           num.threads = threads)))
     spe$ClustSIGNAL <- factor(reClust)
     show(paste("Nonspatial clustering performed on smoothed data. Clusters =",
                length(unique(reClust)), "Time",

@@ -5,22 +5,25 @@
 #' neighbourhoods are also sorted such that cells belonging to the same group as
 #' the central cell are arranged closer to it.
 #'
-#' @param spe SpatialExperiment object with logcounts, PCA, and 'putative cell
-#' type' groups included.
+#' @param spe SpatialExperiment object with logcounts, PCA, and 'initial
+#' cluster' groups included.
 #' @param samples a character vector of sample names to which the cells belong.
 #' Length of vector must be equal to the number of cells in spatialExperiment
 #' object (i.e. the number of rows in colData(spe)).
-#' @param NN an integer for the number of neighbourhood cells the function should
-#' consider. The value must be greater than or equal to 1. Default value is 30.
+#' @param NN an integer for the number of neighbourhood cells the function
+#' should consider. The value must be greater than or equal to 1. Default value
+#' is 30.
 #' @param sort a logical parameter for whether or not to sort the neighbourhood
 #' after region description. Default value is TRUE.
+#' @param threads a numeric value for the number of CPU cores to be used for the
+#' analysis. Default value set to 1.
 #'
 #' @return a list containing two items:
 #'
 #' 1. nnCells, a character matrix of NN nearest neighbours - rows are cells and
-#' columns are their nearest neighbours ranged from closest to farthest neighbour.
-#' For sort = TRUE, the neighbours belonging to the same 'putative cell type'
-#' group as the cell are moved closer to it.
+#' columns are their nearest neighbours ranged from closest to farthest
+#' neighbour. For sort = TRUE, the neighbours belonging to the same 'putative
+#' cell type' group as the cell are moved closer to it.
 #'
 #' 2. regXclust, a list of vectors for each cell's neighbourhood composition
 #' indicated by the proportion of 'putative cell type' groups it contains.
@@ -37,7 +40,7 @@
 #' @export
 
 #### Region description + sorting
-neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE) {
+neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE, threads = 1) {
     samplesList <- unique(spe[[samples]])
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
     nnClusts <- matrix(nrow = 0, ncol = NN)
@@ -49,10 +52,11 @@ neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE) {
         subClust <- as.data.frame(speX$initCluster)
         rownames(subClust) <- colnames(speX)
         # finding NN nearest neighbors for each cell
-        nnMatlist <- BiocNeighbors::findKNN(xy_pos, k = NN,
-                                            BNPARAM = BiocNeighbors::KmknnParam())
+        nnMatlist <- BiocNeighbors::findKNN(
+            xy_pos, k = NN, num.threads = threads,
+            BNPARAM = BiocNeighbors::KmknnParam())
         rownames(nnMatlist$index) <- rownames(subClust)
-        # adding index cell indices to first column of neighborhood indices matrix
+        # add index cell indices to first column of neighborhood indices matrix
         nnMatlist$indexNew <- cbind(seq_len(nrow(nnMatlist$index)),
                                     nnMatlist$index)
         if (sort == TRUE) {
@@ -79,11 +83,14 @@ neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE) {
     if (check.cells.dim == FALSE) {
         stop("Cell name issue - all neighbors were not detected for all cells.")
     } else if (check.cells.names == FALSE) {
-        stop("Cell name issue - Cell order of neighbor data does not match cell order in input data.")
+        stop("Cell name issue - Cell order of neighbor data does not match cell
+             order in input data.")
     } else if (check.clusts.dim == FALSE) {
-        stop("Cluster number issue - all neighbors were not detected for all cells.")
+        stop("Cluster number issue - all neighbors were not detected for all
+             cells.")
     } else if (check.clusts.names == FALSE) {
-        stop("Cluster number issues - Cell order of neighbor data does not match cell order in input data.")
+        stop("Cluster number issues - Cell order of neighbor data does not match
+             cell order in input data.")
     } else if (check.region == FALSE) {
         stop("Region proportions not calculated for all cells.")
     } else if (check.cells.NA != 0 | check.clusts.NA != 0) {

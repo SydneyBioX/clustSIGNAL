@@ -4,29 +4,33 @@
 \alias{neighbourDetect}
 \title{Cell neighbourhood detection}
 \usage{
-neighbourDetect(spe, samples, NN = 30, sort = TRUE)
+neighbourDetect(spe, samples, NN = 30, sort = TRUE, threads = 1)
 }
 \arguments{
-\item{spe}{SpatialExperiment object with logcounts, PCA, and 'putative cell
-type' groups included.}
+\item{spe}{SpatialExperiment object with logcounts, PCA, and 'initial
+cluster' groups included.}
 
 \item{samples}{a character vector of sample names to which the cells belong.
 Length of vector must be equal to the number of cells in spatialExperiment
 object (i.e. the number of rows in colData(spe)).}
 
-\item{NN}{an integer for the number of neighbourhood cells the function should
-consider. The value must be greater than or equal to 1. Default value is 30.}
+\item{NN}{an integer for the number of neighbourhood cells the function
+should consider. The value must be greater than or equal to 1. Default value
+is 30.}
 
 \item{sort}{a logical parameter for whether or not to sort the neighbourhood
 after region description. Default value is TRUE.}
+
+\item{threads}{a numeric value for the number of CPU cores to be used for the
+analysis. Default value set to 1.}
 }
 \value{
 a list containing two items:
 
 1. nnCells, a character matrix of NN nearest neighbours - rows are cells and
-columns are their nearest neighbours ranged from closest to farthest neighbour.
-For sort = TRUE, the neighbours belonging to the same 'putative cell type'
-group as the cell are moved closer to it.
+columns are their nearest neighbours ranged from closest to farthest
+neighbour. For sort = TRUE, the neighbours belonging to the same 'putative
+cell type' group as the cell are moved closer to it.
 
 2. regXclust, a list of vectors for each cell's neighbourhood composition
 indicated by the proportion of 'putative cell type' groups it contains.

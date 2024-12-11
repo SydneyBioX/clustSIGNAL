@@ -9,6 +9,7 @@ p1_clustering(
   dimRed = "None",
   batch = FALSE,
   batch_by = "None",
+  threads = 1,
   clustParams = list(clust_c = 0, subclust_c = 0, iter.max = 30, k = 5, cluster.fun =
     "louvain")
 )
@@ -27,6 +28,9 @@ correction. Default value is FALSE.}
 
 \item{batch_by}{a character indicating name of colData(spe) column containing
 the batch names.}
+
+\item{threads}{a numeric value for the number of CPU cores to be used for the
+analysis. Default value set to 1.}
 
 \item{clustParams}{a list of parameters for TwoStepParam clustering methods.
 The clustering parameters are in the order - centers (centers) for clustering
