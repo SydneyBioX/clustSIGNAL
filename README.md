@@ -1,23 +1,23 @@
-# clustSIGNAL
+# ClustSIGNAL
 
 <img src="man/figures/clustSIGNAL_hex.jpg" align="right" height="250" width="225"/>
 
-clustSIGNAL: ***clust***ering of ***S***patially ***I***nformed ***G***ene expression with ***N***eighbourhood ***A***dapted ***L***earning.
+ClustSIGNAL: ***Clust***ering of ***S***patially ***I***nformed ***G***ene expression with ***N***eighbourhood ***A***dapted ***L***earning.
 
 An R package to perform spatially-resolved clustering on spatial transcriptomics data. Here, we calculate entropy as a measure of "domainness" of cell neighbourhoods and use it to generate weight distributions to perform adaptive smoothing of gene expression. Homogeneous neighbourhoods have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. This approach not only overcomes data sparsity in the gene expression but also incorporates spatial context in the form of cell arrangement information from the neighbourhood. The resulting adaptively smoothed gene expression is used for downstream analyses like clustering.
 
-For a tutorial on how to use clustSIGNAL, see the vignette at this [website](https://sydneybiox.github.io/clustSIGNAL/).
+For a tutorial on how to use ClustSIGNAL, see the vignette at this [website](https://sydneybiox.github.io/clustSIGNAL/).
 
 ## Installation
 
-To install clustSIGNAL via Bioconductor:
+To install ClustSIGNAL via Bioconductor:
 
 ``` r
 library(BiocManager)
 BiocManager::install("clustSIGNAL")
 ```
 
-To install clustSIGNAL from [GitHub](https://github.com/SydneyBioX/clustSIGNAL):
+To install ClustSIGNAL from [GitHub](https://github.com/SydneyBioX/clustSIGNAL):
 
 ``` r
 # install.packages("devtools")
@@ -28,9 +28,9 @@ devtools::install_github("SydneyBioX/clustSIGNAL")
 
 <img src="man/figures/Fig1_schematic.jpg" align="middle"/>
 
-**Figure: clustSIGNAL method overview.**
+**Figure: ClustSIGNAL method overview.**
 
-Here, we present clustSIGNAL, a spatial clustering method developed to handle data sparsity while considering the variability in cell arrangement of tissue regions. The core steps involved in the method are sequential:
+Here, we present ClustSIGNAL, a spatial clustering method developed to handle data sparsity while considering the variability in cell arrangement of tissue regions. The core steps involved in the method are sequential:
 
 **1.** The method starts with non-spatial clustering and subclustering (default louvain clustering) to classify cells into subclusters that we refer to as ‘putative cell type’ groups.
 
@@ -44,17 +44,15 @@ Here, we present clustSIGNAL, a spatial clustering method developed to handle da
 
 **6.** The gene expressions of cells are adaptively smoothed using the entropy-guided weight distributions; cells in heterogeneous neighbourhoods (high entropy) undergo smoothing over a smaller region, whereas cells in homogeneous neighbourhoods (low entropy) undergo smoothing over a larger region.
 
-**7.** Non-spatial clustering is performed with adaptively smoothed gene expression to generate clustSIGNAL clusters that represent cell types.
+**7.** Non-spatial clustering is performed with adaptively smoothed gene expression to generate ClustSIGNAL clusters that represent cell types.
 
-## clustSIGNAL parameters
+## ClustSIGNAL parameters
 
 The clustSIGNAL package uses a SpatialExperiment object as input. We provide users with a number of parameters to explore and experiment with, as well as prior tested default values for quick runs. clustSIGNAL can be used for single sample or multisample analysis with just one function call. Below is the list of the parameters offered and their possible values:
 
 -   **spe** - SpatialExperiment object with cell [spatial coordinates](## "spatialCoords(spe)") matrix and [normalized counts](## "logcounts(spe)") of gene expression.
 
 -   **samples** - column name in [cell metadata](## "colData(spe)") containing sample names.
-
--   **cells** - column name in [cell metadata](## "colData(spe)") containing cell IDs.
 
 -   **dimRed** - dimensionality reduction method name in [low embedding data](## "reducedDimNames(spe)"). Default value is "None", in which case PCA is calculated and used as low dimension data.
 
@@ -72,13 +70,13 @@ The clustSIGNAL package uses a SpatialExperiment object as input. We provide use
 
 -   **threads** - number of cpus to use for parallel runs. Default value is 1.
 
--   **outputs** - choice of output types. Default value is 'c' for data frame of cell IDs and cluster numbers. Other possible value is "a" for a list of dataframe of clusters plus final SpatialExperiment object.
+-   **outputs** - choice of output types. Default value is 'c' for a list containing data frame of cell IDs and cluster numbers. Other possible value are "n" for a list of for dataframe of clusters plus neighbourhood matrix, "s" for a list of dataframe of clusters plus final SpatialExperiment object, and "a" for a list of 3 outputs - cluster dataframe, neighbourhood matrix, and spe object.
 
 -   **clustParams** - parameter options for TwoStepParam clustering methods in the bluster package. The clustering parameters are in the order - centers (centers) for clustering with KmeansParam, centers (centers) for sub-clustering clusters with KmeansParam, maximum iterations (iter.max) for clustering with KmeansParam, k values (k) for clustering with NNGraphParam, and community detection method (cluster.fun) to use with NNGraphParam.
 
-## Running clustSIGNAL
+## Running ClustSIGNAL
 
-Before running clustSIGNAL, it is important to ensure that the SpatialExperiment object input has spatial coordinates stored in the spatialCoords matrix. Otherwise, the method will throw an error asking the user to provide spatial coordinates.
+Before running ClustSIGNAL, it is important to ensure that the SpatialExperiment object input has spatial coordinates stored in the spatialCoords matrix. Otherwise, the method will throw an error asking the user to provide spatial coordinates.
 
 ``` r
 # load required packages
