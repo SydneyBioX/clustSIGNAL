@@ -1,4 +1,4 @@
-#' clustSIGNAL
+#' ClustSIGNAL
 #'
 #' @description
 #' A clustering method for cell type classification of spatial transcriptomics
@@ -44,7 +44,10 @@
 #'
 #' 1. clusters: a data frame of cell names and their cluster classification.
 #'
-#' 2. spe_final: a SpatialExperiment object with initial 'putative cell type'
+#' 2. neighbours: a character matrix containing cells IDs of each cell's
+#' neighbours
+#'
+#' 3. spe_final: a SpatialExperiment object with initial 'putative cell type'
 #' groups, entropy values, smoothed gene expression, post-smoothing clusters,
 #' and silhouette widths included.
 #'
@@ -71,16 +74,16 @@ clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
                                             iter.max = 30, k = 5,
                                             cluster.fun = "louvain")) {
     time_start <- Sys.time()
-    # data and parameter checks
+    # input data and parameter checks
     if (length(spatialCoords(spe)) == 0){
         stop("Spatial coordinates not found.")
     } else if (is.null(logcounts(spe)) == TRUE) {
         stop("Normalised gene expression not found.")
     } else if (is.null(spe[[samples]]) == TRUE) {
         stop("The column 'samples' not found.")
-    } else if (length(unique(colnames(spe))) < ncol(spe)) {
-        stop("The cell names are repeated. Provide specific object with unique
-             cell names.")
+    } else if (length(unique(colnames(spe))) != ncol(spe)) {
+        stop("The cell names are repeated. Provide spe object with unique cell
+             names.")
     } else if (NN < 1){
         stop("NN cannot be less than 1.")
     } else if (!(kernel %in% c("G", "E"))) {
@@ -94,7 +97,7 @@ clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
         dimRed <- "PCA"
     } else if (!(dimRed %in% reducedDimNames(spe))){
         stop("Specified low dimension data not found.")}
-    show(paste("clustSIGNAL run started. Time", format(Sys.time(),'%H:%M:%S')))
+    show(paste("ClustSIGNAL run started. Time", format(Sys.time(),'%H:%M:%S')))
 
     # Non-spatial clustering to identify initial cluster groups
     spe <- p1_clustering(spe, dimRed, batch, batch_by, clustParams)
@@ -106,11 +109,10 @@ clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
     spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, threads)
     # Non-spatial clustering of adaptively smoothed expression
     spe <- p2_clustering(spe, batch, batch_by, clustParams)
-
     cluster_df <- data.frame("Cells" = colnames(spe),
-                             "Clusters" = spe$clustSIGNAL)
+                             "Clusters" = spe$ClustSIGNAL)
     time_end <- Sys.time()
-    show(paste("clustSIGNAL run completed.", format(Sys.time(),'%H:%M:%S')))
+    show(paste("ClustSIGNAL run completed.", format(Sys.time(),'%H:%M:%S')))
     show(time_end - time_start)
     if (outputs == "c"){
         return (list("clusters" = cluster_df))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/clustSIGNAL.R
 \name{clustSIGNAL}
 \alias{clustSIGNAL}
-\title{clustSIGNAL}
+\title{ClustSIGNAL}
 \usage{
 clustSIGNAL(
   spe,
@@ -72,7 +72,10 @@ a list of outputs
 
 1. clusters: a data frame of cell names and their cluster classification.
 
-2. spe_final: a SpatialExperiment object with initial 'putative cell type'
+2. neighbours: a character matrix containing cells IDs of each cell's
+neighbours
+
+3. spe_final: a SpatialExperiment object with initial 'putative cell type'
 groups, entropy values, smoothed gene expression, post-smoothing clusters,
 and silhouette widths included.
 }
