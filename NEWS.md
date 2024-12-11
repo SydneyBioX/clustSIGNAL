@@ -1,3 +1,10 @@
+## clustSIGNAL v0.99.6 (***)
+* Modified adaptiveSmoothing() function to improve its runtime.
+* Improved the tutorial vignette content.
+* Added step-by-step ClustSIGNAL run guide to the tutorial vignette.
+* Removed the user parameter cells. The package automatically uses the column names of the input SpatialExperiment object as the cell ID.
+* Added a cell id check - throws error if duplicates found among column names of input SpatialExperiment object.
+
 ## clustSIGNAL v0.99.5 (2024-11-28)
 * Fixed issue where absence of spatial coordinates was not throwing error at the beginning of the run.
 
