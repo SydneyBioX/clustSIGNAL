@@ -21,10 +21,10 @@
 #' @param kernel a character for type of distribution to be used. The two valid
 #' values are "G" or "E". G for Gaussian distribution, and E for exponential
 #' distribution. Default value is "G".
-#' @param spread a numeric value for distribution spread, represented by standard
-#' deviation for Gaussian distribution and rate for exponential distribution.
-#' Default value is 0.05 for Gaussian distribution and 20 for exponential
-#' distribution.
+#' @param spread a numeric value for distribution spread, represented by
+#' standard deviation for Gaussian distribution and rate for exponential
+#' distribution. Default value is 0.05 for Gaussian distribution and 20 for
+#' exponential distribution.
 #' @param sort a logical parameter for whether or not to sort the neighbourhood
 #' after region description. Default value is TRUE.
 #' @param threads a numeric value for the number of CPU cores to be used for the
@@ -75,22 +75,24 @@ clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
                                             cluster.fun = "louvain")) {
     time_start <- Sys.time()
     # input data and parameter checks
-    if (length(spatialCoords(spe)) == 0){
+    if (length(spatialCoords(spe)) == 0)
         stop("Spatial coordinates not found.")
-    } else if (is.null(logcounts(spe)) == TRUE) {
+    if (is.null(logcounts(spe)) == TRUE)
         stop("Normalised gene expression not found.")
-    } else if (is.null(spe[[samples]]) == TRUE) {
+    if (is.null(spe[[samples]]) == TRUE)
         stop("The column 'samples' not found.")
-    } else if (length(unique(colnames(spe))) != ncol(spe)) {
+    if (length(unique(colnames(spe))) != ncol(spe))
         stop("The cell names are repeated. Provide spe object with unique cell
              names.")
-    } else if (NN < 1){
+    if (NN < 1)
         stop("NN cannot be less than 1.")
-    } else if (!(kernel %in% c("G", "E"))) {
+    if (!(kernel %in% c("G", "E")))
         stop("Invalid kernel type.")
-    } else if (!(outputs %in% c('c', 'n', 's', 'a'))) {
-        stop("Invalid character for output type.")}
+    if (!(outputs %in% c('c', 'n', 's', 'a')))
+        stop("Invalid character for output type.")
 
+    if (batch == TRUE & batch_by == "None")
+        stop("No group name provided for batch correction.")
     if (dimRed == "None") {
         show(paste("Calculating PCA. Time", format(Sys.time(),'%H:%M:%S')))
         spe <- scater::runPCA(spe)
@@ -100,15 +102,15 @@ clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
     show(paste("ClustSIGNAL run started. Time", format(Sys.time(),'%H:%M:%S')))
 
     # Non-spatial clustering to identify initial cluster groups
-    spe <- p1_clustering(spe, dimRed, batch, batch_by, clustParams)
+    spe <- p1_clustering(spe, dimRed, batch, batch_by, threads, clustParams)
     # Neighborhood detection, and sorting if sort = TRUE
-    outReg <- neighbourDetect(spe, samples, NN, sort)
+    outReg <- neighbourDetect(spe, samples, NN, sort, threads)
     # Calculating domainness of cell neighborhoods
     spe <- entropyMeasure(spe, outReg$regXclust, threads)
     # Weighted smoothing guided by neighbourhood entropy
-    spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread, threads)
+    spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread)
     # Non-spatial clustering of adaptively smoothed expression
-    spe <- p2_clustering(spe, batch, batch_by, clustParams)
+    spe <- p2_clustering(spe, batch, batch_by, threads, clustParams)
     cluster_df <- data.frame("Cells" = colnames(spe),
                              "Clusters" = spe$ClustSIGNAL)
     time_end <- Sys.time()

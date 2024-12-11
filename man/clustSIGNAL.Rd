@@ -44,10 +44,10 @@ is 30.}
 values are "G" or "E". G for Gaussian distribution, and E for exponential
 distribution. Default value is "G".}
 
-\item{spread}{a numeric value for distribution spread, represented by standard
-deviation for Gaussian distribution and rate for exponential distribution.
-Default value is 0.05 for Gaussian distribution and 20 for exponential
-distribution.}
+\item{spread}{a numeric value for distribution spread, represented by
+standard deviation for Gaussian distribution and rate for exponential
+distribution. Default value is 0.05 for Gaussian distribution and 20 for
+exponential distribution.}
 
 \item{sort}{a logical parameter for whether or not to sort the neighbourhood
 after region description. Default value is TRUE.}

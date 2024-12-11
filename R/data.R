@@ -34,9 +34,9 @@ NULL
 #' @docType data
 #' @format
 #' \code{spe} a spatialExperiment object containing gene expression matrix with
-#' normalised counts, where rows indicate genes and columns indicate cells. Also,
-#' contains a data frame of cell metadata including cell IDs, sample IDs, cell
-#' type annotations, and x-y coordinates of cells.
+#' normalised counts, where rows indicate genes and columns indicate cells.
+#' Also, contains a data frame of cell metadata including cell IDs, sample IDs,
+#' cell type annotations, and x-y coordinates of cells.
 #' \code{nnCells} a matrix where each row corresponds to a cell in spe object,
 #' and the columns correspond to the nearest neighbors.
 #' \code{regXclust} a list where each element corresponds to a cell in spe
@@ -51,9 +51,9 @@ NULL
 
 #' Mouse Hypothalamus Data
 #'
-#' This dataset contains spatial transcriptomics data from 181 mouse hypothalamus
-#' samples, 155 genes and a total of 1,027,080 cells. For running the
-#' vignettes, we subset the data by selecting total 6000 cells from only 3
+#' This dataset contains spatial transcriptomics data from 181 mouse
+#' hypothalamus samples, 155 genes and a total of 1,027,080 cells. For running
+#' the vignettes, we subset the data by selecting total 6000 cells from only 3
 #' samples - Animal 1 Bregma -0.09 (2080 cells) and Animal 7 Bregmas 0.16
 #' (1936 cells) and -0.09 (1984 cells), excluding cells that were annotated as
 #' 'ambiguous', and removed 20 genes that were assessed using a different

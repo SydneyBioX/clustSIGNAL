@@ -3,9 +3,9 @@
 #' @description
 #' A function to perform a weighted, adaptive smoothing of gene expression based
 #' on the heterogeneity of the cell neighbourhood. Heterogeneous neighbourhoods
-#' are smoothed less with higher weights given to cells belonging to same initial
-#' group. Homogeneous neighbourhoods are smoothed more with similar weights given
-#' to most cells.
+#' are smoothed less with higher weights given to cells belonging to same
+#' initial group. Homogeneous neighbourhoods are smoothed more with similar
+#' weights given to most cells.
 #'
 #' @param spe SpatialExperiment object with logcounts, PCA, 'putative cell type'
 #' groups, and entropy outputs included.
@@ -13,17 +13,16 @@
 #' and columns are their nearest neighbours ranged from closest to farthest
 #' neighbour. For sort = TRUE, the neighbours belonging to the same 'putative
 #' cell type' group as the cell are moved closer to it.
-#' @param NN an integer for the number of neighbourhood cells the function should
-#' consider. The value must be greater than or equal to 1. Default value is 30.
+#' @param NN an integer for the number of neighbourhood cells the function
+#' should consider. The value must be greater than or equal to 1. Default value
+#' is 30.
 #' @param kernel a character for type of distribution to be used. The two valid
 #' values are "G" or "E". G for Gaussian distribution, and E for exponential
 #' distribution. Default value is "G".
-#' @param spread a numeric value for distribution spread, represented by standard
-#' deviation for Gaussian distribution and rate for exponential distribution.
-#' Default value is 0.05 for Gaussian distribution and 20 for exponential
-#' distribution.
-#' @param threads a numeric value for the number of CPU cores to be used for the
-#' analysis. Default value set to 1.
+#' @param spread a numeric value for distribution spread, represented by
+#' standard deviation for Gaussian distribution and rate for exponential
+#' distribution. Default value is 0.05 for Gaussian distribution and 20 for
+#' exponential distribution.
 #' @return SpatialExperiment object including smoothed gene expression values as
 #' another assay.
 #' @importFrom SingleCellExperiment logcounts
@@ -31,6 +30,7 @@
 #' @importFrom methods show as
 #' @importFrom BiocParallel bplapply
 #' @importFrom Matrix sparseMatrix
+#' @importFrom reshape2 melt
 #'
 #' @examples
 #' data(example)
@@ -44,7 +44,7 @@
 
 #### Smoothing
 adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G",
-                              spread = 0.05, threads = 1) {
+                              spread = 0.05) {
     G_mat <- as(logcounts(spe), "sparseMatrix")
     if (kernel == "G") { # generate normal distribution weights
         wts <- .gauss_kernel(spe$entropy, NN + 1, spread)

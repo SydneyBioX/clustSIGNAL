@@ -12,7 +12,7 @@
     if (cores == 1) {
         BPparam <- BiocParallel::SerialParam(RNGseed = seed)
     } else { # Parallel processing is desired.
-        # Set the BPparam RNGseed if the user ran set.seed(someNumber) themselves
+        # Set BPparam RNGseed if the user ran set.seed(someNumber) themselves
         if (Sys.info()["sysname"] == "Windows") {
             # Only SnowParam suits Windows
             BPparam <- BiocParallel::SnowParam(min(

@@ -43,7 +43,8 @@ entropyMeasure <- function(spe, regXclust, threads = 1) {
     check.cells <- identical(sapply(regEntropy, rownames), colnames(spe))
     check.NA.values <- sum(is.na(unlist(regEntropy)))
     if (check.cells == FALSE) {
-        stop("Cell order in entropy data does not match cell order in Spatial Experiment object")
+        stop("Cell order in entropy data does not match cell order in Spatial
+             Experiment object")
     } else if (check.NA.values != 0) {
         stop("Entropy values are missing for some cells.")
     } else {
