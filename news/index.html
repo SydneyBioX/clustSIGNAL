@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,14 @@
       <small>Source: <a href="https://github.com/sydneybiox/clustSIGNAL/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.6" id="clustsignal-v0996-">clustSIGNAL v0.99.6 (***)<a class="anchor" aria-label="anchor" href="#clustsignal-v0996-"></a></h2>
+<ul><li>Modified adaptiveSmoothing() function to improve its runtime.</li>
+<li>Improved the tutorial vignette content.</li>
+<li>Added step-by-step ClustSIGNAL run guide to the tutorial vignette.</li>
+<li>Removed the user parameter cells. The package automatically uses the column names of the input SpatialExperiment object as the cell ID.</li>
+<li>Added a cell id check - throws error if duplicates found among column names of input SpatialExperiment object.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.99.5" id="clustsignal-v0995-2024-11-28">clustSIGNAL v0.99.5 (2024-11-28)<a class="anchor" aria-label="anchor" href="#clustsignal-v0995-2024-11-28"></a></h2>
 <ul><li>Fixed issue where absence of spatial coordinates was not throwing error at the beginning of the run.</li>

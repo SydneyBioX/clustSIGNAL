@@ -11,7 +11,7 @@ heterogeneous neighbourhoods have high entropy."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,7 @@ heterogeneous neighbourhoods have high entropy.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">entropyMeasure</span><span class="op">(</span><span class="va">spe</span>, <span class="va">cells</span>, <span class="va">regXclust</span>, <span class="va">threads</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">entropyMeasure</span><span class="op">(</span><span class="va">spe</span>, <span class="va">regXclust</span>, threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -56,12 +56,6 @@ heterogeneous neighbourhoods have high entropy.</p>
 <dl><dt id="arg-spe">spe<a class="anchor" aria-label="anchor" href="#arg-spe"></a></dt>
 <dd><p>SpatialExperiment object with logcounts, PCA, and 'putative cell
 type' groups included.</p></dd>
-
-
-<dt id="arg-cells">cells<a class="anchor" aria-label="anchor" href="#arg-cells"></a></dt>
-<dd><p>a character vector of cell IDs of each cell. Length of vector
-must be equal to the number of cells in spatialExperiment object (i.e. the
-number of rows in colData(spe)).</p></dd>
 
 
 <dt id="arg-regxclust">regXclust<a class="anchor" aria-label="anchor" href="#arg-regxclust"></a></dt>
@@ -86,9 +80,9 @@ neighbourhood.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># requires list containing cluster proportions of each region (regXclust),</span></span></span>
 <span class="r-in"><span><span class="co"># generated using the neighbourDetect() function</span></span></span>
-<span class="r-in"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu">entropyMeasure</span><span class="op">(</span><span class="va">spe</span>, cells <span class="op">=</span> <span class="st">"uniqueID"</span>, <span class="va">regXclust</span>, threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Region domainness calculated. Time 01:11:42"</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spe</span><span class="op">$</span><span class="va">entropy</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu">entropyMeasure</span><span class="op">(</span><span class="va">spe</span>, <span class="va">regXclust</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Region domainness calculated. Time 06:46:31"</span>
+<span class="r-in"><span><span class="va">spe</span><span class="op">$</span><span class="va">entropy</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.46900 0.21084 0.69984 0.35336 0.81185 0.35336</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
