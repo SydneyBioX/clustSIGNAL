@@ -30,7 +30,6 @@
 #' @importFrom SummarizedExperiment assay
 #' @importFrom methods show as
 #' @importFrom BiocParallel bplapply
-#' @importFrom dplyr bind_rows
 #' @importFrom Matrix sparseMatrix
 #'
 #' @examples
@@ -52,34 +51,13 @@ adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G",
     } else if (kernel == "E") { # generate exponential distribution weights
         wts <- .exp_kernel(spe$entropy, NN + 1, spread)}
     colnames(wts) <- colnames(spe)
-    # scale weights
-    wts <- sweep(wts, 2, colSums(wts), FUN = "/")
-    # create a cell by cell weight matrix
-    BPPARAM <- .generateBPParam(cores = threads)
-    all_w <- BiocParallel::bplapply(colnames(wts), function(x) {
-        neigh_c <- nnCells[x, ]
-        other_c <- colnames(spe)[!colnames(spe) %in% neigh_c]
-        # tmp_df <- rbind(cbind(neigh_c, rep(x, length(neigh_c)), wts[, x]),
-        #                 cbind(other_c, rep(x, length(other_c)), 0)) |>
-        #     as.data.frame()
-        tmp_df <- rbind(cbind(neigh_c, 1, wts[, x]),
-                        cbind(other_c, 1, 0)) |>
-            as.data.frame()
-        colnames(tmp_df) <- c("ci", "c", "wci")
-        tmp_df <- tmp_df[match(colnames(spe), tmp_df$ci), ]
-        tmp_df$ci <- as.integer(match(tmp_df$ci, colnames(spe)))
-        # tmp_df$c <- as.integer(match(tmp_df$c, colnames(spe)))
-        tmp_df$c <- as.integer(tmp_df$c)
-        tmp_df$wci <- as.numeric(tmp_df$wci)
-        tmp_smat <- Matrix::sparseMatrix(i = tmp_df$ci, j = tmp_df$c,
-                                         x = tmp_df$wci)
-        tmp_smat}, BPPARAM = BPPARAM)
-    # W_mat <- dplyr::bind_cols(all_w)
-    # W_mat <- rlist::list.cbind(all_w)
-    W_mat <- do.call(cbind, all_w)
-    # removing unwanted large variable to free memory
-    rm(all_w, wts)
-    invisible(gc())
+    wts <- sweep(wts, 2, colSums(wts), FUN = "/") # scale weights
+    wts_df <- cbind(reshape2::melt(t(nnCells))[, 2:3], reshape2::melt(wts)[, 3])
+    colnames(wts_df) <- c("c", "ci", "wci")
+    wts_df$c <- as.integer(match(wts_df$c, colnames(spe)))
+    wts_df$ci <- as.integer(match(wts_df$ci, colnames(spe)))
+    W_mat <- Matrix::sparseMatrix(i = wts_df$ci, j = wts_df$c,
+                                  x = wts_df$wci)
     smoothMat <- G_mat %*% W_mat
     colnames(smoothMat) <- colnames(spe)
 
