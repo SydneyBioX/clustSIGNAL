@@ -34,7 +34,8 @@ Imports: BiocParallel,
     SingleCellExperiment,
     SummarizedExperiment,
     methods,
-    Matrix
+    Matrix,
+    reshape2
 Suggests: knitr,
     BiocStyle,
     testthat (>= 3.0.0),
