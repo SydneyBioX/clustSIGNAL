@@ -1,4 +1,4 @@
-## clustSIGNAL v0.99.6 (***)
+## clustSIGNAL v0.99.6 (2024-12-11)
 * Modified adaptiveSmoothing() function to improve its runtime.
 * Improved the tutorial vignette content.
 * Added step-by-step ClustSIGNAL run guide to the tutorial vignette.
