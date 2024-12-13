@@ -84,7 +84,7 @@ library(clustSIGNAL)
 
 data(example)
 
-# Here, the cell labels are in the column 'uniqueID' and sample labels are in 'sample_id' column.
+# Here, the sample labels are in 'sample_id' column.
 set.seed(100)
-res <- clustSIGNAL(spe, samples = "sample_id", cells = "uniqueID", outputs = "a")
+res <- clustSIGNAL(spe, samples = "sample_id", outputs = "a")
 ```
