@@ -11,7 +11,7 @@ gene expression data for clustering."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,7 +139,8 @@ k values (k) for clustering with NNGraphParam, and community detection method
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a list of outputs</p>
+    <p>a list of outputs depending on the type of outputs specified in the
+main function call.</p>
 <p>1. clusters: a data frame of cell names and their cluster classification.</p>
 <p>2. neighbours: a character matrix containing cells IDs of each cell's
 neighbours</p>
@@ -150,25 +151,25 @@ and silhouette widths included.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ClustSignal_example</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">spe</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "uniqueID"    "sample_id"   "entropy"     "nsCluster"   "initCluster"</span>
-<span class="r-in"><span><span class="co"># identify the column names with cell and sample labels</span></span></span>
+<span class="r-in"><span><span class="co"># identify the column name with sample labels</span></span></span>
 <span class="r-in"><span><span class="va">samples</span> <span class="op">=</span> <span class="st">"sample_id"</span></span></span>
 <span class="r-in"><span><span class="va">res_list</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, outputs <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Calculating PCA. Time 05:14:50"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ClustSIGNAL run started. Time 05:14:50"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Initial nonspatial clustering performed. Clusters = 6 Time 05:14:50"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Calculating PCA. Time 23:16:50"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ClustSIGNAL run started. Time 23:16:50"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Initial nonspatial clustering performed. Clusters = 6 Time 23:16:50"</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>You're computing too large a percentage of total singular values, use a standard svd instead.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>You're computing too large a percentage of total singular values, use a standard svd instead.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial subclustering performed. Subclusters = 17 Time 05:14:52"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Regions defined. Time 05:14:52"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Region domainness calculated. Time 05:14:52"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 05:14:52"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial clustering performed on smoothed data. Clusters = 9 Time 05:14:52"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ClustSIGNAL run completed. 05:14:52"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time difference of 2.5301 secs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial subclustering performed. Subclusters = 17 Time 23:16:51"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Regions defined. Time 23:16:52"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Region domainness calculated. Time 23:16:52"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.05 Time 23:16:52"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Nonspatial clustering performed on smoothed data. Clusters = 9 Time 23:16:52"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ClustSIGNAL run completed. 23:16:52"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time difference of 2.608634 secs</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
