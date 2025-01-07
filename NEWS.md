@@ -1,3 +1,8 @@
+## clustSIGNAL v0.99.7 (2025-01-08)
+* Minor updates. 
+* Renamed the example dataset from example.RData to ClustSignal_example.RData
+* Updated DESCRIPTION file to add bluster package version (>= 1.16.0) required to run ClustSIGNAL.
+
 ## clustSIGNAL v0.99.6 (2024-12-11)
 * Modified adaptiveSmoothing() function to improve its runtime.
 * Improved the tutorial vignette content.
