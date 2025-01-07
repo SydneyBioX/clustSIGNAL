@@ -32,7 +32,7 @@
 #' @importFrom methods show
 #'
 #' @examples
-#' data(example)
+#' data(ClustSignal_example)
 #'
 #' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
 #' out_list |> names()

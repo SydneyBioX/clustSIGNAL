@@ -48,7 +48,7 @@ A function to perform initial non-spatial clustering and sub-clustering of
 normalised gene expression to generate 'initial clusters'.
 }
 \examples{
-data(example)
+data(ClustSignal_example)
 
 spe <- clustSIGNAL::p1_clustering(spe, dimRed = "PCA")
 spe$nsCluster |> head()

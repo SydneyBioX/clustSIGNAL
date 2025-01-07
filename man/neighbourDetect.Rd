@@ -41,7 +41,7 @@ neighbourhoods are also sorted such that cells belonging to the same group as
 the central cell are arranged closer to it.
 }
 \examples{
-data(example)
+data(ClustSignal_example)
 
 out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
 out_list |> names()

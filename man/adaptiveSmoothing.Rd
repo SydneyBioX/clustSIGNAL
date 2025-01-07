@@ -40,7 +40,7 @@ initial group. Homogeneous neighbourhoods are smoothed more with similar
 weights given to most cells.
 }
 \examples{
-data(example)
+data(ClustSignal_example)
 
 # requires matrix containing NN nearest neighbour cell labels (nnCells),
 # generated using the neighbourDetect() function

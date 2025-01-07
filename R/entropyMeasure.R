@@ -19,7 +19,7 @@
 #' @importFrom methods show
 #'
 #' @examples
-#' data(example)
+#' data(ClustSignal_example)
 #'
 #' # requires list containing cluster proportions of each region (regXclust),
 #' # generated using the neighbourDetect() function

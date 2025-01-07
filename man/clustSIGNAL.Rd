@@ -68,7 +68,8 @@ k values (k) for clustering with NNGraphParam, and community detection method
 (cluster.fun) to use with NNGraphParam.}
 }
 \value{
-a list of outputs
+a list of outputs depending on the type of outputs specified in the
+main function call.
 
 1. clusters: a data frame of cell names and their cluster classification.
 
@@ -85,10 +86,10 @@ data. The tool generates and uses an adaptively smoothed, spatially informed
 gene expression data for clustering.
 }
 \examples{
-data(example)
+data(ClustSignal_example)
 
 names(colData(spe))
-# identify the column names with cell and sample labels
+# identify the column name with sample labels
 samples = "sample_id"
 res_list <- clustSIGNAL(spe, samples, outputs = "c")
 

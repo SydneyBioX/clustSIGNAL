@@ -42,7 +42,7 @@ data.
 A function containing to cluster adaptively smoothed gene expression data.
 }
 \examples{
-data(example)
+data(ClustSignal_example)
 
 # For non-spatial clustering of normalised counts
 spe <- clustSIGNAL::p2_clustering(spe)

@@ -26,7 +26,7 @@ entropy, such that homogeneous neighbourhoods have low entropy and
 heterogeneous neighbourhoods have high entropy.
 }
 \examples{
-data(example)
+data(ClustSignal_example)
 
 # requires list containing cluster proportions of each region (regXclust),
 # generated using the neighbourDetect() function

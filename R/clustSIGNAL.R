@@ -40,7 +40,8 @@
 #' "n" for dataframe of clusters plus neighbourhood matrix, "s" for  dataframe
 #' of clusters plus final spatialExperiment object, or "a" for all outputs.
 #'
-#' @return a list of outputs
+#' @return a list of outputs depending on the type of outputs specified in the
+#' main function call.
 #'
 #' 1. clusters: a data frame of cell names and their cluster classification.
 #'
@@ -57,10 +58,10 @@
 #' @importFrom scater runPCA
 #'
 #' @examples
-#' data(example)
+#' data(ClustSignal_example)
 #'
 #' names(colData(spe))
-#' # identify the column names with cell and sample labels
+#' # identify the column name with sample labels
 #' samples = "sample_id"
 #' res_list <- clustSIGNAL(spe, samples, outputs = "c")
 #'
@@ -103,13 +104,13 @@ clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
 
     # Non-spatial clustering to identify initial cluster groups
     spe <- p1_clustering(spe, dimRed, batch, batch_by, threads, clustParams)
-    # Neighborhood detection, and sorting if sort = TRUE
+    # Neighborhood detection, and sorting when sort = TRUE
     outReg <- neighbourDetect(spe, samples, NN, sort, threads)
     # Calculating domainness of cell neighborhoods
     spe <- entropyMeasure(spe, outReg$regXclust, threads)
     # Weighted smoothing guided by neighbourhood entropy
     spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread)
-    # Non-spatial clustering of adaptively smoothed expression
+    # Non-spatial clustering of adaptively smoothed gene expression
     spe <- p2_clustering(spe, batch, batch_by, threads, clustParams)
     cluster_df <- data.frame("Cells" = colnames(spe),
                              "Clusters" = spe$ClustSIGNAL)

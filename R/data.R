@@ -21,15 +21,15 @@
 NULL
 
 
-#' Example data as SpatialExperiment object
+#' Example data with SpatialExperiment object
 #'
 #' This example data was generated from the mouse embryo spatial transcriptomics
 #' dataset of 3 mouse embryos, with 351 genes and a total of 57536 cells. For
 #' running examples, we subset the data by selecting 1000 random cells from
 #' embryo 2, excluding any cells annotated as 'low quality'. After subsetting,
-#' we have 1000 cells from embryo 2 and 351 genes.
+#' we have expression for 351 genes from 1000 cells in embryo 2.
 #'
-#' @name example
+#' @name ClustSignal_example
 #' @aliases spe nnCells regXclust
 #' @docType data
 #' @format
@@ -41,7 +41,7 @@ NULL
 #' and the columns correspond to the nearest neighbors.
 #' \code{regXclust} a list where each element corresponds to a cell in spe
 #' object, and contains the cluster composition proportions.
-#' @usage data(example)
+#' @usage data(ClustSignal_example)
 #' @source Integration of spatial and single-cell transcriptomic data elucidates
 #' mouse organogenesis, \emph{Nature Biotechnology}, 2021.
 #' Webpage: \url{https://www.nature.com/articles/s41587-021-01006-2}

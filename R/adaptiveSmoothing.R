@@ -33,7 +33,7 @@
 #' @importFrom reshape2 melt
 #'
 #' @examples
-#' data(example)
+#' data(ClustSignal_example)
 #'
 #' # requires matrix containing NN nearest neighbour cell labels (nnCells),
 #' # generated using the neighbourDetect() function

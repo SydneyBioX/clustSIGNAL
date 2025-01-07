@@ -31,7 +31,7 @@
 #' @importFrom stats setNames
 #'
 #' @examples
-#' data(example)
+#' data(ClustSignal_example)
 #'
 #' # For non-spatial clustering of normalised counts
 #' spe <- clustSIGNAL::p2_clustering(spe)
