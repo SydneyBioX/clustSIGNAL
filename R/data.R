@@ -35,8 +35,8 @@ NULL
 #' @format
 #' \code{spe} a spatialExperiment object containing gene expression matrix with
 #' normalised counts, where rows indicate genes and columns indicate cells.
-#' Also, contains a data frame of cell metadata including cell IDs, sample IDs,
-#' cell type annotations, and x-y coordinates of cells.
+#' Also, contains a cell metadata including cell IDs, sample IDs, cell type
+#' annotations, and x-y coordinates of cells.
 #' \code{nnCells} a matrix where each row corresponds to a cell in spe object,
 #' and the columns correspond to the nearest neighbors.
 #' \code{regXclust} a list where each element corresponds to a cell in spe
