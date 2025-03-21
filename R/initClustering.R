@@ -2,30 +2,35 @@
 #'
 #' @description
 #' A function to perform initial non-spatial clustering and sub-clustering of
-#' normalised gene expression to generate 'initial clusters'.
-#'
-#' @param spe SpatialExperiment object. For reclust = FALSE, the object should
-#' contain logcounts and PCA, but for reculst = TRUE, the object should contain
-#' smoothed gene expression.
+#' normalised gene expression to generate 'initial clusters' and 'initial
+#' subclusters'.
+#' @param spe a SpatialExperiment object containing spatial coordinates in
+#' 'spatialCoords' matrix and normalised gene expression in 'logcounts' assay.
 #' @param dimRed a character indicating the name of the reduced dimensions to
 #' use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
-#' Default value is 'PCA'.
-#' @param batch a logical parameter for whether or not to perform batch
-#' correction. Default value is FALSE.
+#' Default value is 'None'.
+#' @param batch a logical parameter for whether to perform batch correction.
+#' Default value is FALSE.
 #' @param batch_by a character indicating name of colData(spe) column containing
-#' the batch names.
+#' the batch names. Default value is 'None'.
 #' @param threads a numeric value for the number of CPU cores to be used for the
 #' analysis. Default value set to 1.
-#' @param clustParams a list of parameters for TwoStepParam clustering methods.
-#' The clustering parameters are in the order - centers (centers) for clustering
-#' with KmeansParam, centers (centers) for sub-clustering clusters with
-#' KmeansParam, maximum iterations (iter.max) for clustering with KmeansParam,
-#' k values (k) for clustering with NNGraphParam, and community detection method
-#' (cluster.fun) to use with NNGraphParam.
-#'
-#' @return SpatialExperiment object containing 'initial cluster' groups
-#' allotted to each cell.
-#'
+#' @param clustParams a list of parameters for TwoStepParam clustering methods:
+#' clust_c is the number of centers to use for clustering with KmeansParam. By
+#' default set to 0, in which case the method uses either 5000 centers or 1/5th
+#' of the total cells in the data as the number of centers, whichever is lower.
+#' subclust_c is the number of centers to use for sub-clustering the initial
+#' clusters with KmeansParam. The default value is 0, in which case the method
+#' uses either 1 center or half of the total cells in the initial cluster as
+#' the number of centers, whichever is higher.
+#' iter.max is the maximum number of iterations to perform during clustering
+#' and sub-clustering with KmeansParam. Default value is 30.
+#' k is a numeric value indicating the k-value used for clustering and
+#' sub-clustering with NNGraphParam. Default value is 10.
+#' cluster.fun is a character indicating the graph clustering method used with
+#' NNGraphParam. By default, the Louvain method is used.
+#' @return SpatialExperiment object with initial cluster and subcluster labels
+#' of each cell.
 #' @importFrom bluster clusterRows TwoStepParam KmeansParam NNGraphParam
 #' @importFrom scater runPCA
 #' @importFrom harmony RunHarmony
@@ -33,24 +38,20 @@
 #' @importFrom SingleCellExperiment reducedDim
 #' @importFrom methods show
 #' @importFrom stats setNames
-#'
 #' @examples
 #' data(ClustSignal_example)
 #'
 #' spe <- clustSIGNAL::p1_clustering(spe, dimRed = "PCA")
 #' spe$nsCluster |> head()
 #' spe$initCluster |> head()
-#'
 #' @export
 
-#### Non-spatial clustering
 p1_clustering <- function(spe, dimRed = "None", batch = FALSE,
                           batch_by = "None", threads = 1,
                           clustParams = list(clust_c = 0, subclust_c = 0,
-                                             iter.max = 30, k = 5,
+                                             iter.max = 30, k = 10,
                                              cluster.fun = "louvain")) {
     if (clustParams[[1]] == 0)
-        # number of centers = 1/5th of total cells in sample
         clustVal <- min(as.integer(ncol(spe) / 5), 5000) else
             clustVal <- clustParams[[1]]
     # Initial clustering
@@ -63,29 +64,27 @@ p1_clustering <- function(spe, dimRed = "None", batch = FALSE,
     } else {
         mat <- reducedDim(spe, dimRed)
     }
-    nsClust <- bluster::clusterRows(mat, bluster::TwoStepParam(
+    initClust <- bluster::clusterRows(mat, bluster::TwoStepParam(
         first = bluster::KmeansParam(centers = clustVal,
                                      iter.max = clustParams[[3]]),
         second = bluster::NNGraphParam(k = clustParams[[4]],
                                        cluster.fun = clustParams[[5]],
                                        num.threads = threads)))
-    spe$nsCluster <- factor(nsClust)
+    spe$initCluster <- factor(initClust)
     show(paste("Initial nonspatial clustering performed. Clusters =",
-               length(unique(nsClust)), "Time",
+               length(unique(initClust)), "Time",
                format(Sys.time(),'%H:%M:%S')))
     # Initial subclustering
-    clusters <- length(unique(spe$nsCluster))
+    clusters <- length(unique(spe$initCluster))
     subclusters_list <- list()
     for (cl in seq_len(clusters)){
-        speX <- spe[, spe$nsCluster == cl]
+        speX <- spe[, spe$initCluster == cl]
         speX <- scater::runPCA(speX)
         matX <- reducedDim(speX, "PCA")
         if (clustParams[[2]] == 0)
-            # number of centers = half of total cells in cluster or 1,
-            # if only one cell in cluster
             subclustVal <- max(as.integer(ncol(speX) / 2), 1) else
                 subclustVal <- clustParams[[2]]
-        nsClustX <- bluster::clusterRows(
+        initClustX <- bluster::clusterRows(
             matX,
             bluster::TwoStepParam(
                 first = bluster::KmeansParam(centers = subclustVal,
@@ -93,11 +92,11 @@ p1_clustering <- function(spe, dimRed = "None", batch = FALSE,
                 second = bluster::NNGraphParam(k = clustParams[[4]],
                                                cluster.fun = clustParams[[5]],
                                                num.threads = threads)))
-        subclusters_list[[cl]] <- setNames(paste0(cl, ".", nsClustX),
+        subclusters_list[[cl]] <- setNames(paste0(cl, ".", initClustX),
                                           colnames(speX))}
-    spe$initCluster <- factor(unlist(subclusters_list)[colnames(spe)])
+    spe$initSubcluster <- factor(unlist(subclusters_list)[colnames(spe)])
     show(paste("Nonspatial subclustering performed. Subclusters =",
-               length(unique(spe$initCluster)), "Time",
+               length(unique(spe$initSubcluster)), "Time",
                format(Sys.time(),'%H:%M:%S')))
     return (spe)
 }
