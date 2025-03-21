@@ -2,61 +2,53 @@
 #'
 #' @description
 #' A function to identify the neighbourhood of each cell. If sort = TRUE, the
-#' neighbourhoods are also sorted such that cells belonging to the same group as
-#' the central cell are arranged closer to it.
-#'
-#' @param spe SpatialExperiment object with logcounts, PCA, and 'initial
-#' cluster' groups included.
-#' @param samples a character vector of sample names to which the cells belong.
-#' Length of vector must be equal to the number of cells in spatialExperiment
-#' object (i.e. the number of rows in colData(spe)).
-#' @param NN an integer for the number of neighbourhood cells the function
+#' neighbourhoods are also sorted such that cells belonging to the same
+#' 'initial cluster' as the index cell are arranged closer to it.
+#' @param spe SpatialExperiment object with initial cluster and subcluster
+#' labels.
+#' @param samples a character indicating name of colData(spe) column containing
+#' sample names.
+#' @param NN an integer for the number of neighbouring cells the function
 #' should consider. The value must be greater than or equal to 1. Default value
 #' is 30.
-#' @param sort a logical parameter for whether or not to sort the neighbourhood
-#' after region description. Default value is TRUE.
+#' @param sort a logical parameter for whether to sort the neighbourhood by
+#' initial clusters. Default value is TRUE.
 #' @param threads a numeric value for the number of CPU cores to be used for the
 #' analysis. Default value set to 1.
-#'
 #' @return a list containing two items:
 #'
-#' 1. nnCells, a character matrix of NN nearest neighbours - rows are cells and
-#' columns are their nearest neighbours ranged from closest to farthest
-#' neighbour. For sort = TRUE, the neighbours belonging to the same 'putative
-#' cell type' group as the cell are moved closer to it.
+#' 1. nnCells, a character matrix of NN nearest neighbours - rows are index
+#' cells and columns are their nearest neighbours ranging from closest to
+#' farthest neighbour. For sort = TRUE, the neighbours belonging to the same
+#' initial cluster as the index cell are moved closer to it.
 #'
-#' 2. regXclust, a list of vectors for each cell's neighbourhood composition
-#' indicated by the proportion of 'putative cell type' groups it contains.
+#' 2. regXclust, a list of vectors of each cell's neighbourhood composition
+#' indicated by the proportion of initial subclusters it contains.
 #' @importFrom BiocNeighbors findKNN KmknnParam
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom methods show
-#'
 #' @examples
 #' data(ClustSignal_example)
 #'
 #' out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
 #' out_list |> names()
-#'
 #' @export
 
-#### Region description + sorting
 neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE, threads = 1) {
     samplesList <- unique(spe[[samples]])
     nnCells <- matrix(nrow = 0, ncol = NN + 1)
-    nnClusts <- matrix(nrow = 0, ncol = NN)
+    nnClusts <- matrix(nrow = 0, ncol = NN + 1)
     for (s in samplesList) {
         speX <- spe[, spe[[samples]] == s]
         xy_pos <- spatialCoords(speX)
-        Clust <- as.data.frame(as.character(speX$nsCluster))
+        Clust <- as.data.frame(as.character(speX$initCluster))
         rownames(Clust) <- colnames(speX)
-        subClust <- as.data.frame(speX$initCluster)
+        subClust <- as.data.frame(speX$initSubcluster)
         rownames(subClust) <- colnames(speX)
-        # finding NN nearest neighbors for each cell
         nnMatlist <- BiocNeighbors::findKNN(
             xy_pos, k = NN, num.threads = threads,
             BNPARAM = BiocNeighbors::KmknnParam())
         rownames(nnMatlist$index) <- rownames(subClust)
-        # add index cell indices to first column of neighborhood indices matrix
         nnMatlist$indexNew <- cbind(seq_len(nrow(nnMatlist$index)),
                                     nnMatlist$index)
         if (sort == TRUE) {
@@ -65,18 +57,16 @@ neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE, threads = 1) {
         } else if (sort == FALSE) {
             nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1,
                                               .cellName, Clust = Clust)))}
-        nnClusts <- rbind(nnClusts, t(apply(nnMatlist$index, 1,
+        nnClusts <- rbind(nnClusts, t(apply(nnMatlist$indexNew, 1,
                                             .clustNum, subClust = subClust)))}
-    # obtaining a list of regions by cluster proportions
     regXclust <- apply(nnClusts, 1, .calculateProp)
-
     # QC check
     check.cells.dim <- identical(dim(nnCells),
                                  as.integer(c(ncol(spe), NN + 1)))
     check.cells.names <- identical(as.character(nnCells[,1]), colnames(spe))
     check.cells.NA <- sum(is.na(nnCells))
     check.clusts.dim <- identical(dim(nnClusts),
-                                  as.integer(c(ncol(spe), NN)))
+                                  as.integer(c(ncol(spe), NN + 1)))
     check.clusts.names <- identical(rownames(nnClusts), colnames(spe))
     check.clusts.NA <- sum(is.na(nnClusts))
     check.region <- identical(length(regXclust), ncol(spe))
