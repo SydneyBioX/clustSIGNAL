@@ -1,3 +1,11 @@
+## clustSIGNAL v0.99.8 (2025-03-21)
+* The neighbourhood entropy calculation now includes the index cell's initial subcluster label. This is to ensure that distinct cells existing in otherwise completely homogeneous space are taken into account when measuring neighbourhood heterogeneity.
+* Following additional parameter testing on simulated data, changed the default values of spread for Gaussian distribution (from 0.05 to 0.3) and clustering k (from 5 to 10), and recommended value of spread for exponential distribution (from 20 to 5).
+* Moved all helper functions to the utilities.R file.
+* Minor updates to the column names in which initial cluster and subcluster labels are stored after first clustering step.
+* Updated the descriptions of all functions in the package. 
+* Improved the tutorial vignette content.
+
 ## clustSIGNAL v0.99.7 (2025-01-08)
 * Minor updates. 
 * Renamed the example dataset from example.RData to ClustSignal_example.RData
