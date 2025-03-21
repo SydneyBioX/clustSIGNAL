@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,7 +30,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Exponential distribution weights</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sydneybiox/clustSIGNAL/blob/main/R/expKernel.R" class="external-link"><code>R/expKernel.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sydneybiox/clustSIGNAL/blob/main/R/utilities.R" class="external-link"><code>R/utilities.R</code></a></small>
       <div class="d-none name"><code>dot-exp_kernel.Rd</code></div>
     </div>
 
@@ -52,9 +52,8 @@
 
 
 <dt id="arg-nn">NN<a class="anchor" aria-label="anchor" href="#arg-nn"></a></dt>
-<dd><p>an integer for the number of neighbourhood cells the function
-should consider. The value must be greater than or equal to 1. Default value
-is 30.</p></dd>
+<dd><p>an integer for the number of neighbourhood cells including the
+index cell.</p></dd>
 
 
 <dt id="arg-rate">rate<a class="anchor" aria-label="anchor" href="#arg-rate"></a></dt>
@@ -63,7 +62,7 @@ is 30.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a matrix where each column contains weights related to specific
+    <p>a matrix where the columns contain weights associated with the
 entropy values.</p>
     </div>
 
