@@ -15,3 +15,4 @@ A BPPPARAM object.
 \description{
 A utility function to generate BPPARAM object.
 }
+\keyword{internal}
