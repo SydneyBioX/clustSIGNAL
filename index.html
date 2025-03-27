@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>clustSIGNAL: a spatial clustering method • clustSIGNAL</title>
+<title>ClustSIGNAL: a spatial clustering method • clustSIGNAL</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="clustSIGNAL: a spatial clustering method">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="ClustSIGNAL: a spatial clustering method">
 <meta name="description" content="clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous neighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.">
 <meta property="og:description" content="clustSIGNAL: clustering of Spatially Informed Gene expression with Neighbourhood Adapted Learning. A tool for adaptively smoothing and clustering gene expression data. clustSIGNAL uses entropy to measure heterogeneity of cell neighbourhoods and performs a weighted, adaptive smoothing, where homogeneous neighbourhoods are smoothed more and heterogeneous neighbourhoods are smoothed less. This not only overcomes data sparsity but also incorporates spatial context into the gene expression data. The resulting smoothed gene expression data is used for clustering and could be used for other downstream analyses.">
 </head>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,7 @@
 </h1></div>
 <p><img src="reference/figures/clustSIGNAL_hex.jpg" align="right" height="250" width="225"></p>
 <p>ClustSIGNAL: <strong><em>Clust</em></strong>ering of <strong><em>S</em></strong>patially <strong><em>I</em></strong>nformed <strong><em>G</em></strong>ene expression with <strong><em>N</em></strong>eighbourhood <strong><em>A</em></strong>dapted <strong><em>L</em></strong>earning.</p>
-<p>An R package to perform spatially-resolved cell type clustering on high-resolution spatial transcriptomics data. This method has two-fold motivation: overcoming data sparsity by using neighbourhood heterogeneity information to guide an adaptive smoothing approach, and performing spatially-informed clustering by embedding spatial context into the gene expression. To achieve these, we calculate entropy as a measure of heterogeneity of cell neighbourhoods and use it to generate weight distributions and perform adaptive smoothing of gene expression. Homogeneous neighbourhoods generally have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. The resulting adaptively smoothed gene expression is used for clustering.</p>
+<p>An R package to perform spatially-informed cell type clustering on high-resolution spatial transcriptomics data. This method has two-fold motivation: overcoming data sparsity by using neighbourhood heterogeneity information to guide an adaptive smoothing approach, and performing spatially-informed clustering by embedding spatial context into the gene expression. To achieve these, we calculate entropy as a measure of heterogeneity of cell neighbourhoods and use it to generate weight distributions and perform adaptive smoothing of gene expression. Homogeneous neighbourhoods generally have low entropy, and so, smoothing is performed over more cells in these neighbourhoods. Contrarily, heterogeneous neighbourhoods have high entropy and are smoothed over a much smaller region. The resulting adaptively smoothed gene expression is used for clustering.</p>
 <p>For a tutorial on how to use ClustSIGNAL, see the vignette at this <a href="https://sydneybiox.github.io/clustSIGNAL/">website</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
