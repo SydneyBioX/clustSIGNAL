@@ -56,8 +56,8 @@
 Panwar</h4>
             <address class="author_afil">
       School of Mathematics and Statistics, The University of Sydney,
-NSW 2006, AustraliaSydney Precision Data Science Centre, University of
-Sydney, NSW 2006, AustraliaCharles Perkins Centre, The University of
+NSW 2006, Australia;Sydney Precision Data Science Centre, University of
+Sydney, NSW 2006, Australia;Charles Perkins Centre, The University of
 Sydney, NSW 2006,
 Australia<br><h4 data-toc-skip class="author">Boyi
 Guo</h4>
@@ -73,16 +73,16 @@ USA<br><h4 data-toc-skip class="author">Stephanie
 Hicks</h4>
             <address class="author_afil">
       Department of Biostatistics, Johns Hopkins Bloomberg School of
-Public Health, MD, USADepartment of Biomedical Engineering, Johns
-Hopkins University, Baltimore, MD, USACenter for Computational Biology,
-Johns Hopkins University, Baltimore, MD, USAMalone Center for
+Public Health, MD, USA;Department of Biomedical Engineering, Johns
+Hopkins University, Baltimore, MD, USA;Center for Computational Biology,
+Johns Hopkins University, Baltimore, MD, USA;Malone Center for
 Engineering in Healthcare, Johns Hopkins University, MD,
 USA<br><h4 data-toc-skip class="author">Shila
 Ghazanfar</h4>
             <address class="author_afil">
       School of Mathematics and Statistics, The University of Sydney,
-NSW 2006, AustraliaSydney Precision Data Science Centre, University of
-Sydney, NSW 2006, AustraliaCharles Perkins Centre, The University of
+NSW 2006, Australia;Sydney Precision Data Science Centre, University of
+Sydney, NSW 2006, Australia;Charles Perkins Centre, The University of
 Sydney, NSW 2006, Australia<br><h4 data-toc-skip class="date">2025-03-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sydneybiox/clustSIGNAL/blob/main/vignettes/clustSIGNAL.Rmd" class="external-link"><code>vignettes/clustSIGNAL.Rmd</code></a></small>
@@ -222,16 +222,16 @@ final SpatialExperiment object.</p>
 <span><span class="co"># labels in colData slot, and the output type to generate (clusters, neighbours,</span></span>
 <span><span class="co"># and/or final spe object).</span></span>
 <span><span class="va">res_emb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Calculating PCA. Time 08:30:57"</span></span>
-<span><span class="co">## [1] "ClustSIGNAL run started. Time 08:30:58"</span></span>
-<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 9 Time 08:30:58"</span></span>
-<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 31 Time 08:31:01"</span></span>
-<span><span class="co">## [1] "Regions defined. Time 08:31:03"</span></span>
-<span><span class="co">## [1] "Region heterogeneity calculated. Time 08:31:03"</span></span>
-<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 08:31:03"</span></span>
-<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 14 Time 08:31:05"</span></span>
-<span><span class="co">## [1] "ClustSIGNAL run completed. 08:31:05"</span></span>
-<span><span class="co">## Time difference of 7.952625 secs</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Calculating PCA. Time 08:51:54"</span></span>
+<span><span class="co">## [1] "ClustSIGNAL run started. Time 08:51:55"</span></span>
+<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 9 Time 08:51:56"</span></span>
+<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 31 Time 08:51:58"</span></span>
+<span><span class="co">## [1] "Regions defined. Time 08:52:00"</span></span>
+<span><span class="co">## [1] "Region heterogeneity calculated. Time 08:52:00"</span></span>
+<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 08:52:01"</span></span>
+<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 14 Time 08:52:02"</span></span>
+<span><span class="co">## [1] "ClustSIGNAL run completed. 08:52:02"</span></span>
+<span><span class="co">## Time difference of 7.756819 secs</span></span></code></pre>
 <p>This returns a list that contains a ClustSIGNAL clusters dataframe
 (clusters), a matrix of cell IDs from each cell’s neighbourhood
 (neighbours with NN neighbourhood size), and a final SpatialExperiment
@@ -502,16 +502,16 @@ internally for batch correction.</p>
 <span><span class="co"># the batch and batch_by options.</span></span>
 <span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="st">"samples"</span> <span class="co"># column name containing sample names</span></span>
 <span><span class="va">res_hyp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe2</span>, <span class="va">samples</span>, threads <span class="op">=</span> <span class="fl">4</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Calculating PCA. Time 08:31:08"</span></span>
-<span><span class="co">## [1] "ClustSIGNAL run started. Time 08:31:09"</span></span>
-<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 9 Time 08:31:10"</span></span>
-<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 38 Time 08:31:11"</span></span>
-<span><span class="co">## [1] "Regions defined. Time 08:31:14"</span></span>
-<span><span class="co">## [1] "Region heterogeneity calculated. Time 08:31:16"</span></span>
-<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 08:31:16"</span></span>
-<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 12 Time 08:31:17"</span></span>
-<span><span class="co">## [1] "ClustSIGNAL run completed. 08:31:17"</span></span>
-<span><span class="co">## Time difference of 8.62054 secs</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Calculating PCA. Time 08:52:06"</span></span>
+<span><span class="co">## [1] "ClustSIGNAL run started. Time 08:52:06"</span></span>
+<span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 9 Time 08:52:07"</span></span>
+<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 38 Time 08:52:09"</span></span>
+<span><span class="co">## [1] "Regions defined. Time 08:52:11"</span></span>
+<span><span class="co">## [1] "Region heterogeneity calculated. Time 08:52:13"</span></span>
+<span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 08:52:13"</span></span>
+<span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 12 Time 08:52:14"</span></span>
+<span><span class="co">## [1] "ClustSIGNAL run completed. 08:52:14"</span></span>
+<span><span class="co">## Time difference of 8.660615 secs</span></span></code></pre>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># for convenience with downstream analyses, we replace the original spe object </span></span>
 <span><span class="co"># with the one generated by ClustSIGNAL.</span></span>
@@ -729,8 +729,8 @@ is higher. For all other values of clust_c and subclust_c, the input is
 treated as the number of centers.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/p1_clustering.html">p1_clustering</a></span><span class="op">(</span><span class="va">spe</span>, dimRed <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 9 Time 08:31:23"</span></span>
-<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 31 Time 08:31:25"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Initial nonspatial clustering performed. Clusters = 9 Time 08:52:20"</span></span>
+<span><span class="co">## [1] "Nonspatial subclustering performed. Subclusters = 31 Time 08:52:22"</span></span></code></pre>
 <p>Here, two columns are added to the spe object under the cell
 metadata:</p>
 <ol style="list-style-type: lower-roman">
@@ -768,7 +768,7 @@ respectively.</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This step generates a list of neighbourhood information.</span></span>
 <span><span class="va">outReg</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/neighbourDetect.html">neighbourDetect</a></span><span class="op">(</span><span class="va">spe</span>, samples <span class="op">=</span> <span class="st">"sample_id"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Regions defined. Time 08:31:27"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Regions defined. Time 08:52:24"</span></span></code></pre>
 <p>This generates a list containing:</p>
 <ol style="list-style-type: lower-roman">
 <li>a neighborhood matrix containing cell IDs,</li>
@@ -801,7 +801,7 @@ and initial subcluster proportions. This step can run in parallel, but
 by default we use 1 cpu core.</p>
 <div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/entropyMeasure.html">entropyMeasure</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">outReg</span><span class="op">$</span><span class="va">regXclust</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Region heterogeneity calculated. Time 08:31:27"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Region heterogeneity calculated. Time 08:52:25"</span></span></code></pre>
 <p>The entropy values are added to the spe object under cell
 metadata.</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
@@ -823,7 +823,7 @@ recommend using a spread of 5 indicating rate of the distribution), and
 number of cores (threads = 1) to use for parallel runs.</p>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/adaptiveSmoothing.html">adaptiveSmoothing</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">outReg</span><span class="op">$</span><span class="va">nnCells</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 08:31:28"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 08:52:25"</span></span></code></pre>
 <p>The adaptively smoothed gene expression data are added to the spe
 object under assays as ‘smoothed’.</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
@@ -851,7 +851,7 @@ adaptively smoothed data. This step has the same default clustering and
 batch correction parameters as the initial clustering in first step.</p>
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/p2_clustering.html">p2_clustering</a></span><span class="op">(</span><span class="va">spe</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 14 Time 08:31:29"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Nonspatial clustering performed on smoothed data. Clusters = 14 Time 08:52:26"</span></span></code></pre>
 <p>Cluster labels are added to the colData of the spe object under a
 ClustSIGNAL column</p>
 <div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
