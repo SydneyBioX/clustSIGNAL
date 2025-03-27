@@ -2,28 +2,28 @@
 title: "ClustSIGNAL tutorial"
 date: "`r Sys.Date()`"
 author:
-  - name: Pratibha Panwar
-    affiliation:
-    - School of Mathematics and Statistics, The University of Sydney, NSW 2006, Australia
-    - Sydney Precision Data Science Centre, University of Sydney, NSW 2006, Australia
-    - Charles Perkins Centre, The University of Sydney, NSW 2006, Australia
-  - name: Boyi Guo
-    affiliation:
-    - Department of Biostatistics, Johns Hopkins Bloomberg School of Public Health, MD, USA
-  - name: Haowen Zhou
-    affiliation:
-    - Bioinformatics and Systems Biology Graduate Program, University of California San Diego, La Jolla, CA, USA
-  - name: Stephanie Hicks
-    affiliation:
-    - Department of Biostatistics, Johns Hopkins Bloomberg School of Public Health, MD, USA
-    - Department of Biomedical Engineering, Johns Hopkins University, Baltimore, MD, USA
-    - Center for Computational Biology, Johns Hopkins University, Baltimore, MD, USA
-    - Malone Center for Engineering in Healthcare, Johns Hopkins University, MD, USA
-  - name: Shila Ghazanfar
-    affiliation:
-    - School of Mathematics and Statistics, The University of Sydney, NSW 2006, Australia
-    - Sydney Precision Data Science Centre, University of Sydney, NSW 2006, Australia
-    - Charles Perkins Centre, The University of Sydney, NSW 2006, Australia
+- name: Pratibha Panwar
+  affiliation:
+  - School of Mathematics and Statistics, The University of Sydney, NSW 2006, Australia
+  - Sydney Precision Data Science Centre, University of Sydney, NSW 2006, Australia
+  - Charles Perkins Centre, The University of Sydney, NSW 2006, Australia
+- name: Boyi Guo
+  affiliation:
+  - Department of Biostatistics, Johns Hopkins Bloomberg School of Public Health, MD, USA
+- name: Haowen Zhou
+  affiliation:
+  - Bioinformatics and Systems Biology Graduate Program, University of California San Diego, La Jolla, CA, USA
+- name: Stephanie Hicks
+  affiliation:
+  - Department of Biostatistics, Johns Hopkins Bloomberg School of Public Health, MD, USA
+  - Department of Biomedical Engineering, Johns Hopkins University, Baltimore, MD, USA
+  - Center for Computational Biology, Johns Hopkins University, Baltimore, MD, USA
+  - Malone Center for Engineering in Healthcare, Johns Hopkins University, MD, USA
+- name: Shila Ghazanfar
+  affiliation:
+  - School of Mathematics and Statistics, The University of Sydney, NSW 2006, Australia
+  - Sydney Precision Data Science Centre, University of Sydney, NSW 2006, Australia
+  - Charles Perkins Centre, The University of Sydney, NSW 2006, Australia
 output:
   BiocStyle::html_document:
     toc_float: true
