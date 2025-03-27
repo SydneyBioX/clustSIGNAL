@@ -1,8 +1,29 @@
 ---
 title: "ClustSIGNAL tutorial"
-author:
-  - Pratibha Panwar, Boyi Guo, Haowen Zhou, Stephanie Hicks, Shila Ghazanfar
 date: "`r Sys.Date()`"
+author:
+  - name: Pratibha Panwar
+    affiliation:
+    - School of Mathematics and Statistics, The University of Sydney, NSW 2006, Australia
+    - Sydney Precision Data Science Centre, University of Sydney, NSW 2006, Australia
+    - Charles Perkins Centre, The University of Sydney, NSW 2006, Australia
+  - name: Boyi Guo
+    affiliation:
+    - Department of Biostatistics, Johns Hopkins Bloomberg School of Public Health, MD, USA
+  - name: Haowen Zhou
+    affiliation:
+    - Bioinformatics and Systems Biology Graduate Program, University of California San Diego, La Jolla, CA, USA
+  - name: Stephanie Hicks
+    affiliation:
+    - Department of Biostatistics, Johns Hopkins Bloomberg School of Public Health, MD, USA
+    - Department of Biomedical Engineering, Johns Hopkins University, Baltimore, MD, USA
+    - Center for Computational Biology, Johns Hopkins University, Baltimore, MD, USA
+    - Malone Center for Engineering in Healthcare, Johns Hopkins University, MD, USA
+  - name: Shila Ghazanfar
+    affiliation:
+    - School of Mathematics and Statistics, The University of Sydney, NSW 2006, Australia
+    - Sydney Precision Data Science Centre, University of Sydney, NSW 2006, Australia
+    - Charles Perkins Centre, The University of Sydney, NSW 2006, Australia
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -21,15 +42,33 @@ editor_options:
 knitr::opts_chunk$set(collapse = FALSE, warning = FALSE)
 ```
 
-# Overview
+# ClustSIGNAL
 
-In this vignette, we demonstrate how spatially-resolved clustering can be
-performed with ClustSIGNAL, exploring the clusters using pre-defined metrics
-like adjusted rand index (ARI) and normalized mutual information (NMI), as well
-as spatial plots to visualize the clusters. ClustSIGNAL is a multisample spatial
-clustering approach, and we show this using an example dataset. We also display
-the use of entropy measures, which are generated as a by-product of the
-ClustSIGNAL process, in understanding the tissue structure of a sample. 
+The R package ClustSIGNAL performs spatially-informed cell type clustering on 
+high-resolution spatial transcriptomics data. It uses both the gene expression 
+and spatial locations of cells to group them into clusters.
+
+## Motivation
+
+ClustSIGNAL aims to: (i) overcome data sparsity using an adaptive smoothing 
+approach that is guided by the heterogeneity/homogeneity of each individual 
+cell's neighbourhood; (ii) embed spatial context information into the gene 
+expression generating a transformed, adaptively smoothed expression matrix that 
+can be used for clustering; and (iii) generate entropy data that captures the
+heterogeneity/homogeneity information from each cell's neighbourhood and can be 
+used to create a spatial map of heterogeneity distribution in a sample tissue.
+
+## Overview
+
+In this vignette, we demonstrate how spatially-informed clustering can be
+performed with ClustSIGNAL, assessing the clusters using pre-defined metrics
+like [adjusted rand index (ARI)](https://www.rdocumentation.org/packages/aricode/versions/0.1.1/topics/ARI) 
+and [normalized mutual information (NMI)](https://www.rdocumentation.org/packages/aricode/versions/0.1.1/topics/NMI) 
+from the [aricode](https://jmlr.csail.mit.edu/papers/volume11/vinh10a/vinh10a.pdf) 
+R package, as well as spatial plots to visualize them. ClustSIGNAL is a 
+multisample spatial clustering approach, and we show this using an example 
+dataset. We also display the use of entropy values, which are generated as part 
+of the ClustSIGNAL process, in understanding the tissue structure of a sample. 
 
 ClustSIGNAL is very flexible in that it allows for, (i) user-provided input 
 values for most parameters (default parameter values are also provided) and 
