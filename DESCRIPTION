@@ -1,7 +1,7 @@
 Package: clustSIGNAL
 Type: Package
 Title: ClustSIGNAL: a spatial clustering method
-Version: 0.99.9
+Version: 1.0.0
 Authors@R: c(
     person("Pratibha", "Panwar", email = "pratibhapanwar.4@gmail.com", 
     role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-7437-7084")),
