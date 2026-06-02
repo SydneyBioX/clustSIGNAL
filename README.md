@@ -74,7 +74,7 @@ ClustSIGNAL package uses a SpatialExperiment object as input. We provide users w
 
 -   **clustParams** - parameter options for TwoStepParam clustering methods in the bluster package. The clustering parameters are in the following order in this list:
 
-    -   ***clust_c*** represents number of centers for clustering with KmeansParam. By default this is set to 0, in which case the method uses either 5000 centers or 1/5th of the total cells in the data as the number of centers, whichever is lower.
+    -   ***clust_c*** represents number of centers for clustering with KmeansParam. By default this is set to 0, in which case the method uses either 3000 centers or 1/5th of the total cells in the data as the number of centers, whichever is lower.
 
     -   ***subclust_c*** represents number of centers for sub-clustering the initial clusters with KmeansParam. The default value is 0, in which case the method uses either 1 center or half of the total cells in the initial cluster as the number of centers, whichever is higher.
 
