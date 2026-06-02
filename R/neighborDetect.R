@@ -24,9 +24,11 @@
 #'
 #' 2. regXclust, a list of vectors of each cell's neighbourhood composition
 #' indicated by the proportion of initial subclusters it contains.
+#'
 #' @importFrom BiocNeighbors findKNN KmknnParam
 #' @importFrom SpatialExperiment spatialCoords
 #' @importFrom methods show
+#' @importFrom SummarizedExperiment colData
 #' @examples
 #' data(ClustSignal_example)
 #'
@@ -35,58 +37,89 @@
 #' @export
 
 neighbourDetect <- function(spe, samples, NN = 30, sort = TRUE, threads = 1) {
-    samplesList <- unique(spe[[samples]])
-    nnCells <- matrix(nrow = 0, ncol = NN + 1)
-    nnClusts <- matrix(nrow = 0, ncol = NN + 1)
-    for (s in samplesList) {
-        speX <- spe[, spe[[samples]] == s]
+    # extracting sample names
+    samplesList <- unique(colData(spe)[[samples]])
+
+    # finding neighbours for each sample
+    results_list <- lapply(samplesList, function(s) {
+        speX <- spe[, colData(spe)[[samples]] == s]
         xy_pos <- spatialCoords(speX)
-        Clust <- as.data.frame(as.character(speX$initCluster))
-        rownames(Clust) <- colnames(speX)
-        subClust <- as.data.frame(speX$initSubcluster)
-        rownames(subClust) <- colnames(speX)
-        nnMatlist <- BiocNeighbors::findKNN(
-            xy_pos, k = NN, num.threads = threads,
-            BNPARAM = BiocNeighbors::KmknnParam())
-        rownames(nnMatlist$index) <- rownames(subClust)
-        nnMatlist$indexNew <- cbind(seq_len(nrow(nnMatlist$index)),
-                                    nnMatlist$index)
-        if (sort == TRUE) {
-            nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1,
-                                              .cellNameSort, Clust = Clust)))
-        } else if (sort == FALSE) {
-            nnCells <- rbind(nnCells, t(apply(nnMatlist$indexNew, 1,
-                                              .cellName, Clust = Clust)))}
-        nnClusts <- rbind(nnClusts, t(apply(nnMatlist$indexNew, 1,
-                                            .clustNum, subClust = subClust)))}
-    regXclust <- apply(nnClusts, 1, .calculateProp)
-    # QC check
-    check.cells.dim <- identical(dim(nnCells),
-                                 as.integer(c(ncol(spe), NN + 1)))
-    check.cells.names <- identical(as.character(nnCells[,1]), colnames(spe))
-    check.cells.NA <- sum(is.na(nnCells))
-    check.clusts.dim <- identical(dim(nnClusts),
-                                  as.integer(c(ncol(spe), NN + 1)))
-    check.clusts.names <- identical(rownames(nnClusts), colnames(spe))
-    check.clusts.NA <- sum(is.na(nnClusts))
-    check.region <- identical(length(regXclust), ncol(spe))
-    if (check.cells.dim == FALSE) {
-        stop("Cell name issue - all neighbors were not detected for all cells.")
-    } else if (check.cells.names == FALSE) {
-        stop("Cell name issue - Cell order of neighbor data does not match cell
-             order in input data.")
-    } else if (check.clusts.dim == FALSE) {
-        stop("Cluster number issue - all neighbors were not detected for all
-             cells.")
-    } else if (check.clusts.names == FALSE) {
-        stop("Cluster number issues - Cell order of neighbor data does not match
-             cell order in input data.")
-    } else if (check.region == FALSE) {
-        stop("Region proportions not calculated for all cells.")
-    } else if (check.cells.NA != 0 | check.clusts.NA != 0) {
+        Cell_names <- colnames(speX)
+        Clust <- as.character(speX$initCluster)
+        subClust <- as.character(speX$initSubcluster)
+        nnMatlist <- findKNN(xy_pos, k = NN, num.threads = threads,
+                             BNPARAM = KmknnParam())
+        rownames(nnMatlist$index) <- colnames(speX)
+        # adding index cell number as first column
+        indexNew <- cbind(seq_len(nrow(nnMatlist$index)),
+                          nnMatlist$index)
+        # sorting neighbourhood
+        mat_clusts <- matrix(subClust[indexNew], nrow = nrow(indexNew),
+                             ncol = ncol(indexNew))
+        rownames(mat_clusts) <- colnames(speX)
+        if (isTRUE(sort)) {
+            # Extract the unsorted names and initial clusters natively
+            mat_cells_unsort <- matrix(Cell_names[indexNew],
+                                       nrow = nrow(indexNew))
+            mat_clusts_init <- matrix(Clust[indexNew], nrow = nrow(indexNew))
+            # sorting neighbourhood
+            mat_cells <- t(sapply(seq_len(nrow(indexNew)), function(i) {
+                names_row  <- mat_cells_unsort[i, ]
+                clusts_row <- mat_clusts_init[i, ]
+                # find neighbouring cells from same cluster as index cell
+                is_match <- clusts_row == clusts_row[1]
+                # rearrange neighbours
+                return(names_row[c(which(is_match), which(!is_match))])
+            }))
+        } else {
+            mat_cells <- matrix(Cell_names[indexNew], nrow = nrow(indexNew),
+                                ncol = ncol(indexNew))
+        }
+        rownames(mat_cells) <- colnames(speX)
+        return(list(cells = mat_cells, clusts = mat_clusts))
+    })
+
+    # combining data from all samples
+    nnCells  <- do.call(rbind, lapply(results_list, `[[`, "cells"))
+    nnClusts <- do.call(rbind, lapply(results_list, `[[`, "clusts"))
+
+    # generating cluster proportions
+    all_clusters <- sort(unique(as.vector(nnClusts)))
+    nnClusts_int <- matrix(match(nnClusts, all_clusters),
+                           nrow = nrow(nnClusts),
+                           ncol = ncol(nnClusts))
+    regXclust <- t(apply(nnClusts_int, 1, function(row_arr) {
+        prop <- tabulate(row_arr, nbins = length(all_clusters)) / length(row_arr)
+        # QC check
+        if (round(sum(prop)) != 1) {
+            stop("Neighbourhood cluster proportions are incorrect.")
+        }
+        return(prop)
+    }))
+    rownames(regXclust) <- rownames(nnClusts)
+    colnames(regXclust) <- all_clusters
+
+    # QC checks
+    target_dim <- as.integer(c(ncol(spe), NN + 1))
+
+    if (!identical(dim(nnCells), target_dim) |
+        !identical(dim(nnClusts), target_dim)) {
+        stop("Cell name or cluster number issue: neighbors were not detected for
+             some cells.")
+    }
+    if (!identical(as.character(nnCells[, 1]), colnames(spe)) |
+        !identical(rownames(nnClusts), colnames(spe))) {
+        stop("Cell name or cluster number issue: cell ids are misaligned between
+             neighbour data and original input data.")
+    }
+    if (!identical(nrow(regXclust), ncol(spe))) {
+        stop("Neighbourhood composition not assessed for some cells.")
+    }
+    if (anyNA(nnCells) | anyNA(nnClusts)) {
         stop("Missing values in neighbor data.")
-    } else {
-        show(paste("Regions defined. Time", format(Sys.time(),'%H:%M:%S')))}
-    return(list("nnCells" = nnCells,
-                "regXclust" = regXclust))
+    }
+
+    message(sprintf("%s Neighbourhoods defined.", format(Sys.time(), '%H:%M:%S')))
+
+    return(list("nnCells" = nnCells, "regXclust" = regXclust))
 }
