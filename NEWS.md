@@ -1,3 +1,11 @@
+## ClustSIGNAL v1.4.0 (2026-06-1)
+* Minor updates to vignette content.
+* Added option for using externally generated low embeddings of smoothed data 
+in the final clustering.
+* Reduced the minimum number of centers used in bluster k-means from 5000 to 
+3000 in the initial and final clustering steps.
+* Improved overall code for better scaling on large datasets.
+
 ## ClustSIGNAL v0.99.9 (2025-03-27)
 * Minor updates to vignette content.
 
