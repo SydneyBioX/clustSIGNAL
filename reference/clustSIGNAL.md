@@ -143,15 +143,15 @@ names(colData(spe))
 # identify the column name with sample labels
 samples = "sample_id"
 res_list <- clustSIGNAL(spe, samples, outputs = "c")
-#> 06:30:37 ClustSIGNAL running.
-#> 06:30:37 Calculating PCA.
-#> 06:30:37 Initial clustering performed. Clusters = 3
-#> 06:30:38 Initial sub-clustering performed. Subclusters = 7 
-#> 06:30:38 Neighbourhoods defined.
-#> 06:30:38 Neighbourhood heterogeneity calculated.
-#> 06:30:38 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
-#> 06:30:38 Calculating PCA using smoothed data.
-#> 06:30:39 Final clustering performed on smoothed data. Clusters = 4 
-#> 06:30:39 ClustSIGNAL completed.
-#> Time difference of 1.579595 secs
+#> 06:35:21 ClustSIGNAL running.
+#> 06:35:21 Calculating PCA.
+#> 06:35:21 Initial clustering performed. Clusters = 3
+#> 06:35:22 Initial sub-clustering performed. Subclusters = 7 
+#> 06:35:22 Neighbourhoods defined.
+#> 06:35:22 Neighbourhood heterogeneity calculated.
+#> 06:35:22 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+#> 06:35:22 Calculating PCA using smoothed data.
+#> 06:35:22 Final clustering performed on smoothed data. Clusters = 4 
+#> 06:35:22 ClustSIGNAL completed.
+#> Time difference of 1.699367 secs
 ```

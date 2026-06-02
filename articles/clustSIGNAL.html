@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -223,17 +223,17 @@ final SpatialExperiment object.</p>
 <span><span class="co"># labels in colData slot, and the output type to generate (clusters, neighbours,</span></span>
 <span><span class="co"># and/or final spe object).</span></span>
 <span><span class="va">res_emb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">samples</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span> </span></code></pre></div>
-<pre><code><span><span class="co">## 06:30:50 ClustSIGNAL running.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:50 Calculating PCA.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:51 Initial clustering performed. Clusters = 9</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:53 Initial sub-clustering performed. Subclusters = 34</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:53 Neighbourhoods defined.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:53 Neighbourhood heterogeneity calculated.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:54 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:54 Calculating PCA using smoothed data.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:55 Final clustering performed on smoothed data. Clusters = 14</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:55 ClustSIGNAL completed.</span></span></code></pre>
-<pre><code><span><span class="co">## Time difference of 5.282554 secs</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:34 ClustSIGNAL running.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:34 Calculating PCA.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:36 Initial clustering performed. Clusters = 9</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:38 Initial sub-clustering performed. Subclusters = 34</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:38 Neighbourhoods defined.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:38 Neighbourhood heterogeneity calculated.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:38 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:38 Calculating PCA using smoothed data.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:40 Final clustering performed on smoothed data. Clusters = 14</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:40 ClustSIGNAL completed.</span></span></code></pre>
+<pre><code><span><span class="co">## Time difference of 5.561546 secs</span></span></code></pre>
 <p>This returns a list that contains a ClustSIGNAL clusters dataframe
 (clusters), a matrix of cell IDs from each cell’s neighbourhood
 (neighbours with NN neighbourhood size), and a final SpatialExperiment
@@ -511,17 +511,17 @@ internally for batch correction.</p>
 <span><span class="co"># the batch and batch_by options.</span></span>
 <span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="st">"samples"</span> <span class="co"># column name containing sample names</span></span>
 <span><span class="va">res_hyp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustSIGNAL.html">clustSIGNAL</a></span><span class="op">(</span><span class="va">spe2</span>, <span class="va">samples</span>, threads <span class="op">=</span> <span class="fl">4</span>, outputs <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 06:30:59 ClustSIGNAL running.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:30:59 Calculating PCA.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:01 Initial clustering performed. Clusters = 9</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:03 Initial sub-clustering performed. Subclusters = 37</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:03 Neighbourhoods defined.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:03 Neighbourhood heterogeneity calculated.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:04 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:04 Calculating PCA using smoothed data.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:05 Final clustering performed on smoothed data. Clusters = 12</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:05 ClustSIGNAL completed.</span></span></code></pre>
-<pre><code><span><span class="co">## Time difference of 5.928032 secs</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:43 ClustSIGNAL running.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:43 Calculating PCA.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:45 Initial clustering performed. Clusters = 9</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:48 Initial sub-clustering performed. Subclusters = 37</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:49 Neighbourhoods defined.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:49 Neighbourhood heterogeneity calculated.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:49 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:49 Calculating PCA using smoothed data.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:50 Final clustering performed on smoothed data. Clusters = 12</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:50 ClustSIGNAL completed.</span></span></code></pre>
+<pre><code><span><span class="co">## Time difference of 6.471147 secs</span></span></code></pre>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># for convenience with downstream analyses, we replace the original spe object </span></span>
 <span><span class="co"># with the one generated by ClustSIGNAL.</span></span>
@@ -747,8 +747,8 @@ is higher. For all other values of clust_c and subclust_c, the input is
 treated as the number of centers.</p>
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/p1_clustering.html">p1_clustering</a></span><span class="op">(</span><span class="va">spe</span>, dimRed_init <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 06:31:11 Initial clustering performed. Clusters = 9</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:13 Initial sub-clustering performed. Subclusters = 34</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:57 Initial clustering performed. Clusters = 9</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:58 Initial sub-clustering performed. Subclusters = 34</span></span></code></pre>
 <p>Here, two columns are added to the spe object under the cell
 metadata:</p>
 <ol style="list-style-type: lower-roman">
@@ -786,7 +786,7 @@ respectively.</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This step generates a list of neighbourhood information.</span></span>
 <span><span class="va">outReg</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/neighbourDetect.html">neighbourDetect</a></span><span class="op">(</span><span class="va">spe</span>, samples <span class="op">=</span> <span class="st">"sample_id"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 06:31:13 Neighbourhoods defined.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:59 Neighbourhoods defined.</span></span></code></pre>
 <p>This generates a list containing:</p>
 <ol style="list-style-type: lower-roman">
 <li>a neighborhood matrix containing cell IDs,</li>
@@ -820,7 +820,7 @@ and initial subcluster proportions. This step can run in parallel, but
 by default we use 1 cpu core.</p>
 <div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/entropyMeasure.html">entropyMeasure</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">outReg</span><span class="op">$</span><span class="va">regXclust</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 06:31:13 Neighbourhood heterogeneity calculated.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:59 Neighbourhood heterogeneity calculated.</span></span></code></pre>
 <p>The entropy values are added to the spe object under cell
 metadata.</p>
 <div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
@@ -845,7 +845,7 @@ recommend using a spread of 5 indicating rate of the distribution), and
 number of cores (threads = 1) to use for parallel runs.</p>
 <div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/adaptiveSmoothing.html">adaptiveSmoothing</a></span><span class="op">(</span><span class="va">spe</span>, <span class="va">outReg</span><span class="op">$</span><span class="va">nnCells</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 06:31:14 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:59 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000</span></span></code></pre>
 <p>The adaptively smoothed gene expression data are added to the spe
 object under assays as ‘smoothed’.</p>
 <div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
@@ -873,8 +873,8 @@ adaptively smoothed data. This step has the same default clustering and
 batch correction parameters as the initial clustering in first step.</p>
 <div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu"><a href="../reference/p2_clustering.html">p2_clustering</a></span><span class="op">(</span><span class="va">spe</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 06:31:14 Calculating PCA using smoothed data.</span></span></code></pre>
-<pre><code><span><span class="co">## 06:31:15 Final clustering performed on smoothed data. Clusters = 14</span></span></code></pre>
+<pre><code><span><span class="co">## 06:35:59 Calculating PCA using smoothed data.</span></span></code></pre>
+<pre><code><span><span class="co">## 06:36:00 Final clustering performed on smoothed data. Clusters = 14</span></span></code></pre>
 <p>Cluster labels are added to the colData of the spe object under a
 ClustSIGNAL column</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
@@ -909,7 +909,7 @@ ClustSIGNAL column</p>
 <span><span class="co">##  [1] aricode_1.1.0               patchwork_1.3.2            </span></span>
 <span><span class="co">##  [3] dplyr_1.2.1                 scater_1.40.1              </span></span>
 <span><span class="co">##  [5] ggplot2_4.0.3               scuttle_1.22.0             </span></span>
-<span><span class="co">##  [7] clustSIGNAL_1.6.0           SpatialExperiment_1.22.0   </span></span>
+<span><span class="co">##  [7] clustSIGNAL_1.5.1           SpatialExperiment_1.22.0   </span></span>
 <span><span class="co">##  [9] SingleCellExperiment_1.34.0 SummarizedExperiment_1.42.0</span></span>
 <span><span class="co">## [11] Biobase_2.72.0              GenomicRanges_1.64.0       </span></span>
 <span><span class="co">## [13] Seqinfo_1.2.0               IRanges_2.46.0             </span></span>
@@ -942,7 +942,7 @@ ClustSIGNAL column</p>
 <span><span class="co">## [64] htmltools_0.5.9     R6_2.6.1            textshaping_1.0.5  </span></span>
 <span><span class="co">## [67] evaluate_1.0.5      lattice_0.22-9      bslib_0.11.0       </span></span>
 <span><span class="co">## [70] Rcpp_1.1.1-1.1      gridExtra_2.3       SparseArray_1.12.2 </span></span>
-<span><span class="co">## [73] xfun_0.58           fs_2.1.0            pkgconfig_2.0.3</span></span></code></pre>
+<span><span class="co">## [73] xfun_0.57           fs_2.1.0            pkgconfig_2.0.3</span></span></code></pre>
 </details>
 </div>
 </div>

@@ -146,27 +146,27 @@ samples <- "sample_id" # column name containing sample names
 res_emb <- clustSIGNAL(spe, samples, outputs = "a") 
 ```
 
-    ## 06:30:50 ClustSIGNAL running.
+    ## 06:35:34 ClustSIGNAL running.
 
-    ## 06:30:50 Calculating PCA.
+    ## 06:35:34 Calculating PCA.
 
-    ## 06:30:51 Initial clustering performed. Clusters = 9
+    ## 06:35:36 Initial clustering performed. Clusters = 9
 
-    ## 06:30:53 Initial sub-clustering performed. Subclusters = 34
+    ## 06:35:38 Initial sub-clustering performed. Subclusters = 34
 
-    ## 06:30:53 Neighbourhoods defined.
+    ## 06:35:38 Neighbourhoods defined.
 
-    ## 06:30:53 Neighbourhood heterogeneity calculated.
+    ## 06:35:38 Neighbourhood heterogeneity calculated.
 
-    ## 06:30:54 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+    ## 06:35:38 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 
-    ## 06:30:54 Calculating PCA using smoothed data.
+    ## 06:35:38 Calculating PCA using smoothed data.
 
-    ## 06:30:55 Final clustering performed on smoothed data. Clusters = 14
+    ## 06:35:40 Final clustering performed on smoothed data. Clusters = 14
 
-    ## 06:30:55 ClustSIGNAL completed.
+    ## 06:35:40 ClustSIGNAL completed.
 
-    ## Time difference of 5.282554 secs
+    ## Time difference of 5.561546 secs
 
 This returns a list that contains a ClustSIGNAL clusters dataframe
 (clusters), a matrix of cell IDs from each cell’s neighbourhood
@@ -512,27 +512,27 @@ samples <- "samples" # column name containing sample names
 res_hyp <- clustSIGNAL(spe2, samples, threads = 4, outputs = "a")
 ```
 
-    ## 06:30:59 ClustSIGNAL running.
+    ## 06:35:43 ClustSIGNAL running.
 
-    ## 06:30:59 Calculating PCA.
+    ## 06:35:43 Calculating PCA.
 
-    ## 06:31:01 Initial clustering performed. Clusters = 9
+    ## 06:35:45 Initial clustering performed. Clusters = 9
 
-    ## 06:31:03 Initial sub-clustering performed. Subclusters = 37
+    ## 06:35:48 Initial sub-clustering performed. Subclusters = 37
 
-    ## 06:31:03 Neighbourhoods defined.
+    ## 06:35:49 Neighbourhoods defined.
 
-    ## 06:31:03 Neighbourhood heterogeneity calculated.
+    ## 06:35:49 Neighbourhood heterogeneity calculated.
 
-    ## 06:31:04 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+    ## 06:35:49 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 
-    ## 06:31:04 Calculating PCA using smoothed data.
+    ## 06:35:49 Calculating PCA using smoothed data.
 
-    ## 06:31:05 Final clustering performed on smoothed data. Clusters = 12
+    ## 06:35:50 Final clustering performed on smoothed data. Clusters = 12
 
-    ## 06:31:05 ClustSIGNAL completed.
+    ## 06:35:50 ClustSIGNAL completed.
 
-    ## Time difference of 5.928032 secs
+    ## Time difference of 6.471147 secs
 
 ``` r
 
@@ -805,9 +805,9 @@ treated as the number of centers.
 spe <- clustSIGNAL::p1_clustering(spe, dimRed_init = "PCA")
 ```
 
-    ## 06:31:11 Initial clustering performed. Clusters = 9
+    ## 06:35:57 Initial clustering performed. Clusters = 9
 
-    ## 06:31:13 Initial sub-clustering performed. Subclusters = 34
+    ## 06:35:58 Initial sub-clustering performed. Subclusters = 34
 
 Here, two columns are added to the spe object under the cell metadata:
 
@@ -856,7 +856,7 @@ respectively.
 outReg <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
 ```
 
-    ## 06:31:13 Neighbourhoods defined.
+    ## 06:35:59 Neighbourhoods defined.
 
 This generates a list containing:
 
@@ -900,7 +900,7 @@ by default we use 1 cpu core.
 spe <- clustSIGNAL::entropyMeasure(spe, outReg$regXclust)
 ```
 
-    ## 06:31:13 Neighbourhood heterogeneity calculated.
+    ## 06:35:59 Neighbourhood heterogeneity calculated.
 
 The entropy values are added to the spe object under cell metadata.
 
@@ -933,7 +933,7 @@ number of cores (threads = 1) to use for parallel runs.
 spe <- clustSIGNAL::adaptiveSmoothing(spe, outReg$nnCells)
 ```
 
-    ## 06:31:14 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+    ## 06:35:59 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 
 The adaptively smoothed gene expression data are added to the spe object
 under assays as ‘smoothed’.
@@ -969,9 +969,9 @@ correction parameters as the initial clustering in first step.
 spe <- clustSIGNAL::p2_clustering(spe)
 ```
 
-    ## 06:31:14 Calculating PCA using smoothed data.
+    ## 06:35:59 Calculating PCA using smoothed data.
 
-    ## 06:31:15 Final clustering performed on smoothed data. Clusters = 14
+    ## 06:36:00 Final clustering performed on smoothed data. Clusters = 14
 
 Cluster labels are added to the colData of the spe object under a
 ClustSIGNAL column
@@ -1016,7 +1016,7 @@ sessionInfo()
     ##  [1] aricode_1.1.0               patchwork_1.3.2            
     ##  [3] dplyr_1.2.1                 scater_1.40.1              
     ##  [5] ggplot2_4.0.3               scuttle_1.22.0             
-    ##  [7] clustSIGNAL_1.6.0           SpatialExperiment_1.22.0   
+    ##  [7] clustSIGNAL_1.5.1           SpatialExperiment_1.22.0   
     ##  [9] SingleCellExperiment_1.34.0 SummarizedExperiment_1.42.0
     ## [11] Biobase_2.72.0              GenomicRanges_1.64.0       
     ## [13] Seqinfo_1.2.0               IRanges_2.46.0             
@@ -1049,4 +1049,4 @@ sessionInfo()
     ## [64] htmltools_0.5.9     R6_2.6.1            textshaping_1.0.5  
     ## [67] evaluate_1.0.5      lattice_0.22-9      bslib_0.11.0       
     ## [70] Rcpp_1.1.1-1.1      gridExtra_2.3       SparseArray_1.12.2 
-    ## [73] xfun_0.58           fs_2.1.0            pkgconfig_2.0.3
+    ## [73] xfun_0.57           fs_2.1.0            pkgconfig_2.0.3

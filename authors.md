@@ -20,13 +20,13 @@ Source:
 [`DESCRIPTION`](https://github.com/sydneybiox/clustSIGNAL/blob/main/DESCRIPTION)
 
 Panwar P, Guo B, Zhao H, Hicks S, Ghazanfar S (2026). *clustSIGNAL:
-ClustSIGNAL: a spatial clustering method*. R package version 1.6.0,
+ClustSIGNAL: a spatial clustering method*. R package version 1.5.1,
 <https://sydneybiox.github.io/clustSIGNAL/>.
 
     @Manual{,
       title = {clustSIGNAL: ClustSIGNAL: a spatial clustering method},
       author = {Pratibha Panwar and Boyi Guo and Haowen Zhao and Stephanie Hicks and Shila Ghazanfar},
       year = {2026},
-      note = {R package version 1.6.0},
+      note = {R package version 1.5.1},
       url = {https://sydneybiox.github.io/clustSIGNAL/},
     }

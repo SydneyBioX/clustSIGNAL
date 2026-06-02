@@ -75,8 +75,8 @@ each cell.
 data(ClustSignal_example)
 
 spe <- clustSIGNAL::p1_clustering(spe, dimRed_init = "PCA")
-#> 06:30:40 Initial clustering performed. Clusters = 2
-#> 06:30:41 Initial sub-clustering performed. Subclusters = 6 
+#> 06:35:24 Initial clustering performed. Clusters = 2
+#> 06:35:25 Initial sub-clustering performed. Subclusters = 6 
 spe$nsCluster |> head()
 #> NULL
 spe$initCluster |> head()
