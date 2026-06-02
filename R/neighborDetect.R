@@ -22,8 +22,9 @@
 #' farthest neighbour. For sort = TRUE, the neighbours belonging to the same
 #' initial cluster as the index cell are moved closer to it.
 #'
-#' 2. regXclust, a list of vectors of each cell's neighbourhood composition
-#' indicated by the proportion of initial subclusters it contains.
+#' 2. regXclust, a numeric matrix of each cell's neighbourhood composition
+#' indicated by the proportion of initial subclusters (column) in each cell
+#' (row).
 #'
 #' @importFrom BiocNeighbors findKNN KmknnParam
 #' @importFrom SpatialExperiment spatialCoords
