@@ -26,10 +26,8 @@
 #' additional assay.
 #' @importFrom SingleCellExperiment logcounts
 #' @importFrom SummarizedExperiment assay
-#' @importFrom methods show as
-#' @importFrom BiocParallel bplapply
+#' @importFrom methods as
 #' @importFrom Matrix sparseMatrix
-#' @importFrom reshape2 melt
 #' @examples
 #' data(ClustSignal_example)
 #'
@@ -39,34 +37,54 @@
 #' spe
 #' @export
 
-adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = "G",
+adaptiveSmoothing <- function(spe, nnCells, NN = 30, kernel = c("G", "E"),
                               spread = 0.3) {
-    G_mat <- as(logcounts(spe), "sparseMatrix")
-    if (kernel == "G") { # generate normal distribution weights
-        wts <- .gauss_kernel(spe$entropy, NN + 1, spread)
-    } else if (kernel == "E") { # generate exponential distribution weights
-        wts <- .exp_kernel(spe$entropy, NN + 1, spread)}
-    colnames(wts) <- colnames(spe)
-    wts <- sweep(wts, 2, colSums(wts), FUN = "/") # scale weights
-    wts_df <- cbind(reshape2::melt(t(nnCells))[, 2:3], reshape2::melt(wts)[, 3])
-    colnames(wts_df) <- c("c", "ci", "wci")
-    wts_df$c <- as.integer(match(wts_df$c, colnames(spe)))
-    wts_df$ci <- as.integer(match(wts_df$ci, colnames(spe)))
-    W_mat <- Matrix::sparseMatrix(i = wts_df$ci, j = wts_df$c,
-                                  x = wts_df$wci)
+    # check kernel name
+    kernel <- match.arg(kernel)
+
+    # extracting normalised counts as sparse matrix
+    G_mat <- as(logcounts(spe), "dgCMatrix")
+    if (kernel == "G") {
+        # generate normal distribution weights
+        wts <-
+            dnorm(sapply(spe$entropy, function(x) seq(0, x, length.out = NN+1)),
+                  sd = spread)
+    } else if (kernel == "E") {
+        # generate exponential distribution weights
+        wts <-
+            dexp(sapply(spe$entropy, function(x) seq(0, x, length.out = NN+1)),
+                 rate = spread)
+    }
+    # scale weights
+    wts <- t(t(wts) / colSums(wts))
+
+    # QC check
+    if (!identical(colnames(wts), colnames(spe))) {
+        stop("Cells have likely been allocated wrong weights.")
+    }
+
+    # Building a sparse weight matrix for all cells
+    col_idx <- rep(seq_len(ncol(spe)), each = NN + 1)
+    row_idx <- match(as.vector(t(nnCells)), colnames(spe))
+    x_val <- as.vector(wts)
+    W_mat <- sparseMatrix(i = row_idx,
+                          j = col_idx,
+                          x = x_val,
+                          dims = c(ncol(spe), ncol(spe)),
+                          dimnames = list(colnames(spe), colnames(spe)))
     smoothMat <- G_mat %*% W_mat
     colnames(smoothMat) <- colnames(spe)
-    # QC check
-    check.genes <- identical(rownames(spe), rownames(smoothMat))
-    check.NA <- sum(is.na(smoothMat))
-    if (check.genes == FALSE) {
+
+    # QC checks
+    if (!identical(rownames(spe), rownames(smoothMat))) {
         stop("Gene order in smoothed data does not match gene order
              in SpatialExperiment object.")
-    } else if (check.NA != 0) {
+    }
+    if (anyNA(smoothMat)) {
         stop("Smoothed data has missing values.")
-    } else {
-        SummarizedExperiment::assay(spe, "smoothed") <- smoothMat
-        show(paste("Smoothing performed. NN =", NN, "Kernel =", kernel,
-                   "Spread =", spread, "Time", format(Sys.time(),'%H:%M:%S')))}
+    }
+    SummarizedExperiment::assay(spe, "smoothed") <- smoothMat
+    message(sprintf("%s Smoothing performed. NN = %d, Kernel = %s, Spread = %f",
+                    format(Sys.time(), '%H:%M:%S'), NN, kernel, spread))
     return(spe)
 }

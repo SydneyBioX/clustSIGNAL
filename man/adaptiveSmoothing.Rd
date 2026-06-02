@@ -4,7 +4,7 @@
 \alias{adaptiveSmoothing}
 \title{Adaptive smoothing}
 \usage{
-adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.3)
+adaptiveSmoothing(spe, nnCells, NN = 30, kernel = c("G", "E"), spread = 0.3)
 }
 \arguments{
 \item{spe}{SpatialExperiment object containing neighbourhood entropy values
