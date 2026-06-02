@@ -7,15 +7,16 @@
 clustSIGNAL(
   spe,
   samples,
-  dimRed = "None",
+  dimRed_init = "None",
+  dimRed_f = c("None", "embed.smooth"),
   batch = FALSE,
   batch_by = "None",
   NN = 30,
-  kernel = "G",
+  kernel = c("G", "E"),
   spread = 0.3,
   sort = TRUE,
   threads = 1,
-  outputs = "c",
+  outputs = c("c", "n", "s", "a"),
   clustParams = list(clust_c = 0, subclust_c = 0, iter.max = 30, k = 10, cluster.fun =
     "louvain")
 )
@@ -27,9 +28,15 @@ clustSIGNAL(
 \item{samples}{a character indicating name of colData(spe) column containing
 sample names.}
 
-\item{dimRed}{a character indicating the name of the reduced dimensions to
-use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
-Default value is 'None'.}
+\item{dimRed_init}{a character indicating the name of the reduced dimensions
+in the SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+initial clustering step. Default value is 'None'.}
+
+\item{dimRed_f}{a character indicating the name of the reduced dimensions
+in the SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+final clustering step. Two valid options are "None" (default), which triggers
+a PCA run on smoothed expression, and "embed.smooth", which triggers a search
+for "embed.smooth" low embedding in reducedDimNames(spe).}
 
 \item{batch}{a logical parameter for whether to perform batch correction.
 Default value is FALSE.}
@@ -60,7 +67,7 @@ analysis. Default value set to 1.}
 for data frame of cell IDs and their respective ClustSIGNAL cluster labels,
 "n" for ClustSIGNAL cluster dataframe plus neighbourhood matrix, "s" for
 ClustSIGNAL cluster dataframe plus final SpatialExperiment object, or "a" for
-all 3 outputs.}
+all 3 outputs. Default value is 'c'.}
 
 \item{clustParams}{a list of parameters for TwoStepParam clustering methods:
 clust_c is the number of centers to use for clustering with KmeansParam. By

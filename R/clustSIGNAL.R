@@ -8,9 +8,14 @@
 #' 'spatialCoords' matrix and normalised gene expression in 'logcounts' assay.
 #' @param samples a character indicating name of colData(spe) column containing
 #' sample names.
-#' @param dimRed a character indicating the name of the reduced dimensions to
-#' use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
-#' Default value is 'None'.
+#' @param dimRed_init a character indicating the name of the reduced dimensions
+#' in the SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+#' initial clustering step. Default value is 'None'.
+#' @param dimRed_f a character indicating the name of the reduced dimensions
+#' in the SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+#' final clustering step. Two valid options are "None" (default), which triggers
+#' a PCA run on smoothed expression, and "embed.smooth", which triggers a search
+#' for "embed.smooth" low embedding in reducedDimNames(spe).
 #' @param batch a logical parameter for whether to perform batch correction.
 #' Default value is FALSE.
 #' @param batch_by a character indicating name of colData(spe) column containing
@@ -47,7 +52,7 @@
 #' for data frame of cell IDs and their respective ClustSIGNAL cluster labels,
 #' "n" for ClustSIGNAL cluster dataframe plus neighbourhood matrix, "s" for
 #' ClustSIGNAL cluster dataframe plus final SpatialExperiment object, or "a" for
-#' all 3 outputs.
+#' all 3 outputs. Default value is 'c'.
 #' @return a list of outputs depending on the type of outputs specified in the
 #' main function call.
 #'
@@ -61,9 +66,9 @@
 #' data plus initial cluster and subcluster labels, entropy values, smoothed
 #' gene expression, and ClustSIGNAL cluster labels.
 #' @importFrom SpatialExperiment spatialCoords
-#' @importFrom SingleCellExperiment reducedDimNames
+#' @importFrom SingleCellExperiment reducedDimNames logcounts
+#' @importFrom SummarizedExperiment colData
 #' @importFrom methods show
-#' @importFrom scater runPCA
 #' @examples
 #' data(ClustSignal_example)
 #'
@@ -73,57 +78,62 @@
 #' res_list <- clustSIGNAL(spe, samples, outputs = "c")
 #' @export
 
-clustSIGNAL <- function (spe, samples, dimRed = "None", batch = FALSE,
-                         batch_by = "None", NN = 30, kernel = "G",
-                         spread = 0.3, sort = TRUE, threads = 1, outputs = "c",
-                         clustParams = list(clust_c = 0, subclust_c = 0,
-                                            iter.max = 30, k = 10,
-                                            cluster.fun = "louvain")) {
+clustSIGNAL <- function(spe, samples, dimRed_init = "None",
+                        dimRed_f = c("None", "embed.smooth"),
+                        batch = FALSE, batch_by = "None", NN = 30,
+                        kernel = c("G", "E"), spread = 0.3, sort = TRUE,
+                        threads = 1, outputs = c("c", "n", "s", "a"),
+                        clustParams = list(clust_c = 0, subclust_c = 0,
+                                           iter.max = 30, k = 10,
+                                           cluster.fun = "louvain")) {
+    # method run begins
     time_start <- Sys.time()
-    # input data and parameter checks
-    if (length(spatialCoords(spe)) == 0) # check spatial coordinates
-        stop("Spatial coordinates not found.")
-    if (is.null(logcounts(spe)) == TRUE) # check normalised gene expression
-        stop("Normalised gene expression not found.")
-    if (is.null(spe[[samples]]) == TRUE) # check sample column
-        stop("The column 'samples' not found.")
-    if (length(unique(colnames(spe))) != ncol(spe)) # check cell IDs
-        stop("The cell names are repeated. Provide spe object with unique cell
-             names.")
-    if (NN < 1) # check neighbourhood size
-        stop("NN cannot be less than 1.")
-    if (!(kernel %in% c("G", "E"))) # check kernel name
-        stop("Invalid kernel type.")
-    if (!(outputs %in% c('c', 'n', 's', 'a'))) # check output type
-        stop("Invalid character for output type.")
-    if (batch == TRUE & batch_by == "None") # check batch correction parameters
-        stop("No group name provided for batch correction.")
-    if (dimRed == "None") { # check reduced dimension data
-        show(paste("Calculating PCA. Time", format(Sys.time(),'%H:%M:%S')))
-        spe <- scater::runPCA(spe)
-        dimRed <- "PCA"
-    } else if (!(dimRed %in% reducedDimNames(spe))){
-        stop("Specified low dimension data not found.")}
-    show(paste("ClustSIGNAL run started. Time", format(Sys.time(),'%H:%M:%S')))
 
-    spe <- p1_clustering(spe, dimRed, batch, batch_by, threads, clustParams)
+    # check spatial coordinates
+    if (length(spatialCoords(spe)) == 0)
+        stop("No spatial coordinates found in spatialCoords(spe).")
+    # check normalised gene expression
+    if (is.null(logcounts(spe)))
+        stop("Normalised gene expression (logcounts) not found.")
+    # check sample column
+    if (is.null(colData(spe)[[samples]]))
+        stop(sprintf("Column '%s' not found in colData(spe)."), samples)
+    # check cell IDs
+    if (anyDuplicated(colnames(spe)) > 0)
+        stop("Cell IDs are repeated. Provide spe object with unique cell
+             IDs.")
+    # check neighbourhood size
+    if (NN < 1)
+        stop("NN cannot be less than 1.")
+    # check batch correction parameters
+    if (isTRUE(batch) & batch_by == "None")
+        stop("Batch correction enabled but no 'batch_by' group provided.")
+    # check kernel name
+    kernel <- match.arg(kernel)
+    # check output type
+    outputs <- match.arg(outputs)
+    message(sprintf("%s ClustSIGNAL running.", format(Sys.time(), '%H:%M:%S')))
+
+    spe <- p1_clustering(spe, dimRed_init, batch, batch_by, threads, clustParams)
     outReg <- neighbourDetect(spe, samples, NN, sort, threads)
-    spe <- entropyMeasure(spe, outReg$regXclust, threads)
+    spe <- entropyMeasure(spe, outReg$regXclust)
     spe <- adaptiveSmoothing(spe, outReg$nnCells, NN, kernel, spread)
-    spe <- p2_clustering(spe, batch, batch_by, threads, clustParams)
+    spe <- p2_clustering(spe, dimRed_f, batch, batch_by, threads, clustParams)
     cluster_df <- data.frame("Cells" = colnames(spe),
                              "Clusters" = spe$ClustSIGNAL)
+    # method run ends
     time_end <- Sys.time()
-    show(paste("ClustSIGNAL run completed.", format(Sys.time(),'%H:%M:%S')))
+    message(sprintf("%s ClustSIGNAL completed.", format(Sys.time(), '%H:%M:%S')))
     show(time_end - time_start)
-    if (outputs == "c"){
-        return (list("clusters" = cluster_df))
-    } else if (outputs == "n") {
-        return (list("clusters" = cluster_df, "neighbours" = outReg$nnCells))
-    } else if (outputs == "s") {
-        return (list("clusters" = cluster_df, "spe_final" = spe))
-    } else if (outputs == "a") {
-        return (list("clusters" = cluster_df, "neighbours" = outReg$nnCells,
-                     "spe_final" = spe))
+
+    # generating outputs
+    res <- list("clusters" = cluster_df)
+    if (outputs %in% c("n", "a")) {
+        res[["neighbours"]] <- outReg$nnCells
     }
+    if (outputs %in% c("s", "a")) {
+        res[["spe_final"]] <- spe
+    }
+
+    return(res)
 }
