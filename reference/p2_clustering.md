@@ -8,6 +8,7 @@ data to generate ClustSIGNAL clusters.
 ``` r
 p2_clustering(
   spe,
+  dimRed_f = c("None", "embed.smooth"),
   batch = FALSE,
   batch_by = "None",
   threads = 1,
@@ -22,6 +23,15 @@ p2_clustering(
 
   SpatialExperiment object containing the adaptively smoothed gene
   expression.
+
+- dimRed_f:
+
+  a character indicating the name of the reduced dimensions in the
+  SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+  final clustering step. Two valid options are "None" (default), which
+  triggers a PCA run on smoothed expression, and "embed.smooth", which
+  triggers a search for "embed.smooth" low embedding in
+  reducedDimNames(spe).
 
 - batch:
 
@@ -42,7 +52,7 @@ p2_clustering(
 
   a list of parameters for TwoStepParam clustering methods: clust_c is
   the number of centers to use for clustering with KmeansParam. By
-  default set to 0, in which case the method uses either 5000 centers or
+  default set to 0, in which case the method uses either 3000 centers or
   1/5th of the total cells in the data as the number of centers,
   whichever is lower. subclust_c is the number of centers to use for
   sub-clustering the initial clusters with KmeansParam. This parameter
@@ -65,8 +75,9 @@ data(ClustSignal_example)
 
 # For non-spatial clustering of normalised counts
 spe <- clustSIGNAL::p2_clustering(spe)
-#> [1] "Nonspatial clustering performed on smoothed data. Clusters = 7 Time 01:12:30"
+#> 05:48:54 Calculating PCA using smoothed data.
+#> 05:48:54 Final clustering performed on smoothed data. Clusters = 6 
 spe$ClustSIGNAL |> head()
-#> [1] 5 5 1 5 5 5
-#> Levels: 1 2 3 4 5 6 7
+#> [1] 3 3 3 3 3 3
+#> Levels: 1 2 3 4 5 6
 ```

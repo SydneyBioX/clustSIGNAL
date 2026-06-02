@@ -10,7 +10,7 @@ to most cells.
 ## Usage
 
 ``` r
-adaptiveSmoothing(spe, nnCells, NN = 30, kernel = "G", spread = 0.3)
+adaptiveSmoothing(spe, nnCells, NN = 30, kernel = c("G", "E"), spread = 0.3)
 ```
 
 ## Arguments
@@ -59,18 +59,18 @@ data(ClustSignal_example)
 # requires matrix containing NN nearest neighbour cell labels (nnCells),
 # generated using the neighbourDetect() function
 spe <- clustSIGNAL::adaptiveSmoothing(spe, nnCells)
-#> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 01:12:23"
+#> 05:48:49 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 spe
 #> class: SpatialExperiment 
-#> dim: 351 1000 
+#> dim: 351 500 
 #> metadata(0):
 #> assays(2): logcounts smoothed
 #> rownames(351): Abcc4 Acp5 ... Zfp57 Zic3
 #> rowData names(0):
-#> colnames(1000): embryo2_Pos29_cell110_z2 embryo2_Pos29_cell117_z2 ...
-#>   embryo2_Pos50_cell361_z5 embryo2_Pos50_cell372_z2
-#> colData names(5): uniqueID sample_id entropy initCluster initSubcluster
-#> reducedDimNames(1): PCA
+#> colnames(500): embryo2_Pos29_cell110_z2 embryo2_Pos29_cell117_z2 ...
+#>   embryo2_Pos40_cell61_z2 embryo2_Pos40_cell69_z2
+#> colData names(6): uniqueID sample_id ... entropy ClustSIGNAL
+#> reducedDimNames(2): PCA embed.smooth
 #> mainExpName: NULL
 #> altExpNames(0):
 #> spatialCoords names(2) : X Y

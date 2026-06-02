@@ -7,7 +7,7 @@ and heterogeneous neighbourhoods have high entropy.
 ## Usage
 
 ``` r
-entropyMeasure(spe, regXclust, threads = 1)
+entropyMeasure(spe, regXclust)
 ```
 
 ## Arguments
@@ -18,13 +18,8 @@ entropyMeasure(spe, regXclust, threads = 1)
 
 - regXclust:
 
-  a list of vectors of each cell's neighbourhood composition indicated
-  by the proportion of initial subclusters it contains.
-
-- threads:
-
-  a numeric value for the number of CPU cores to be used for the
-  analysis. Default value set to 1.
+  a numeric matrix of cells by subclusters, where the values are the
+  proportion of initial subclusters in each cell's neighbourhood.
 
 ## Value
 
@@ -35,10 +30,13 @@ SpatialExperiment object with entropy values associated with each cell.
 ``` r
 data(ClustSignal_example)
 
-# requires list containing cluster proportions of each region (regXclust),
-# generated using the neighbourDetect() function
+# requires matrix containing cluster proportions of each neighbourhood
+# (regXclust), generated using the neighbourDetect() function
 spe <- clustSIGNAL::entropyMeasure(spe, regXclust)
-#> [1] "Region heterogeneity calculated. Time 01:12:27"
+#> 05:48:52 Neighbourhood heterogeneity calculated.
 spe$entropy |> head()
-#> [1] 0 0 0 0 0 0
+#> embryo2_Pos29_cell110_z2 embryo2_Pos29_cell117_z2 embryo2_Pos29_cell128_z2 
+#>                0.4586858                0.2055925                0.6373875 
+#> embryo2_Pos29_cell134_z2  embryo2_Pos29_cell14_z2 embryo2_Pos29_cell141_z2 
+#>                0.3451173                0.6838104                0.3451173 
 ```

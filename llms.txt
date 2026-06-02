@@ -28,6 +28,7 @@ For a tutorial on how to use ClustSIGNAL, see the vignette at this
 To install ClustSIGNAL via Bioconductor:
 
 ``` r
+
 library(BiocManager)
 BiocManager::install("clustSIGNAL")
 ```
@@ -36,6 +37,7 @@ To install ClustSIGNAL from
 [GitHub](https://github.com/SydneyBioX/clustSIGNAL):
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("SydneyBioX/clustSIGNAL")
 ```
@@ -138,7 +140,7 @@ values:
 
   - ***clust_c*** represents number of centers for clustering with
     KmeansParam. By default this is set to 0, in which case the method
-    uses either 5000 centers or 1/5th of the total cells in the data as
+    uses either 3000 centers or 1/5th of the total cells in the data as
     the number of centers, whichever is lower.
 
   - ***subclust_c*** represents number of centers for sub-clustering the
@@ -164,6 +166,7 @@ spatialCoords matrix. Otherwise, the method will throw an error asking
 the user to provide spatial coordinates.
 
 ``` r
+
 # load required packages
 library(clustSIGNAL)
 

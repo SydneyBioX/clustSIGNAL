@@ -1,8 +1,8 @@
 # ClustSIGNAL
 
-A clustering method for spatially-resolved cell-type classification of
+Clustering method for spatially-resolved cell-state classification of
 spatial transcriptomics data. The tool generates and uses an adaptively
-smoothed, spatially informed gene expression data for clustering.
+smoothed, spatially-informed gene expression for clustering.
 
 ## Usage
 
@@ -10,15 +10,16 @@ smoothed, spatially informed gene expression data for clustering.
 clustSIGNAL(
   spe,
   samples,
-  dimRed = "None",
+  dimRed_init = "None",
+  dimRed_f = c("None", "embed.smooth"),
   batch = FALSE,
   batch_by = "None",
   NN = 30,
-  kernel = "G",
+  kernel = c("G", "E"),
   spread = 0.3,
   sort = TRUE,
   threads = 1,
-  outputs = "c",
+  outputs = c("c", "n", "s", "a"),
   clustParams = list(clust_c = 0, subclust_c = 0, iter.max = 30, k = 10, cluster.fun =
     "louvain")
 )
@@ -37,11 +38,20 @@ clustSIGNAL(
   a character indicating name of colData(spe) column containing sample
   names.
 
-- dimRed:
+- dimRed_init:
 
-  a character indicating the name of the reduced dimensions to use from
-  the SpatialExperiment object (i.e., from reducedDimNames(spe)).
-  Default value is 'None'.
+  a character indicating the name of the reduced dimensions in the
+  SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+  initial clustering step. Default value is 'None'.
+
+- dimRed_f:
+
+  a character indicating the name of the reduced dimensions in the
+  SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+  final clustering step. Two valid options are "None" (default), which
+  triggers a PCA run on smoothed expression, and "embed.smooth", which
+  triggers a search for externally-generated "embed.smooth" low
+  embedding in reducedDimNames(spe).
 
 - batch:
 
@@ -88,13 +98,13 @@ clustSIGNAL(
   frame of cell IDs and their respective ClustSIGNAL cluster labels, "n"
   for ClustSIGNAL cluster dataframe plus neighbourhood matrix, "s" for
   ClustSIGNAL cluster dataframe plus final SpatialExperiment object, or
-  "a" for all 3 outputs.
+  "a" for all 3 outputs. Default value is 'c'.
 
 - clustParams:
 
   a list of parameters for TwoStepParam clustering methods: clust_c is
   the number of centers to use for clustering with KmeansParam. By
-  default set to 0, in which case the method uses either 5000 centers or
+  default set to 0, in which case the method uses either 3000 centers or
   1/5th of the total cells in the data as the number of centers,
   whichever is lower. subclust_c is the number of centers to use for
   sub-clustering the initial clusters with KmeansParam. The default
@@ -128,19 +138,20 @@ smoothed gene expression, and ClustSIGNAL cluster labels.
 data(ClustSignal_example)
 
 names(colData(spe))
-#> [1] "uniqueID"       "sample_id"      "entropy"        "initCluster"   
-#> [5] "initSubcluster"
+#> [1] "uniqueID"       "sample_id"      "initCluster"    "initSubcluster"
+#> [5] "entropy"        "ClustSIGNAL"   
 # identify the column name with sample labels
 samples = "sample_id"
 res_list <- clustSIGNAL(spe, samples, outputs = "c")
-#> [1] "Calculating PCA. Time 01:12:23"
-#> [1] "ClustSIGNAL run started. Time 01:12:24"
-#> [1] "Initial nonspatial clustering performed. Clusters = 3 Time 01:12:24"
-#> [1] "Nonspatial subclustering performed. Subclusters = 9 Time 01:12:25"
-#> [1] "Regions defined. Time 01:12:25"
-#> [1] "Region heterogeneity calculated. Time 01:12:25"
-#> [1] "Smoothing performed. NN = 30 Kernel = G Spread = 0.3 Time 01:12:25"
-#> [1] "Nonspatial clustering performed on smoothed data. Clusters = 7 Time 01:12:25"
-#> [1] "ClustSIGNAL run completed. 01:12:26"
-#> Time difference of 2.475766 secs
+#> 05:48:49 ClustSIGNAL running.
+#> 05:48:49 Calculating PCA.
+#> 05:48:50 Initial clustering performed. Clusters = 3
+#> 05:48:51 Initial sub-clustering performed. Subclusters = 7 
+#> 05:48:51 Neighbourhoods defined.
+#> 05:48:51 Neighbourhood heterogeneity calculated.
+#> 05:48:51 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+#> 05:48:51 Calculating PCA using smoothed data.
+#> 05:48:51 Final clustering performed on smoothed data. Clusters = 4 
+#> 05:48:51 ClustSIGNAL completed.
+#> Time difference of 1.612391 secs
 ```
