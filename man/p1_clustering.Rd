@@ -6,7 +6,7 @@
 \usage{
 p1_clustering(
   spe,
-  dimRed = "None",
+  dimRed_init = "None",
   batch = FALSE,
   batch_by = "None",
   threads = 1,
@@ -18,9 +18,9 @@ p1_clustering(
 \item{spe}{a SpatialExperiment object containing spatial coordinates in
 'spatialCoords' matrix and normalised gene expression in 'logcounts' assay.}
 
-\item{dimRed}{a character indicating the name of the reduced dimensions to
-use from the SpatialExperiment object (i.e., from reducedDimNames(spe)).
-Default value is 'None'.}
+\item{dimRed_init}{a character indicating the name of the reduced dimensions
+in the SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+initial clustering step. Default value is 'None'.}
 
 \item{batch}{a logical parameter for whether to perform batch correction.
 Default value is FALSE.}
@@ -33,7 +33,7 @@ analysis. Default value set to 1.}
 
 \item{clustParams}{a list of parameters for TwoStepParam clustering methods:
 clust_c is the number of centers to use for clustering with KmeansParam. By
-default set to 0, in which case the method uses either 5000 centers or 1/5th
+default set to 0, in which case the method uses either 3000 centers or 1/5th
 of the total cells in the data as the number of centers, whichever is lower.
 subclust_c is the number of centers to use for sub-clustering the initial
 clusters with KmeansParam. The default value is 0, in which case the method
@@ -58,7 +58,7 @@ subclusters'.
 \examples{
 data(ClustSignal_example)
 
-spe <- clustSIGNAL::p1_clustering(spe, dimRed = "PCA")
+spe <- clustSIGNAL::p1_clustering(spe, dimRed_init = "PCA")
 spe$nsCluster |> head()
 spe$initCluster |> head()
 }
