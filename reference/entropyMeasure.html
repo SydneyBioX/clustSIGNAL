@@ -11,7 +11,7 @@ heterogeneous neighbourhoods have high entropy."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@ cell.</p>
 <span class="r-in"><span><span class="co"># requires matrix containing cluster proportions of each neighbourhood</span></span></span>
 <span class="r-in"><span><span class="co"># (regXclust), generated using the neighbourDetect() function</span></span></span>
 <span class="r-in"><span><span class="va">spe</span> <span class="op">&lt;-</span> <span class="fu">clustSIGNAL</span><span class="fu">::</span><span class="fu">entropyMeasure</span><span class="op">(</span><span class="va">spe</span>, <span class="va">regXclust</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:48:52 Neighbourhood heterogeneity calculated.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:30:40 Neighbourhood heterogeneity calculated.</span>
 <span class="r-in"><span><span class="va">spe</span><span class="op">$</span><span class="va">entropy</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> embryo2_Pos29_cell110_z2 embryo2_Pos29_cell117_z2 embryo2_Pos29_cell128_z2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                0.4586858                0.2055925                0.6373875 </span>

@@ -75,8 +75,8 @@ data(ClustSignal_example)
 
 # For non-spatial clustering of normalised counts
 spe <- clustSIGNAL::p2_clustering(spe)
-#> 05:48:54 Calculating PCA using smoothed data.
-#> 05:48:54 Final clustering performed on smoothed data. Clusters = 6 
+#> 06:30:41 Calculating PCA using smoothed data.
+#> 06:30:41 Final clustering performed on smoothed data. Clusters = 6 
 spe$ClustSIGNAL |> head()
 #> [1] 3 3 3 3 3 3
 #> Levels: 1 2 3 4 5 6

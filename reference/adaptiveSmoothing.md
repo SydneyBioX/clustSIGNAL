@@ -59,7 +59,7 @@ data(ClustSignal_example)
 # requires matrix containing NN nearest neighbour cell labels (nnCells),
 # generated using the neighbourDetect() function
 spe <- clustSIGNAL::adaptiveSmoothing(spe, nnCells)
-#> 05:48:49 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+#> 06:30:37 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 spe
 #> class: SpatialExperiment 
 #> dim: 351 500 
