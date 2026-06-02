@@ -4,17 +4,14 @@
 \alias{entropyMeasure}
 \title{Heterogeneity measure}
 \usage{
-entropyMeasure(spe, regXclust, threads = 1)
+entropyMeasure(spe, regXclust)
 }
 \arguments{
 \item{spe}{SpatialExperiment object with initial cluster and subcluster
 labels.}
 
-\item{regXclust}{a list of vectors of each cell's neighbourhood composition
-indicated by the proportion of initial subclusters it contains.}
-
-\item{threads}{a numeric value for the number of CPU cores to be used for the
-analysis. Default value set to 1.}
+\item{regXclust}{a numeric matrix of cells by subclusters, where the values
+are the proportion of initial subclusters in each cell's neighbourhood.}
 }
 \value{
 SpatialExperiment object with entropy values associated with each
@@ -28,8 +25,8 @@ heterogeneous neighbourhoods have high entropy.
 \examples{
 data(ClustSignal_example)
 
-# requires list containing cluster proportions of each region (regXclust),
-# generated using the neighbourDetect() function
+# requires matrix containing cluster proportions of each neighbourhood
+# (regXclust), generated using the neighbourDetect() function
 spe <- clustSIGNAL::entropyMeasure(spe, regXclust)
 spe$entropy |> head()
 }
