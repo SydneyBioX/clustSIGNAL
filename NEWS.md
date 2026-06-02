@@ -1,4 +1,4 @@
-## ClustSIGNAL v1.6.0 (2026-06-1)
+## ClustSIGNAL v1.5.1 (2026-06-1)
 * Minor updates to vignette content.
 * Added option for using externally generated low embeddings of smoothed data 
 in the final clustering.
