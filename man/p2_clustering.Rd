@@ -6,6 +6,7 @@
 \usage{
 p2_clustering(
   spe,
+  dimRed_f = c("None", "embed.smooth"),
   batch = FALSE,
   batch_by = "None",
   threads = 1,
@@ -16,6 +17,12 @@ p2_clustering(
 \arguments{
 \item{spe}{SpatialExperiment object containing the adaptively smoothed gene
 expression.}
+
+\item{dimRed_f}{a character indicating the name of the reduced dimensions
+in the SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+final clustering step. Two valid options are "None" (default), which triggers
+a PCA run on smoothed expression, and "embed.smooth", which triggers a search
+for "embed.smooth" low embedding in reducedDimNames(spe).}
 
 \item{batch}{a logical parameter for whether to perform batch correction.
 Default value is FALSE.}
@@ -28,7 +35,7 @@ analysis. Default value set to 1.}
 
 \item{clustParams}{a list of parameters for TwoStepParam clustering methods:
 clust_c is the number of centers to use for clustering with KmeansParam. By
-default set to 0, in which case the method uses either 5000 centers or 1/5th
+default set to 0, in which case the method uses either 3000 centers or 1/5th
 of the total cells in the data as the number of centers, whichever is lower.
 subclust_c is the number of centers to use for sub-clustering the initial
 clusters with KmeansParam. This parameter is not used in the final

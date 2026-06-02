@@ -5,6 +5,11 @@
 #' to generate ClustSIGNAL clusters.
 #' @param spe SpatialExperiment object containing the adaptively smoothed gene
 #' expression.
+#' @param dimRed_f a character indicating the name of the reduced dimensions
+#' in the SpatialExperiment object (i.e., from reducedDimNames(spe)) to use for
+#' final clustering step. Two valid options are "None" (default), which triggers
+#' a PCA run on smoothed expression, and "embed.smooth", which triggers a search
+#' for "embed.smooth" low embedding in reducedDimNames(spe).
 #' @param batch a logical parameter for whether to perform batch correction.
 #' Default value is FALSE.
 #' @param batch_by a character indicating name of colData(spe) column containing
@@ -13,7 +18,7 @@
 #' analysis. Default value set to 1.
 #' @param clustParams  a list of parameters for TwoStepParam clustering methods:
 #' clust_c is the number of centers to use for clustering with KmeansParam. By
-#' default set to 0, in which case the method uses either 5000 centers or 1/5th
+#' default set to 0, in which case the method uses either 3000 centers or 1/5th
 #' of the total cells in the data as the number of centers, whichever is lower.
 #' subclust_c is the number of centers to use for sub-clustering the initial
 #' clusters with KmeansParam. This parameter is not used in the final
@@ -42,35 +47,55 @@
 #' @export
 
 #### Non-spatial clustering
-p2_clustering <- function(spe, batch = FALSE, batch_by = "None", threads = 1,
+p2_clustering <- function(spe, dimRed_f = c("None", "embed.smooth"),
+                          batch = FALSE, batch_by = "None", threads = 1,
                           clustParams = list(clust_c = 0, subclust_c = 0,
                                              iter.max = 30, k = 10,
                                              cluster.fun = "louvain")) {
-    if (clustParams[[1]] == 0)
-        # number of centers = 1/5th of total cells in sample
-        clustVal <- min(as.integer(ncol(spe) / 5), 5000) else
-            clustVal <- clustParams[[1]]
-    # Clustering adaptively smoothed data
-    spe <- scater::runPCA(spe, assay.type = "smoothed", name = "PCA.smooth")
+
+    # check kernel name
+    dimRed_f <- match.arg(dimRed_f)
+
+    # extracting parameters
+    clust_c <- clustParams$clust_c
+    subclust_c <- clustParams$subclust_c
+    iter.max <- clustParams$iter.max
+    k <- clustParams$k
+    cluster.fun <- clustParams$cluster.fun
+
+    # checking availability of low dimension data
+    if (dimRed_f == "None") {
+        message(sprintf("%s Calculating PCA using smoothed data.",
+                        format(Sys.time(), '%H:%M:%S')))
+        # Using a fast approximate PCA (Irlba) instead of exact PCA
+        spe <- runPCA(spe, assay.type = "smoothed", name = "embed.smooth",
+                      BSPARAM = IrlbaParam())
+        dimRed_f <- "PCA"
+    } else if (!(dimRed_f %in% reducedDimNames(spe))){
+        stop("'embed.smooth' low dimension data not found.")}
+
     if (batch == TRUE) {
-        emb <- harmony::RunHarmony(data_mat = reducedDim(spe, "PCA.smooth"),
-                                   meta_data = colData(spe),
-                                   vars_use = batch_by, max.iter = 20,
-                                   verbose = FALSE)
+        emb <- RunHarmony(data_mat = reducedDim(spe, "embed.smooth"),
+                          meta_data = colData(spe),
+                          vars_use = batch_by, max.iter = 20,
+                          verbose = FALSE)
         mat <- emb
     } else {
-        mat <- reducedDim(spe, "PCA.smooth")}
-    reClust <- bluster::clusterRows(
+        mat <- reducedDim(spe, "embed.smooth")}
+
+    # Clustering adaptively smoothed data
+    # Calculating number of cluster centres
+    clustVal <-
+        if (clust_c == 0) min(as.integer(ncol(spe) / 5), 3000) else clust_c
+    reClust <- clusterRows(
         mat,
-        bluster::TwoStepParam(
-            first = bluster::KmeansParam(centers = clustVal,
-                                         iter.max = clustParams[[3]]),
-            second = bluster::NNGraphParam(k = clustParams[[4]],
-                                           cluster.fun = clustParams[[5]],
-                                           num.threads = threads)))
+        TwoStepParam(
+            first = KmeansParam(centers = clustVal, iter.max = iter.max),
+            second = NNGraphParam(k = k, cluster.fun = cluster.fun,
+                                  num.threads = threads)))
     spe$ClustSIGNAL <- factor(reClust)
-    show(paste("Nonspatial clustering performed on smoothed data. Clusters =",
-               length(unique(reClust)), "Time",
-               format(Sys.time(),'%H:%M:%S')))
+    message(sprintf(
+        "%s Final clustering performed on smoothed data. Clusters = %d ",
+        format(Sys.time(),'%H:%M:%S'), length(unique(reClust))))
     return (spe)
 }
