@@ -1,3 +1,6 @@
+## ClustSIGNAL v1.4.1 (2026-09-09)
+* Bug fix: corrected a bug in the vignette where ARI() gives error if given a regular vector without factors.
+
 ## ClustSIGNAL v0.99.9 (2025-03-27)
 * Minor updates to vignette content.
 

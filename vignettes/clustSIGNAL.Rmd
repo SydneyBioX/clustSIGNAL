@@ -356,6 +356,7 @@ spe2 <- SpatialExperiment(assays = list(logcounts = mh_expr),
                           # spatialCoordsNames requires column names in 
                           # mh_data that contain xy-coordinates of cells
                           spatialCoordsNames = c("X", "Y"))
+spe2$Cell_class <- factor(spe2$Cell_class)
 spe2
 ```
 
@@ -709,7 +710,7 @@ spe$ClustSIGNAL |> head() # ClustSIGNAL cluster labels
 
 <summary>**Session Information**</summary>
 
-```{r}
+```{r session_summary}
 sessionInfo()
 ```
 
