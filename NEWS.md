@@ -1,3 +1,7 @@
+## ClustSIGNAL v.1.5.2 (2026-09-09)
+* Updated ReadME description.
+* Updated harmony arguments to latest version.
+
 ## ClustSIGNAL v1.5.1 (2026-06-1)
 * Minor updates to vignette content.
 * Added option for using externally generated low embeddings of smoothed data 

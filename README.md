@@ -54,7 +54,9 @@ ClustSIGNAL package uses a SpatialExperiment object as input. We provide users w
 
 -   **samples** - column name in cell metadata of the spe object that contains sample names.
 
--   **dimRed** - dimensionality reduction method name in reduced dimensions of the spe object. Default value is "None", in which case PCA is calculated and used as low dimension data.
+-   **dimRed_init** - dimensionality reduction method name in reduced dimensions of the input spe object, to be used for initial clustering and sub-clustering. Default value is "None", in which case PCA is performed and used as low dimension data.
+
+-   **dimRed_f** - dimensionality reduction method name in reduced dimensions of the processed spe object with adaptively-smoothed expression, to be used for the final clustering. Input values include "embed.smooth" or "None". Default value is "None", in which case PCA is performed on the adaptively-smoothed expression and stored as "embed.smooth" to be used as low dimension data for final clustering. Users can apply external dimension reduction methods to the adaptively-smoothed expression and store the resulting embedding as "embed.smooth" in the spe object, which can be used for final clustering in the step-by-step version of the ClustSIGNAL application. 
 
 -   **batch** - whether batch correction should be performed. Default value is False.
 

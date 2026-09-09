@@ -729,7 +729,7 @@ spe$ClustSIGNAL |> head() # ClustSIGNAL cluster labels
 
 <summary>**Session Information**</summary>
 
-```{r}
+```{r session_packages}
 sessionInfo()
 ```
 

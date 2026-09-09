@@ -1,7 +1,7 @@
 Package: clustSIGNAL
 Type: Package
 Title: ClustSIGNAL: a spatial clustering method
-Version: 1.5.1
+Version: 1.5.2
 Authors@R: c(
     person("Pratibha", "Panwar", email = "pratibhapanwar.4@gmail.com", 
     role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-7437-7084")),
@@ -25,7 +25,7 @@ URL: https://sydneybiox.github.io/clustSIGNAL/
 BugReports: https://github.com/sydneybiox/clustSIGNAL/issues
 biocViews: Clustering, Software, GeneExpression, Spatial, Transcriptomics, SingleCell
 RoxygenNote: 7.3.3
-Depends: R (>= 4.4.0), SpatialExperiment
+Depends: R (>= 4.5.0), SpatialExperiment
 Imports: BiocParallel,
     BiocNeighbors, 
     BiocSingular,

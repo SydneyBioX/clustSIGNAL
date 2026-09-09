@@ -76,7 +76,7 @@ p1_clustering <- function(spe, dimRed_init = "None", batch = FALSE,
     if (batch == TRUE) {
         mat <- RunHarmony(data_mat = reducedDim(spe, dimRed_init),
                           meta_data = colData(spe), vars_use = batch_by,
-                          max.iter = 20, verbose = FALSE)
+                          max_iter = 20, verbose = FALSE)
     } else {
         mat <- reducedDim(spe, dimRed_init)
     }

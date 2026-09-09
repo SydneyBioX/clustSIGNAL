@@ -76,9 +76,8 @@ p2_clustering <- function(spe, dimRed_f = c("None", "embed.smooth"),
 
     if (batch == TRUE) {
         emb <- RunHarmony(data_mat = reducedDim(spe, "embed.smooth"),
-                          meta_data = colData(spe),
-                          vars_use = batch_by, max.iter = 20,
-                          verbose = FALSE)
+                          meta_data = colData(spe), vars_use = batch_by,
+                          max_iter = 20, verbose = FALSE)
         mat <- emb
     } else {
         mat <- reducedDim(spe, "embed.smooth")}
