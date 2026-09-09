@@ -33,7 +33,7 @@ data(ClustSignal_example)
 # requires matrix containing cluster proportions of each neighbourhood
 # (regXclust), generated using the neighbourDetect() function
 spe <- clustSIGNAL::entropyMeasure(spe, regXclust)
-#> 06:35:23 Neighbourhood heterogeneity calculated.
+#> 03:22:19 Neighbourhood heterogeneity calculated.
 spe$entropy |> head()
 #> embryo2_Pos29_cell110_z2 embryo2_Pos29_cell117_z2 embryo2_Pos29_cell128_z2 
 #>                0.4586858                0.2055925                0.6373875 

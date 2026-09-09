@@ -1,9 +1,9 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   clustSIGNAL: clustSIGNAL.html
-last_built: 2026-06-02T06:35Z
+last_built: 2026-09-09T03:22Z
 urls:
   reference: https://sydneybiox.github.io/clustSIGNAL/reference
   article: https://sydneybiox.github.io/clustSIGNAL/articles

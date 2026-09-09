@@ -146,27 +146,27 @@ samples <- "sample_id" # column name containing sample names
 res_emb <- clustSIGNAL(spe, samples, outputs = "a") 
 ```
 
-    ## 06:35:34 ClustSIGNAL running.
+    ## 03:22:30 ClustSIGNAL running.
 
-    ## 06:35:34 Calculating PCA.
+    ## 03:22:30 Calculating PCA.
 
-    ## 06:35:36 Initial clustering performed. Clusters = 9
+    ## 03:22:32 Initial clustering performed. Clusters = 9
 
-    ## 06:35:38 Initial sub-clustering performed. Subclusters = 34
+    ## 03:22:34 Initial sub-clustering performed. Subclusters = 34
 
-    ## 06:35:38 Neighbourhoods defined.
+    ## 03:22:34 Neighbourhoods defined.
 
-    ## 06:35:38 Neighbourhood heterogeneity calculated.
+    ## 03:22:34 Neighbourhood heterogeneity calculated.
 
-    ## 06:35:38 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+    ## 03:22:34 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 
-    ## 06:35:38 Calculating PCA using smoothed data.
+    ## 03:22:34 Calculating PCA using smoothed data.
 
-    ## 06:35:40 Final clustering performed on smoothed data. Clusters = 14
+    ## 03:22:36 Final clustering performed on smoothed data. Clusters = 14
 
-    ## 06:35:40 ClustSIGNAL completed.
+    ## 03:22:36 ClustSIGNAL completed.
 
-    ## Time difference of 5.561546 secs
+    ## Time difference of 5.6986 secs
 
 This returns a list that contains a ClustSIGNAL clusters dataframe
 (clusters), a matrix of cell IDs from each cell’s neighbourhood
@@ -512,27 +512,27 @@ samples <- "samples" # column name containing sample names
 res_hyp <- clustSIGNAL(spe2, samples, threads = 4, outputs = "a")
 ```
 
-    ## 06:35:43 ClustSIGNAL running.
+    ## 03:22:40 ClustSIGNAL running.
 
-    ## 06:35:43 Calculating PCA.
+    ## 03:22:40 Calculating PCA.
 
-    ## 06:35:45 Initial clustering performed. Clusters = 9
+    ## 03:22:42 Initial clustering performed. Clusters = 9
 
-    ## 06:35:48 Initial sub-clustering performed. Subclusters = 37
+    ## 03:22:45 Initial sub-clustering performed. Subclusters = 37
 
-    ## 06:35:49 Neighbourhoods defined.
+    ## 03:22:45 Neighbourhoods defined.
 
-    ## 06:35:49 Neighbourhood heterogeneity calculated.
+    ## 03:22:45 Neighbourhood heterogeneity calculated.
 
-    ## 06:35:49 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+    ## 03:22:45 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 
-    ## 06:35:49 Calculating PCA using smoothed data.
+    ## 03:22:45 Calculating PCA using smoothed data.
 
-    ## 06:35:50 Final clustering performed on smoothed data. Clusters = 12
+    ## 03:22:46 Final clustering performed on smoothed data. Clusters = 12
 
-    ## 06:35:50 ClustSIGNAL completed.
+    ## 03:22:46 ClustSIGNAL completed.
 
-    ## Time difference of 6.471147 secs
+    ## Time difference of 6.653308 secs
 
 ``` r
 
@@ -805,9 +805,9 @@ treated as the number of centers.
 spe <- clustSIGNAL::p1_clustering(spe, dimRed_init = "PCA")
 ```
 
-    ## 06:35:57 Initial clustering performed. Clusters = 9
+    ## 03:22:53 Initial clustering performed. Clusters = 9
 
-    ## 06:35:58 Initial sub-clustering performed. Subclusters = 34
+    ## 03:22:55 Initial sub-clustering performed. Subclusters = 34
 
 Here, two columns are added to the spe object under the cell metadata:
 
@@ -856,7 +856,7 @@ respectively.
 outReg <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
 ```
 
-    ## 06:35:59 Neighbourhoods defined.
+    ## 03:22:55 Neighbourhoods defined.
 
 This generates a list containing:
 
@@ -900,7 +900,7 @@ by default we use 1 cpu core.
 spe <- clustSIGNAL::entropyMeasure(spe, outReg$regXclust)
 ```
 
-    ## 06:35:59 Neighbourhood heterogeneity calculated.
+    ## 03:22:55 Neighbourhood heterogeneity calculated.
 
 The entropy values are added to the spe object under cell metadata.
 
@@ -933,7 +933,7 @@ number of cores (threads = 1) to use for parallel runs.
 spe <- clustSIGNAL::adaptiveSmoothing(spe, outReg$nnCells)
 ```
 
-    ## 06:35:59 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
+    ## 03:22:56 Smoothing performed. NN = 30, Kernel = G, Spread = 0.300000
 
 The adaptively smoothed gene expression data are added to the spe object
 under assays as ‘smoothed’.
@@ -969,9 +969,9 @@ correction parameters as the initial clustering in first step.
 spe <- clustSIGNAL::p2_clustering(spe)
 ```
 
-    ## 06:35:59 Calculating PCA using smoothed data.
+    ## 03:22:56 Calculating PCA using smoothed data.
 
-    ## 06:36:00 Final clustering performed on smoothed data. Clusters = 14
+    ## 03:22:57 Final clustering performed on smoothed data. Clusters = 14
 
 Cluster labels are added to the colData of the spe object under a
 ClustSIGNAL column
@@ -991,9 +991,9 @@ spe$ClustSIGNAL |> head() # ClustSIGNAL cluster labels
 sessionInfo()
 ```
 
-    ## R version 4.6.0 (2026-04-24)
+    ## R version 4.6.1 (2026-06-24)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 24.04.5 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -1014,13 +1014,13 @@ sessionInfo()
     ## 
     ## other attached packages:
     ##  [1] aricode_1.1.0               patchwork_1.3.2            
-    ##  [3] dplyr_1.2.1                 scater_1.40.1              
+    ##  [3] dplyr_1.2.1                 scater_1.40.2              
     ##  [5] ggplot2_4.0.3               scuttle_1.22.0             
-    ##  [7] clustSIGNAL_1.5.1           SpatialExperiment_1.22.0   
+    ##  [7] clustSIGNAL_1.5.2           SpatialExperiment_1.22.0   
     ##  [9] SingleCellExperiment_1.34.0 SummarizedExperiment_1.42.0
     ## [11] Biobase_2.72.0              GenomicRanges_1.64.0       
     ## [13] Seqinfo_1.2.0               IRanges_2.46.0             
-    ## [15] S4Vectors_0.50.1            BiocGenerics_0.58.1        
+    ## [15] S4Vectors_0.50.2            BiocGenerics_0.58.1        
     ## [17] generics_0.1.4              MatrixGenerics_1.24.0      
     ## [19] matrixStats_1.5.0           BiocStyle_2.40.0           
     ## 
@@ -1029,24 +1029,25 @@ sessionInfo()
     ##  [4] farver_2.1.2        viridis_0.6.5       S7_0.2.2           
     ##  [7] fastmap_1.2.0       bluster_1.22.0      digest_0.6.39      
     ## [10] rsvd_1.0.5          lifecycle_1.0.5     cluster_2.1.8.2    
-    ## [13] magrittr_2.0.5      compiler_4.6.0      rlang_1.2.0        
-    ## [16] sass_0.4.10         tools_4.6.0         utf8_1.2.6         
-    ## [19] igraph_2.3.2        yaml_2.3.12         knitr_1.51         
+    ## [13] magrittr_2.0.5      compiler_4.6.1      rlang_1.3.0        
+    ## [16] sass_0.4.10         tools_4.6.1         utf8_1.2.6         
+    ## [19] igraph_2.3.3        yaml_2.3.12         knitr_1.52         
     ## [22] labeling_0.4.3      S4Arrays_1.12.0     DelayedArray_0.38.2
     ## [25] RColorBrewer_1.1-3  abind_1.4-8         BiocParallel_1.46.0
-    ## [28] withr_3.0.2         desc_1.4.3          grid_4.6.0         
+    ## [28] withr_3.0.3         desc_1.4.3          grid_4.6.1         
     ## [31] beachmat_2.28.0     scales_1.4.0        cli_3.6.6          
-    ## [34] rmarkdown_2.31      ragg_1.5.2          rjson_0.2.23       
-    ## [37] ggbeeswarm_0.7.3    cachem_1.1.0        parallel_4.6.0     
-    ## [40] BiocManager_1.30.27 XVector_0.52.0      vctrs_0.7.3        
-    ## [43] Matrix_1.7-5        jsonlite_2.0.0      bookdown_0.46      
-    ## [46] BiocSingular_1.28.0 BiocNeighbors_2.6.0 ggrepel_0.9.8      
-    ## [49] scattermore_1.2     irlba_2.3.7         beeswarm_0.4.0     
-    ## [52] systemfonts_1.3.2   magick_2.9.1        harmony_2.0.3      
-    ## [55] jquerylib_0.1.4     glue_1.8.1          pkgdown_2.2.0      
-    ## [58] codetools_0.2-20    cowplot_1.2.0       gtable_0.3.6       
-    ## [61] ScaledMatrix_1.20.0 tibble_3.3.1        pillar_1.11.1      
-    ## [64] htmltools_0.5.9     R6_2.6.1            textshaping_1.0.5  
-    ## [67] evaluate_1.0.5      lattice_0.22-9      bslib_0.11.0       
-    ## [70] Rcpp_1.1.1-1.1      gridExtra_2.3       SparseArray_1.12.2 
-    ## [73] xfun_0.57           fs_2.1.0            pkgconfig_2.0.3
+    ## [34] rmarkdown_2.32      ragg_1.5.2          otel_0.2.0         
+    ## [37] rjson_0.2.23        ggbeeswarm_0.7.3    cachem_1.1.0       
+    ## [40] parallel_4.6.1      BiocManager_1.30.27 XVector_0.52.0     
+    ## [43] vctrs_0.7.3         Matrix_1.7-5        jsonlite_2.0.0     
+    ## [46] bookdown_0.48       BiocSingular_1.28.0 BiocNeighbors_2.6.0
+    ## [49] ggrepel_0.9.8       scattermore_1.2     irlba_2.3.7        
+    ## [52] beeswarm_0.4.0      systemfonts_1.3.2   magick_2.9.1       
+    ## [55] harmony_2.0.5       jquerylib_0.1.4     glue_1.8.1         
+    ## [58] pkgdown_2.2.1       codetools_0.2-20    cowplot_1.2.0      
+    ## [61] gtable_0.3.6        ScaledMatrix_1.20.0 tibble_3.3.1       
+    ## [64] pillar_1.11.1       htmltools_0.5.9     R6_2.6.1           
+    ## [67] textshaping_1.0.5   evaluate_1.0.5      lattice_0.22-9     
+    ## [70] bslib_0.12.0        Rcpp_1.1.2          gridExtra_2.3.1    
+    ## [73] SparseArray_1.12.2  xfun_0.60           fs_2.1.0           
+    ## [76] pkgconfig_2.0.3

@@ -56,7 +56,7 @@ indicated by the proportion of initial subclusters (column) in each cell
 data(ClustSignal_example)
 
 out_list <- clustSIGNAL::neighbourDetect(spe, samples = "sample_id")
-#> 06:35:24 Neighbourhoods defined.
+#> 03:22:20 Neighbourhoods defined.
 out_list |> names()
 #> [1] "nnCells"   "regXclust"
 ```

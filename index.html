@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">clustSIGNAL</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,8 @@
 <ul>
 <li><p><strong>spe</strong> - SpatialExperiment object with cell spatial coordinates and normalized gene expression in it.</p></li>
 <li><p><strong>samples</strong> - column name in cell metadata of the spe object that contains sample names.</p></li>
-<li><p><strong>dimRed</strong> - dimensionality reduction method name in reduced dimensions of the spe object. Default value is “None”, in which case PCA is calculated and used as low dimension data.</p></li>
+<li><p><strong>dimRed_init</strong> - dimensionality reduction method name in reduced dimensions of the input spe object, to be used for initial clustering and sub-clustering. Default value is “None”, in which case PCA is performed and used as low dimension data.</p></li>
+<li><p><strong>dimRed_f</strong> - dimensionality reduction method name in reduced dimensions of the processed spe object with adaptively-smoothed expression, to be used for the final clustering. Input values include “embed.smooth” or “None”. Default value is “None”, in which case PCA is performed on the adaptively-smoothed expression and stored as “embed.smooth” to be used as low dimension data for final clustering. Users can apply external dimension reduction methods to the adaptively-smoothed expression and store the resulting embedding as “embed.smooth” in the spe object, which can be used for final clustering in the step-by-step version of the ClustSIGNAL application.</p></li>
 <li><p><strong>batch</strong> - whether batch correction should be performed. Default value is False.</p></li>
 <li><p><strong>batch_by</strong> - column name in cell metadata of the spe object containing the groups by which to perform batch correction. By default, batch_by is set to “None”. If the batch option is set to True, the batch_by value must be changed to the group name to perform batch correction.</p></li>
 <li><p><strong>NN</strong> - neighbourhood size in terms of the number of nearest neighbours to consider. Value should be &gt; 1. Default value is 30.</p></li>
@@ -168,7 +169,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
